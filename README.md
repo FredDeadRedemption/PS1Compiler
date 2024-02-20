@@ -1,3 +1,6 @@
+(_ lexer-ml _)
+(_ Definer lexer rules _)
+
 (_ parser.mly _)
 (_ Define parser rules using Menhir _)
 
