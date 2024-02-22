@@ -1,4 +1,4 @@
-.PHONY: all clean # this tells Make that these targets (all & clean) do not represent files
+.PHONY: all clean lex # this tells Make that these targets (all & clean) do not represent files
 
 all: # compile all .ml -mll -mli
 	dune build
