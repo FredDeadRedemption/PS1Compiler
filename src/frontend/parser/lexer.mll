@@ -29,7 +29,7 @@ rule tokenize = parse
 {
 let main () = begin
   try
-    let filename = Sys.argv.(1) in
+    let filename = "../../../code.psx" in (* Sys.argv.(1) pass file as cli arg*)
     let filehandle = open_in filename in
     let lexbuf = Lexing.from_channel filehandle in
     while true do 

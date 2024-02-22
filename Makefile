@@ -7,3 +7,6 @@ all: # compile all .ml -mll -mli
 clean: # rm -rf /build
 	@echo "Ryder op..."
 	dune clean
+
+lex: # lexes code.psx
+	cd _build/default/src/frontend/parser && ./lexer.exe
