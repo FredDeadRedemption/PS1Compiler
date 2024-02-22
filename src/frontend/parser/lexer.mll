@@ -35,8 +35,8 @@ let main () = begin
     while true do 
       let result = tokenize lexbuf in
       match result with 
-      | INT(i) -> Printf.printf "digit\n%d\n" i
-      | ADD -> Printf.printf "+\n"
+      | INT(i) -> Printf.printf "%d (INT)\n" i
+      | ADD -> Printf.printf "+ (PLUS)\n"
     done
   with Eof -> exit 0
 end ;;

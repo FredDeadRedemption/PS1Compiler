@@ -1,4 +1,4 @@
-.PHONY: all clean lex # this tells Make that these targets (all & clean) do not represent files
+.PHONY: all clean lex relax # this tells Make that these targets (all & clean) do not represent files
 
 all: # compile all .ml -mll -mli
 	dune build
@@ -10,3 +10,6 @@ clean: # rm -rf /build
 
 lex: # lexes code.psx
 	cd _build/default/src/frontend/parser && ./lexer.exe
+
+relax: clean all lex # clean --> recompile --> lex
+	@echo "Cleaning, building, and lexing completed."
