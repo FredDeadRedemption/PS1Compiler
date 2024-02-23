@@ -1,9 +1,0 @@
-(executable
- (name lexer)) ; out name
-
-;(rule
- ;(targets lexer.ml) ; out type
- ;(deps lexer.mll) ; in type
- ;(action (run ocamllex lexer.mll))) ; build step
-
-(ocamllex lexer) ;compile lexer using ocamllex

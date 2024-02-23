@@ -60,21 +60,30 @@ rule tokenize = parse
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT(int_of_string i) }
   | float as i { FLOAT(float_of_string i) }
-(*| identifier { read_string ID } *)
+ (*) | identifier { ID }
+    | '"' { read_string lexbuf } *)
   | newline { tokenize lexbuf } (* skip newline *)
   | eof { raise Eof }
-  | _ as c { failwith (Printf.sprintf "unexpected character: %C" c) }
+  | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C" c) }
 
 and read_comment = parse
-  | newline { tokenize lexbuf } 
+  | newline { tokenize lexbuf } (* go back to tokenization on newline *)
   | eof { raise Eof }
-  | _ { read_comment lexbuf } 
+  | _ { read_comment lexbuf } (* read all kinds of chars within comment *)
 
 and read_multi_line_comment = parse
-  | "*/" { tokenize lexbuf } 
+  | "*/" { tokenize lexbuf } (* go back to tokenization on */ *)
   | newline { read_multi_line_comment lexbuf } 
-  | eof { raise Eof }
-  | _ { read_multi_line_comment lexbuf } 
+  | eof { failwith (Printf.sprintf "Lexer error: unexpected eof, please terminate comment") }
+  | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
+
+(*and read_string
+  | '"' { tokenize lexbuf }
+  | alpha { read_string lexbuf }
+  |
+  |
+  |
+  |*)
 {
 let main () = begin
   try
@@ -122,7 +131,7 @@ let main () = begin
       | FOR -> Printf.printf "for (FOR)\n"
       | MAIN -> Printf.printf "main (MAIN)\n"
       | PRINT -> Printf.printf "print (PRINT)\n"
-      | RETURN -> Printf.printf "return (RETURN\n)"
+      | RETURN -> Printf.printf "return (RETURN)\n"
     done
   with Eof -> exit 0
 end ;;

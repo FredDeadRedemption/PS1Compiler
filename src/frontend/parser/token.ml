@@ -16,8 +16,8 @@ type token =
   | MOD 
   | LANGLE 
   | RANGLE 
-  |  AND 
-  |  OR 
+  | AND 
+  | OR 
   | NEG 
   | LET 
   | CONST 
