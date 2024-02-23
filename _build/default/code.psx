@@ -1,7 +1,0 @@
-int main(void){
-  1 + 53 - (-1.3324);
-
-  function(int 4){
-    return 0;
-  }
-}

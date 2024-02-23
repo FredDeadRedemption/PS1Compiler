@@ -6,4 +6,4 @@
  ;(deps lexer.mll) ; in type
  ;(action (run ocamllex lexer.mll))) ; build step
 
-(ocamllex lexer)
+(ocamllex lexer) ;compile lexer using ocamllex
