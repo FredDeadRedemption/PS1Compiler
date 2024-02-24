@@ -12,6 +12,7 @@ let fraction = '.' digit+
 (* Regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
 let float = (integer fraction?) | ('-'? fraction) (* VED IK OM DEN HER VIRKER *)
+let string = '"' ([^ '"' '\\'] | '\\')* '"'
 let identifier = (alpha) (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
 
 let whitespace = [' ' '\t']
@@ -37,7 +38,7 @@ rule tokenize = parse
   | ">" { RANGLE }
   | "&&" { AND }
   | "||" { OR }
-  | "!" { NEG }
+  | "!" { NOT }
   | "let" { LET }
   | "const" {CONST }
   | "function" { FUN }
@@ -60,8 +61,8 @@ rule tokenize = parse
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT(int_of_string i) }
   | float as i { FLOAT(float_of_string i) }
- (*) | identifier { ID }
-    | '"' { read_string lexbuf } *)
+  | string as s { STRING(s) }
+  | identifier as s { ID(s) }
   | newline { tokenize lexbuf } (* skip newline *)
   | eof { raise Eof }
   | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C" c) }
@@ -77,13 +78,6 @@ and read_multi_line_comment = parse
   | eof { failwith (Printf.sprintf "Lexer error: unexpected eof, please terminate comment") }
   | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
 
-(*and read_string
-  | '"' { tokenize lexbuf }
-  | alpha { read_string lexbuf }
-  |
-  |
-  |
-  |*)
 {
 let main () = begin
   try
@@ -95,6 +89,8 @@ let main () = begin
       match result with 
       | INT(i) -> Printf.printf "%d (INT)\n" i
       | FLOAT(i) -> Printf.printf "%f (FLOAT)\n" i
+      | STRING(s) -> Printf.printf "%s (STRING)\n" s;
+      | ID(s) -> Printf.printf "%s (ID)\n" s;
       | LPAREN -> Printf.printf "( (LPAREN)\n"
       | RPAREN -> Printf.printf ") (RPAREN)\n"
       | LBRACE -> Printf.printf "{ (LBRACE)\n"
@@ -114,7 +110,7 @@ let main () = begin
       | RANGLE -> Printf.printf "> (RANGLE)\n"
       | AND -> Printf.printf "&& (AND)\n"
       | OR -> Printf.printf "|| (OR)\n"
-      | NEG -> Printf.printf "! (NEG)\n"
+      | NOT -> Printf.printf "! (NOT)\n"
       | LET -> Printf.printf "let (LET)\n"
       | CONST -> Printf.printf "const (CONST)\n"
       | FUN -> Printf.printf "fun (FUN)\n"

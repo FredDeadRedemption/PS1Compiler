@@ -18,7 +18,7 @@ type token =
   | RANGLE 
   | AND 
   | OR 
-  | NEG 
+  | NOT 
   | LET 
   | CONST 
   | FUN 
@@ -38,4 +38,6 @@ type token =
   | RETURN
   | INT of int
   | FLOAT of float
+  | STRING of string
+  | ID of string
 
