@@ -11,14 +11,18 @@ let fraction = '.' digit+
 
 (* Regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
-let float = (integer fraction?) | ('-'? fraction) (* VED IK OM DEN HER VIRKER *)
+let float = (integer fraction?) | ('-'? fraction) (* aner ik hvad jeg har lavet her men det virker*)
 let string = '"' ([^ '"' '\\'] | '\\')* '"'
 let identifier = (alpha) (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
 
 let whitespace = [' ' '\t']
 let newline = '\r' | '\n' | "\r\n"
 
+(* lexbuf = skip without returning token *)
+
 rule tokenize = parse
+  | whitespace { tokenize lexbuf } (* skip whitespace *)
+  | newline { tokenize lexbuf } (* skip newline *)
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "{" { LBRACE }
@@ -56,14 +60,12 @@ rule tokenize = parse
   | "main" { MAIN }
   | "print" { PRINT } 
   | "return" { RETURN }
-  | whitespace { tokenize lexbuf } (* skip whitespace *)
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT(int_of_string i) }
   | float as i { FLOAT(float_of_string i) }
   | string as s { STRING(s) }
   | identifier as s { ID(s) }
-  | newline { tokenize lexbuf } (* skip newline *)
   | eof { raise Eof }
   | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C" c) }
 
