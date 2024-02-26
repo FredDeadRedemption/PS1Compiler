@@ -3,6 +3,11 @@ open Token
 (*open Lexing*)
 
 exception Eof
+
+let line : int ref = ref 1
+
+let increase () =
+  line := !line + 1
 }
 
 let digit = ['0'-'9']
@@ -22,7 +27,7 @@ let newline = '\r' | '\n' | "\r\n"
 
 rule tokenize = parse
   | whitespace { tokenize lexbuf } (* skip whitespace *)
-  | newline { tokenize lexbuf } (* skip newline *)
+  | newline { increase(); tokenize lexbuf } (* skip newline *)
   | "(" { LPAREN }
   | ")" { RPAREN }
   | "{" { LBRACE }
@@ -30,6 +35,7 @@ rule tokenize = parse
   | "[" { LBRACK }
   | "]" { RBRACK }
   | "." { DOT }
+  | "," { COMMA }
   | ":" { COLON }
   | ";" { SEMICOLON }
   | "=" { EQ }
@@ -67,16 +73,16 @@ rule tokenize = parse
   | string as s { STRING(s) }
   | identifier as s { ID(s) }
   | eof { raise Eof }
-  | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C" c) }
+  | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C, on line: %d" c !line) }
 
 and read_comment = parse
-  | newline { tokenize lexbuf } (* go back to tokenization on newline *)
+  | newline { increase(); tokenize lexbuf } (* go back to tokenization on newline *)
   | eof { raise Eof }
   | _ { read_comment lexbuf } (* read all kinds of chars within comment *)
 
 and read_multi_line_comment = parse
   | "*/" { tokenize lexbuf } (* go back to tokenization on */ *)
-  | newline { read_multi_line_comment lexbuf } 
+  | newline { increase(); read_multi_line_comment lexbuf } 
   | eof { failwith (Printf.sprintf "Lexer error: unexpected eof, please terminate comment") }
   | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
 
@@ -85,9 +91,9 @@ let main () = begin
   try
     let filename = "../../../code.psx" in (* Sys.argv.(1) pass file as cli arg*)
     let filehandle = open_in filename in
-    let lexbuf = Lexing.from_channel filehandle in
+    let stream = Lexing.from_channel filehandle in
     while true do 
-      let result = tokenize lexbuf in
+      let result = tokenize stream in
       match result with 
       | INT(i) -> Printf.printf "%d (INT)\n" i
       | FLOAT(i) -> Printf.printf "%f (FLOAT)\n" i
@@ -100,6 +106,7 @@ let main () = begin
       | LBRACK -> Printf.printf "[ (LBRACK)\n"
       | RBRACK -> Printf.printf "] (RBRACK)\n"
       | DOT -> Printf.printf ". (DOT)\n"
+      | COMMA -> Printf.printf ", (COMMA)\n"
       | COLON -> Printf.printf ": (COLON)\n"
       | SEMICOLON -> Printf.printf "; (SEMICOLON)\n"
       | EQ -> Printf.printf "= (EQ)\n"
@@ -131,7 +138,9 @@ let main () = begin
       | PRINT -> Printf.printf "print (PRINT)\n"
       | RETURN -> Printf.printf "return (RETURN)\n"
     done
-  with Eof -> exit 0
+  with Eof ->
+    Printf.printf "File was %d lines\n" !line; 
+    exit 0
 end ;;
 main () ;;
 }

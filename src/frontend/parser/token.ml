@@ -6,6 +6,7 @@ type token =
   | LBRACK 
   | RBRACK 
   | DOT 
+  | COMMA
   | COLON 
   | SEMICOLON 
   | EQ 
