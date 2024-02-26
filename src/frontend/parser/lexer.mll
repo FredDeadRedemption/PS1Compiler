@@ -2,12 +2,12 @@
 open Token
 (*open Lexing*)
 
-exception Eof
-
 let line : int ref = ref 1
 
 let increase () =
   line := !line + 1
+
+exception Eof
 }
 
 let digit = ['0'-'9']
