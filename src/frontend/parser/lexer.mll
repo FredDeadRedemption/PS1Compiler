@@ -16,7 +16,7 @@ let fraction = '.' digit+
 
 (* Regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
-let float = (integer fraction?) | ('-'? fraction) (* aner ik hvad jeg har lavet her men det virker*)
+let float = (integer) (fraction) (* aner ik hvad jeg har lavet her men det virker*)
 let string = '"' ([^ '"' '\\'] | '\\')* '"'
 let identifier = (alpha) (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
 

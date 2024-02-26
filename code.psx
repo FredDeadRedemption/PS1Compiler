@@ -6,6 +6,10 @@ int main(void){
   function(float f){
     return f;
   } 
+
+ - 2.12 2
+
+ .234
             
                      "stri   s iing"    "1234string"
 /* gadfg
