@@ -13,3 +13,11 @@ lex: # lexes code.psx
 
 relax: clean all lex # clean --> recompile --> lex
 	@echo "Cleaning, building, and lexing completed."
+
+SHELL := /bin/bash
+
+lextest: #det viiiirker ikke ;-;
+	source tests/runtest.bash "_build/default/src/frontend/lexer/lexer.exe"
+
+purge: #convert bash script notation from dos to unix
+	dos2unix tests/runtest.bash 
