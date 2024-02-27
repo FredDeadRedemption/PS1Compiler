@@ -17,7 +17,7 @@ relax: clean all lex # clean --> recompile --> lex
 SHELL := /bin/bash
 
 lextest: #det viiiirker ikke ;-;
-	source tests/runtest.bash "_build/default/src/frontend/lexer/lexer.exe"
+	source scripts/runtest.bash "_build/default/src/frontend/lexer/lexer.exe"
 
 purge: #convert bash script notation from dos to unix
-	dos2unix tests/runtest.bash 
+	dos2unix scripts/runtest.bash 
