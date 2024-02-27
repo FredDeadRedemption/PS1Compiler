@@ -2,10 +2,10 @@
 open Token
 (*open Lexing*)
 
-let line : int ref = ref 1
+let line = ref 1 (* ref = mutable*)
 
 let increase () =
-  line := !line + 1
+  line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
 
 exception Eof
 }
@@ -16,8 +16,8 @@ let fraction = '.' digit+
 
 (* Regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
-let float = (integer) (fraction) (* aner ik hvad jeg har lavet her men det virker*)
-let string = '"' ([^ '"' '\\'] | '\\')* '"'
+let float = (integer) (fraction) 
+let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)
 let identifier = (alpha) (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
 
 let whitespace = [' ' '\t']
