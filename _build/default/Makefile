@@ -14,10 +14,9 @@ lex: # lexes code.psx
 relax: clean all lex # clean --> recompile --> lex
 	@echo "Cleaning, building, and lexing completed."
 
-## BASH SHIT
 SHELL := /bin/bash
 
-lexspeedtest: 
+lextest: 
 	make speedtest EXE="_build/default/src/frontend/lexer/lexer.exe" PSX="code.psx"
 
 speedtest: #EXE to test #PSC path to code for exe arg
