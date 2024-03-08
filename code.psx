@@ -3,16 +3,12 @@ int main(void){
 
 // COMMENT 1¤!¤"?=`?Ø 
 
+/* yeehaw */
+
   function(float f){
     return f;
   } 
 
- - 2.12 2
-
- .234
-            
-                     "stri   s iing"    "1234string"
-/* gadfg
-adfg 249 9==#=??Q#¤
-       6 6#%&"¤#¤!¤¤#¤!¤"?=`?Ø */
+ -2.12
+ let string = "string";
 }
