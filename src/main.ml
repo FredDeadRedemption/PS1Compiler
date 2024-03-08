@@ -1,6 +1,5 @@
-open Lexing
+
 open Lexer
-open Parser
 
 let main () = begin
   try

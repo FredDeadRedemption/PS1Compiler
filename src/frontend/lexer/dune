@@ -1,5 +1,6 @@
-(executable
- (name lexer)) ; out name
+
+ (library
+  (name lexer))
 ;(rule
  ;(targets lexer.ml) ; out type
  ;(deps lexer.mll) ; in type

@@ -12,7 +12,7 @@ lex: # lexes code.psx
 	cd _build/default/src/frontend/lexer && ./lexer.exe ../../../code.psx
 
 main:
-	cd _build/default/src && ./main.exe ../../code.psx
+	cd _build/default/src && ./main.exe ../../../code.psx
 
 relax: clean all lex # clean --> recompile --> lex
 	@echo "Cleaning, building, and lexing completed."
