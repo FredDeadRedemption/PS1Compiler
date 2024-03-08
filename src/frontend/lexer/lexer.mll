@@ -73,7 +73,7 @@ rule tokenize = parse
   | string as s { STRING(s) }
   | identifier as s { ID(s) }
   | eof { raise Eof }
-  | _ as c { failwith (Printf.sprintf "Lexer error: unexpected character: %C, on line: %d" c !line) }
+  | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 
 and read_comment = parse
   | newline { increase(); tokenize lexbuf } (* go back to tokenization on newline *)
@@ -83,7 +83,7 @@ and read_comment = parse
 and read_multi_line_comment = parse
   | "*/" { tokenize lexbuf } (* go back to tokenization on */ *)
   | newline { increase(); read_multi_line_comment lexbuf } 
-  | eof { failwith (Printf.sprintf "Lexer error: unexpected eof, please terminate comment") }
+  | eof { failwith (Printf.sprintf "Syntax error: unexpected eof, please terminate comment") }
   | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
 
 {
