@@ -1,1 +1,0 @@
-type binop = ADD | SUB | MUL | DIV | MOD | LANGLE | RANGLE | AND | OR
