@@ -1,10 +1,9 @@
 %{
-  open Ast
+  open ast
 %}
 
 %token <int> INT
 %token <string> ID
-%token 
 
 %token LPAREN 
 %token RPAREN  
