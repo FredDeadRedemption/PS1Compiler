@@ -4,14 +4,38 @@
 
 %token <int> INT
 %token <string> ID
-%token 
 
 %token LPAREN 
-%token RPAREN  
+%token RPAREN 
+%token EOF
+
+%left ADD SUB LESSER GREATER
+%left MUL DIV MOD
+%left AND OR
+%nonassoc NOT
+
+%start program
+
+%type <Ast.program> program
 
 
 %%
 
+program:
+  defs = def*
+  main = stmt*
+  EOF
+    { { defs = defs;
+        main = Sblock main; } }
+;
+
+def:
+| FUN f = ID
+  LPAREN formals = separated_list(COMMA, ID) RPAREN body = stmt
+    { { name = f;
+        formals = formals;
+        body = body } }
+;
 
 
 

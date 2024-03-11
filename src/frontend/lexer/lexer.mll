@@ -12,13 +12,13 @@ exception Eof
 
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
-let fraction = '.' digit+
+let fraction = '.' digit+ (* måske lave float uden decimaltal *)
 
 (* Regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
 let float = (integer) (fraction) 
 let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)
-let identifier = (alpha) (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
+let identifier = (alpha|'_') (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
 
 let whitespace = [' ' '\t']
 let newline = '\r' | '\n' | "\r\n"
@@ -85,7 +85,3 @@ and read_multi_line_comment = parse
   | newline { increase(); read_multi_line_comment lexbuf } 
   | eof { failwith (Printf.sprintf "Syntax error: unexpected eof, please terminate comment") }
   | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
-
-{
-  
-}

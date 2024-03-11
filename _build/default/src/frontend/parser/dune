@@ -1,5 +1,0 @@
-(executable
- (name parser)) ; out name
-
-(menhir
- (modules parser))
