@@ -1,5 +1,8 @@
-(executable
- (name parser)) ; out name
+(library
+ (name parser)
+ (libraries ast)) ; out name
+
+
 
 (menhir
  (modules parser))

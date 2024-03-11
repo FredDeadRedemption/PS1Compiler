@@ -37,6 +37,7 @@ type token =
   | MAIN 
   | PRINT
   | RETURN
+  | EOF
   | INT of int
   | FLOAT of float
   | STRING of string

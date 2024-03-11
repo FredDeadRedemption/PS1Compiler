@@ -6,8 +6,6 @@ let line = ref 1 (* ref = mutable*)
 
 let increase () =
   line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
-
-exception Eof
 }
 
 let digit = ['0'-'9']
@@ -72,12 +70,12 @@ rule tokenize = parse
   | float as i { FLOAT(float_of_string i) }
   | string as s { STRING(s) }
   | identifier as s { ID(s) }
-  | eof { raise Eof }
+  | eof { EOF }
   | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 
 and read_comment = parse
   | newline { increase(); tokenize lexbuf } (* go back to tokenization on newline *)
-  | eof { raise Eof }
+  | eof { EOF }
   | _ { read_comment lexbuf } (* read all kinds of chars within comment *)
 
 and read_multi_line_comment = parse
