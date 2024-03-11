@@ -1,4 +1,4 @@
-.PHONY: all clean lex relax lextest main # this tells Make that these targets (all & clean) do not represent files
+.PHONY: all clean main lexspeedtest purge main main2 main3# this tells Make that these targets (all & clean) do not represent files
 
 all: # compile all .ml -mll -mli
 	dune build
@@ -8,16 +8,21 @@ clean: # rm -rf /build
 	@echo "Ryder op..."
 	dune clean
 
-lex: # lexes code.psx
-	cd _build/default/src/frontend/lexer && ./lexer.exe ../../../code.psx
-
 main:
 	cd _build/default/src && ./main.exe ../../../code.psx
 
-relax: clean all lex # clean --> recompile --> lex
-	@echo "Cleaning, building, and lexing completed."
+main2:
+	cd _build/default/src && ./main.exe ../../../code2.psx
 
-## BASH SHIT
+main3:
+	cd _build/default/src && ./main.exe ../../../code3.psx
+
+
+
+
+
+
+## BENCHMARKING SCRIPTS
 SHELL := /bin/bash
 
 lexspeedtest: 
