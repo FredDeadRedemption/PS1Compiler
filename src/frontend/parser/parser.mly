@@ -66,15 +66,23 @@ program:
         main = Sblock main; } }
 ;
 
+def:
+| FUN f = ID
+  LPAREN formals = separated_list(COMMA, ID) RPAREN body = stmt
+    { { name = f;
+        formals = formals;
+        body = body } }
+;
+
 stmt:
 | IF e = expr s = stmt
   { Sif (e, s, Sblock []) }
 ;
 
 expr:
-| c = INT                        { Econst c }
+| c = INT                     { Econst c }
 | id = ID                     { Evar id }
-| LPAREN e = expr RPAREN         { e }
+| LPAREN e = expr RPAREN      { e }
 ;
 
 
