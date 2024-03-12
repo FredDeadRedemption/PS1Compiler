@@ -20,7 +20,8 @@ type expr =
 type stmt =
   | Sif      of expr * stmt * stmt
   | Sblock   of stmt list
-  | Scall    of string * expr list
+  | Sempty 
+  (*| Scall    of string * expr list*)
 
   (*
     Sif(expr: 2 > 1){

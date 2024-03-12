@@ -59,17 +59,23 @@
 %%
 
 program:
+  defs = def*
   main = stmt*
   EOF
-    { { defs = [];
-        main = Sblock main; } };
+    { { defs = defs;
+        main = Sblock main; } }
+;
 
 stmt:
 | IF e = expr s = stmt
-  { Sif (e, s, Sblock []) };
+  { Sif (e, s, Sblock []) }
+;
 
 expr:
-| c = INT { Econst c };
+| c = INT                        { Econst c }
+| id = ID                     { Evar id }
+| LPAREN e = expr RPAREN         { e }
+;
 
 
 

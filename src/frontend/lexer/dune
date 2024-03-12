@@ -1,6 +1,7 @@
 
  (library
-  (name lexer))
+  (name lexer)
+  (libraries parser))
 ;(rule
  ;(targets lexer.ml) ; out type
  ;(deps lexer.mll) ; in type

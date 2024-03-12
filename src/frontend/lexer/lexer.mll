@@ -1,5 +1,5 @@
 {
-open Token
+open Parser
 (*open Lexing*)
 
 let line = ref 1 (* ref = mutable*)

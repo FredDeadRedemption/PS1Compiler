@@ -1,6 +1,6 @@
 
-open Lexer
 open Ast
+
 
 (*let main () = begin
   try
@@ -59,36 +59,70 @@ open Ast
 end ;;
 main () ;;*)
 
-let main () = begin
-  let filename = Sys.argv.(1) in (* Sys.argv.(1) pass file as cli arg "../../../code.psx" *)
-    let filehandle = open_in filename in
-  let lexbuf = Lexing.from_channel filehandle in
-  let expr = Parser.program Lexer.tokenize lexbuf in
-    print_expr expr   
-end ;;
-main () ;;
-
-
-
-let rec string_of_expr = function
-  | Econst n -> string_of_int n
-  | Ebinop (op, e1, e2) ->
+let rec print_expr expr =
+  match expr with
+  | Econst c -> Printf.printf "Econst(%d)" c
+  | Evar v -> Printf.printf "Evar(%s)" v
+  | Ebool b -> Printf.printf "Ebool(%b)" b
+  | Ebinop (op, e1, e2) -> 
     let op_str = match op with
       | Add -> "+"
       | Sub -> "-"
       | Mul -> "*"
-      | Div -> "/"
-      | Lesser -> "<"
-      | Greater -> ">"
-      | Mod -> "%"
-      | And -> "&&"
-      | Or -> "||"
-      | Equal -> "=="
-    in
-    "(" ^ string_of_expr e1 ^ " " ^ op_str ^ " " ^ string_of_expr e2 ^ ")"
+      | Div -> "/" 
+      | Lesser -> "/" 
+      | Greater -> "/" 
+      | Mod -> "/" 
+      | And -> "/" 
+      | Or -> "/" 
+      | Equal -> "="
+    in 
+    Printf.printf "Ebinop(%s)" op_str;
+    print_expr e1;
+    Printf.printf ", ";
+    print_expr e2;
+    Printf.printf ")"
 
-let print_expr expr =
-  print_endline (string_of_expr expr)
+let rec print_stmt stmt =
+  match stmt with
+  | Sif (e, s, else_stmt) ->
+      Printf.printf "Sif (";
+      print_expr e;
+      Printf.printf ", ";
+      print_stmt s;
+      Printf.printf ", [\n";
+      (match else_stmt with
+       | Sblock else_stmts -> print_stmt (Sblock else_stmts)
+       | _ -> print_stmt else_stmt);
+      Printf.printf ")"
+  | Sblock stmts ->
+      Printf.printf "Sblock [\n";
+      List.iter (fun stmt -> print_stmt stmt; Printf.printf ";\n") stmts;
+      Printf.printf "]"
+  | Sempty -> Printf.printf "Sempty"
+
+let extract_def_name def =
+  def.name
+
+let print_program program =
+  Printf.printf "{\n  defs = [";
+  List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
+  Printf.printf "];\n  main = ";
+  print_stmt program.main;
+  Printf.printf "\n}\n"
+
+let main () =
+  let filename = Sys.argv.(1) in
+  let filehandle = open_in filename in
+  let lexbuf = Lexing.from_channel filehandle in
+  let prog = Parser.program Lexer.tokenize lexbuf in
+  print_program prog
+
+let () = main ()
+
+
+
+
 
 (*
 (* ast.ml *)
