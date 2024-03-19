@@ -37,6 +37,15 @@ let rec print_stmt stmt =
       Printf.printf "\tSstart [\n";
       List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
       Printf.printf "\t]"
+  | Sexpr stmt ->
+    Printf.printf "\tSexpr: ";
+      print_expr stmt;
+      Printf.printf ""           
+  | Svardef stmt ->
+      Printf.printf "{\n";
+      Printf.printf "\tvariable_type : %s;\n" stmt.variable_type;
+      Printf.printf "\tvariable_name : %s;\n" stmt.variable_name;
+    print_expr stmt.variable_value
 
 let extract_def_name def =
   def.name

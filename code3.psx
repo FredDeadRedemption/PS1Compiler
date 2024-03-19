@@ -1,4 +1,5 @@
 start() {
     print (5);
     print (10);
+    int x = 10;
 }

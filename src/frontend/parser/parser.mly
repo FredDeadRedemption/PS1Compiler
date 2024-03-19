@@ -2,9 +2,13 @@
   open Ast
 %}
 
+%token <string> TYPE_INT
+%token <string> TYPE_FLOAT
+%token VAR
 %token <int> INT
 %token <string> ID
 %token ADD SUB MUL DIV
+%token EQ LESSER GREATER
 %token LPAREN RPAREN
 %token LBRACK RBRACK
 %token SEMICOLON
@@ -17,6 +21,7 @@
 %start program
 
 %type <Ast.program> program
+%type <Ast.variable_declaration> variable_declaration
 
 
 %%
@@ -28,13 +33,29 @@ program:
       main = Sblock main;} }
 ;
 
+def:
+| variable_type = type_specification variable_name = ID EQ variable_value = expr SEMICOLON
+    { { variable_type = variable_type;
+        variable_name = variable_name;
+        variable_value = variable_value; } }
+
+type_specification:
+| TYPE_INT {"int"}
+| TYPE_FLOAT {"float"}
+;
+
 stmt:
+| def = def
+    {Svardef def}
+| expr = expr SEMICOLON
+    { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON 
     {Sprint e}
 | START LPAREN RPAREN LBRACK
     body = stmt*
   RBRACK
     {Sstart body}
+;
 
 expr:
 | c = INT                        { Econst c }
@@ -48,6 +69,12 @@ expr:
 | MUL { Mul }
 | DIV   { Div }
 
+variable_declaration:
+| type_specification ID EQ expr
+    { { variable_type = type_specification;
+        variable_name = ID;
+        variable_value = expr } }
+;
 
 
 

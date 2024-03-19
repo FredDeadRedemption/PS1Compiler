@@ -4,6 +4,7 @@
   let kwd_tbl =
     [ "print", PRINT;
       "start", START;
+      (*"int", TYPE_INT;*)
       ]
 
   let id_or_kwd =
@@ -35,15 +36,18 @@ let newline = '\r' | '\n' | "\r\n"
 rule tokenize = parse
   | whitespace { tokenize lexbuf } (* skip whitespace *)
   | newline { increase(); tokenize lexbuf } (* skip newline *)
-  | '+'     { ADD }
-  | '-'     { SUB }
-  | '*'     { MUL }
-  | '/'     { DIV }
-  | '('     { LPAREN }
-  | ')'     { RPAREN }
-  | '{'     { LBRACK }
-  | '}'     { RBRACK }
-  | ';'     { SEMICOLON }
+  | '+'         { ADD }
+  | '-'         { SUB }
+  | '*'         { MUL }
+  | '/'         { DIV }
+  | '='         { EQ }
+  | '('         { LPAREN }
+  | ')'         { RPAREN }
+  | '{'         { LBRACK }
+  | '}'         { RBRACK }
+  | ';'         { SEMICOLON }
+  | "int" as i  { TYPE_INT i}
+  | "float" as f  { TYPE_FLOAT f}
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }

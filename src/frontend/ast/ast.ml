@@ -14,12 +14,20 @@ type expr =
   (mul, 2, (add, 2, 4))
   *)
 
+type variable_declaration = {
+  variable_type : string;
+  variable_name : string;
+  variable_value : expr; }
 (* statements *)
 
 type stmt =
   | Sprint of expr
   | Sstart of stmt list
   | Sblock of stmt list
+  | Sexpr of expr                          (* Expression statement *)
+  | Svardef of variable_declaration   
+  
+
   
 (* funktion declaration *)
 
