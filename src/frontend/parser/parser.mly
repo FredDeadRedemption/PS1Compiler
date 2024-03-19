@@ -14,8 +14,11 @@
 %token PRINT START
 %token EOF
 
-%left ADD SUB
-%left MUL DIV 
+%right EQ 
+%left ADD SUB RANGLE LANGLE
+%left MUL DIV MOD
+%left AND OR  
+%nonassoc EXCL
 
 %start program
 
