@@ -4,7 +4,6 @@ let rec print_expr expr =
   match expr with
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
-  | Ebool b -> Printf.printf "Ebool(%b)" b
   | Ebinop (op, e1, e2) -> 
     let op_str = match op with
       | Add -> "+"
@@ -18,7 +17,7 @@ let rec print_expr expr =
       | Or -> "||" 
       | Equal -> "=="
     in 
-    Printf.printf "Ebinop(%s)" op_str;
+    Printf.printf "Ebinop(%s, " op_str;
     print_expr e1;
     Printf.printf ", ";
     print_expr e2;
@@ -26,45 +25,25 @@ let rec print_expr expr =
 
 let rec print_stmt stmt =
   match stmt with
-  | Sif (e, s, else_stmt) ->
-      Printf.printf "Sif (";
-      print_expr e;
-      Printf.printf ", ";
-      print_stmt s;
-      Printf.printf ", [\n";
-      (match else_stmt with
-       | Sblock else_stmts -> print_stmt (Sblock else_stmts)
-       | _ -> print_stmt else_stmt);
-      Printf.printf ")"
   | Sblock stmts ->
       Printf.printf "Sblock [\n";
       List.iter (fun stmt -> print_stmt stmt; Printf.printf ";\n") stmts;
       Printf.printf "]"
-  | Sempty -> Printf.printf "Sempty"
+  | Sprint stmt ->
+      Printf.printf "Sprint: \"";
+      print_expr stmt;
+      Printf.printf "\""
 
 let extract_def_name def =
   def.name
 
-  (*
+  
 let print_program program =
   Printf.printf "{\n  defs = [";
   List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
   Printf.printf "];\n  main = ";
   print_stmt program.main;
-  Printf.printf "\n}\n"9
-*)
-let print_program program =
-    let rec print_exprs = function
-      | [] -> ()
-      | expr :: rest ->
-          (* print each expression *)
-          print_endline "\nExpression: "; (* print your expression here *)
-          print_expr expr;
-          print_exprs rest
-    in
-    print_endline "Program:";
-    print_exprs program.exprs
-
+  Printf.printf "\n}\n"
 
 let () =
   let filename = Sys.argv.(1) in
