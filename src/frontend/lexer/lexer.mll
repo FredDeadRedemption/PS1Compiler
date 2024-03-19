@@ -3,6 +3,7 @@
 
   let kwd_tbl =
     [ "print", PRINT;
+      "start", START;
       ]
 
   let id_or_kwd =
@@ -40,6 +41,8 @@ rule tokenize = parse
   | '/'     { DIV }
   | '('     { LPAREN }
   | ')'     { RPAREN }
+  | '{'     { LBRACK }
+  | '}'     { RBRACK }
   | ';'     { SEMICOLON }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 

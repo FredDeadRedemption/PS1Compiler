@@ -6,8 +6,9 @@
 %token <string> ID
 %token ADD SUB MUL DIV
 %token LPAREN RPAREN
+%token LBRACK RBRACK
 %token SEMICOLON
-%token PRINT
+%token PRINT START
 %token EOF
 
 %left ADD SUB
@@ -28,8 +29,12 @@ program:
 ;
 
 stmt:
-| PRINT e = expr SEMICOLON
+| PRINT LPAREN e = expr RPAREN SEMICOLON 
     {Sprint e}
+| START LPAREN RPAREN LBRACK
+    body = stmt*
+  RBRACK
+    {Sstart body}
 
 expr:
 | c = INT                        { Econst c }

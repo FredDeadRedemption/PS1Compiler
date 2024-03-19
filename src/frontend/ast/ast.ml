@@ -18,7 +18,8 @@ type expr =
 
 type stmt =
   | Sprint of expr
-  | Sblock   of stmt list
+  | Sstart of stmt list
+  | Sblock of stmt list
   
 (* funktion declaration *)
 

@@ -27,21 +27,25 @@ let rec print_stmt stmt =
   match stmt with
   | Sblock stmts ->
       Printf.printf "Sblock [\n";
-      List.iter (fun stmt -> print_stmt stmt; Printf.printf ";\n") stmts;
-      Printf.printf "]"
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") stmts; (* SEMI COLON VED ALLE BLOCKS*)
+      Printf.printf "\t]"
   | Sprint stmt ->
-      Printf.printf "Sprint: \"";
+      Printf.printf "\tSprint: \"";
       print_expr stmt;
       Printf.printf "\""
+  | Sstart stmts ->
+      Printf.printf "\tSstart [\n";
+      List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
+      Printf.printf "\t]"
 
 let extract_def_name def =
   def.name
 
   
 let print_program program =
-  Printf.printf "{\n  defs = [";
+  Printf.printf "{\n\tdefs = [";
   List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
-  Printf.printf "];\n  main = ";
+  Printf.printf "];\n\tmain = ";
   print_stmt program.main;
   Printf.printf "\n}\n"
 
@@ -50,7 +54,8 @@ let () =
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  print_program prog
+  print_program prog;
+  (*Interp.program prog               TODO:*)
 
 
 
