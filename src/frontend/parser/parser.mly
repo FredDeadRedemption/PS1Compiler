@@ -10,7 +10,7 @@
 %token PRINT
 %token EOF
 
-%left MINUS PLUS
+%left ADD SUB
 %left MUL DIV 
 
 %start program
