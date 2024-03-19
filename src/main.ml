@@ -53,19 +53,25 @@ let print_program program =
   print_stmt program.main;
   Printf.printf "\n}\n"9
 *)
+let print_program program =
+    let rec print_exprs = function
+      | [] -> ()
+      | expr :: rest ->
+          (* print each expression *)
+          print_endline "\nExpression: "; (* print your expression here *)
+          print_expr expr;
+          print_exprs rest
+    in
+    print_endline "Program:";
+    print_exprs program.exprs
 
-let rec print_program2 program =
-  Printf.printf "{\n  exprs = [";
-  List.iter (fun expr -> print_expr expr) program.exprs;
-  Printf.printf "];\n";
 
-try
+let () =
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  print_program2 prog
-with _ -> Printf.printf "fack"
+  print_program prog
 
 
 
