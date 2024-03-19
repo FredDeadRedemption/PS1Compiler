@@ -7,6 +7,7 @@
 
   let kwd_tbl =
     [ "print", PRINT;
+      "start", START;
       ]
 
   let id_or_kwd =
@@ -35,6 +36,8 @@ rule tokenize = parse
   | '/'     { DIV }
   | '('     { LPAREN }
   | ')'     { RPAREN }
+  | '{'     { LBRACK }
+  | '}'     { RBRACK }
   | ';'     { SEMICOLON }
   | "(*"    { comment lexbuf }
   | integer as s { CST (int_of_string s) }
