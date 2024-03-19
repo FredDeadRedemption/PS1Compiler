@@ -33,6 +33,7 @@ stmt:
 
 expr:
 | c = INT                        { Econst c }
+| id = ID                        { Evar id}
 | e1 = expr o = op e2 = expr     { Ebinop (o, e1, e2) }
 ;
 
