@@ -56,9 +56,9 @@
 %start program
 
 %type <Ast.program> program
-%type <Ast.stmt> stmt
 %type <Ast.def> def
 %type <Ast.expr> expr
+%type <Ast.stmt> stmt
 
 
 %%
