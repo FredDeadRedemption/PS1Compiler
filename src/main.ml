@@ -45,10 +45,9 @@ let rec print_stmt stmt =
       print_expr stmt;
       Printf.printf ""           
   | Svardef stmt ->
-      Printf.printf "{\n";
-      Printf.printf "\tvariable_type : %s;\n" stmt.variable_type;
-      Printf.printf "\tvariable_name : %s;\n" stmt.variable_name;
-    print_expr stmt.variable_value
+      Printf.printf "\tvariable: type : %s, " stmt.variable_type;
+      Printf.printf "name : %s, " stmt.variable_name;
+      Printf.printf "value : "; print_expr stmt.variable_value; Printf.printf ""
 
 let extract_def_name def =
   def.name

@@ -4,7 +4,6 @@
 
 %token <string> TYPE_INT
 %token <string> TYPE_FLOAT
-%token VAR
 %token <int> INT
 %token <string> ID
 %token ADD SUB MUL DIV 
@@ -26,7 +25,6 @@
 %start program
 
 %type <Ast.program> program
-%type <Ast.variable_declaration> variable_declaration
 
 
 %%
@@ -38,16 +36,7 @@ program:
       main = Sblock main;} }
 ;
 
-def:
-| variable_type = type_specification variable_name = ID EQ variable_value = expr SEMICOLON
-    { { variable_type = variable_type;
-        variable_name = variable_name;
-        variable_value = variable_value; } }
 
-type_specification:
-| TYPE_INT {"int"}
-| TYPE_FLOAT {"float"}
-;
 
 stmt:
 | def = def
@@ -62,6 +51,17 @@ stmt:
     {Sstart body}
 ;
 
+def:
+| variable_type = type_specification variable_name = ID EQ variable_value = expr SEMICOLON
+    { { variable_type = variable_type;
+        variable_name = variable_name;
+        variable_value = variable_value; } }
+
+type_specification:
+| TYPE_INT {"int"}
+| TYPE_FLOAT {"float"}
+;
+
 expr:
 | c = INT                        { Econst c }
 | id = ID                        { Evar id}
@@ -69,13 +69,13 @@ expr:
 ;
 
 %inline op:
-| ADD  { BinopAdd }
-| SUB { BinopSub }
-| MUL { BinopMul }
+| ADD   { BinopAdd }
+| SUB   { BinopSub }
+| MUL   { BinopMul }
 | DIV   { BinopDiv }
-| MOD { BinopMod }
-| AND { BinopAnd }
-| OR { BinopOr }
+| MOD   { BinopMod }
+| AND   { BinopAnd }
+| OR    { BinopOr }
 | LANGLE { BinopLessThan }
 | RANGLE { BinopGreaterThan }
 | LANGLE EQ { BinopLessThanEq }
@@ -84,12 +84,7 @@ expr:
 | EXCL EQ { BinopNotEq}
 
 
-variable_declaration:
-| type_specification ID EQ expr
-    { { variable_type = type_specification;
-        variable_name = ID;
-        variable_value = expr } }
-;
+
 
 
 
