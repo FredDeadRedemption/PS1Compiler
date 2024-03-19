@@ -47,5 +47,10 @@ type def = {
 (* program *)
 
 type program = {
+  exprs : expr list }
+
+(*
+type program = {
   defs : def list;
-  main : stmt; }
+  main : stmt; }   
+*)

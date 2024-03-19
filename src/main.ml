@@ -45,22 +45,28 @@ let rec print_stmt stmt =
 let extract_def_name def =
   def.name
 
+  (*
 let print_program program =
   Printf.printf "{\n  defs = [";
   List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
   Printf.printf "];\n  main = ";
   print_stmt program.main;
-  Printf.printf "\n}\n"
+  Printf.printf "\n}\n"9
+*)
 
-let main () =
+let rec print_program2 program =
+  Printf.printf "{\n  exprs = [";
+  List.iter (fun expr -> print_expr expr) program.exprs;
+  Printf.printf "];\n";
+
+try
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  print_program prog
-    
+  print_program2 prog
+with _ -> Printf.printf "fack"
 
-let () = main ()
 
 
 

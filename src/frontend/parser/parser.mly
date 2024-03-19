@@ -56,38 +56,30 @@
 %start program
 
 %type <Ast.program> program
-%type <Ast.def> def
 %type <Ast.expr> expr
-%type <Ast.stmt> stmt
 
 
 %%
 
-program:
-  defs = def*
-  main = stmt*
+program: 
+  exprs = expr* 
   EOF
-    { { defs = defs;
-        main = Sblock main; } }
+  {{ exprs = exprs; }}
 ;
 
-def:
-| FUN f = ID
-  LPAREN formals = separated_list(COMMA, ID) RPAREN body = stmt
-    { { name = f;
-        formals = formals;
-        body = body } }
-;
 
-stmt:
-| IF e = expr s = stmt
-  { Sif (e, s, Sblock []) }
-;
 
 expr:
 | c = INT                     { Econst c }
 | id = ID                     { Evar id }
 | LPAREN e = expr RPAREN      { e }
+| e1 = expr o = binop e2 = expr
+    { Ebinop (o, e1, e2) }
+;
+
+
+%inline binop:
+| ADD   { Add }
 ;
 
 
