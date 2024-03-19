@@ -84,11 +84,6 @@ expr:
 | EXCL EQ { BinopNotEq}
 
 
-| ADD  { Add }
-| SUB { Sub }
-| MUL { Mul }
-| DIV   { Div }
-
 variable_declaration:
 | type_specification ID EQ expr
     { { variable_type = type_specification;
