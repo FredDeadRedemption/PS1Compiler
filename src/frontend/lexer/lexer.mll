@@ -1,9 +1,5 @@
 {
-  open Lexing
   open Parser
-
-  (* Lexical analysis error *)
-  exception Lexing_error of string
 
   let kwd_tbl =
     [ "print", PRINT;
@@ -15,37 +11,53 @@
     List.iter (fun (s,t) -> Hashtbl.add h s t) kwd_tbl;
     fun s ->
       let s = String.lowercase_ascii s in
-      try List.assoc s kwd_tbl with _ -> IDENT s
+      try List.assoc s kwd_tbl with _ -> ID s
 
- }
+  let line = ref 1 (* ref = mutable*)
 
-let letter = ['a'-'z' 'A'-'Z']
+  let increase () =
+    line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
+}
+
 let digit = ['0'-'9']
-let ident = (letter | '_') (letter | digit | '_')*
-let integer = ['0'-'9']+
-let space = [' ' '\t']
+let alpha = ['a'-'z' 'A'-'Z']
+let fraction = '.' digit+ (* måske lave float uden decimaltal *)
+
+(* Regexes for tokens *)
+let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
+let float = (integer) (fraction) 
+let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)
+let identifier = (alpha|'_') (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
+
+let whitespace = [' ' '\t']
+let newline = '\r' | '\n' | "\r\n"
 
 rule tokenize = parse
-  | "//" [^ '\n']* '\n'
-  | '\n'    { new_line lexbuf; tokenize lexbuf }
-  | space+  { tokenize lexbuf }
-  | ident as id { id_or_kwd id }
-  | '+'     { PLUS }
-  | '-'     { MINUS }
-  | '*'     { TIMES }
+  | whitespace { tokenize lexbuf } (* skip whitespace *)
+  | newline { increase(); tokenize lexbuf } (* skip newline *)
+  | '+'     { ADD }
+  | '-'     { SUB }
+  | '*'     { MUL }
   | '/'     { DIV }
   | '('     { LPAREN }
   | ')'     { RPAREN }
   | '{'     { LBRACK }
   | '}'     { RBRACK }
   | ';'     { SEMICOLON }
-  | "(*"    { comment lexbuf }
-  | integer as s { CST (int_of_string s) }
-  | eof     { EOF }
-  | _ as c  { raise (Lexing_error ("illegal character: " ^ String.make 1 c)) }
+  | "//" { read_comment lexbuf }
+  | "/*" { read_multi_line_comment lexbuf } 
+  | integer as i { INT (int_of_string i) }
+  | identifier as s { id_or_kwd s }
+  | eof { EOF }
+  | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 
-(* Note : comments are not nested in our language *)
-and comment = parse
-  | "*)"    { tokenize lexbuf }
-  | _       { comment lexbuf }
-  | eof     { raise (Lexing_error ("unterminated comment")) }
+and read_comment = parse
+  | newline { increase(); tokenize lexbuf } (* go back to tokenization on newline *)
+  | eof { EOF }
+  | _ { read_comment lexbuf } (* read all kinds of chars within comment *)
+
+and read_multi_line_comment = parse
+  | "*/" { tokenize lexbuf } (* go back to tokenization on */ *)
+  | newline { increase(); read_multi_line_comment lexbuf } 
+  | eof { failwith (Printf.sprintf "Syntax error: unexpected eof, please terminate comment") }
+  | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)

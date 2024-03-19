@@ -2,9 +2,9 @@
   open Ast
 %}
 
-%token <int> CST
-%token <string> IDENT
-%token PLUS MINUS TIMES DIV
+%token <int> INT
+%token <string> ID
+%token ADD SUB MUL DIV
 %token LPAREN RPAREN
 %token LBRACK RBRACK
 %token SEMICOLON
@@ -12,7 +12,7 @@
 %token EOF
 
 %left MINUS PLUS
-%left TIMES DIV 
+%left MUL DIV 
 
 %start program
 
@@ -37,14 +37,15 @@ stmt:
     {Sstart body}
 
 expr:
-| c = CST                        { Econst c }
+| c = INT                        { Econst c }
+| id = ID                        { Evar id}
 | e1 = expr o = op e2 = expr     { Ebinop (o, e1, e2) }
 ;
 
 %inline op:
-| PLUS  { Add }
-| MINUS { Sub }
-| TIMES { Mul }
+| ADD  { Add }
+| SUB { Sub }
+| MUL { Mul }
 | DIV   { Div }
 
 
