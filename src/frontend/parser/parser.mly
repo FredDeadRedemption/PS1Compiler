@@ -2,16 +2,16 @@
   open Ast
 %}
 
-%token <int> CST
-%token <string> IDENT
-%token PLUS MINUS TIMES DIV
+%token <int> INT
+%token <string> ID
+%token ADD SUB MUL DIV
 %token LPAREN RPAREN
 %token SEMICOLON
 %token PRINT
 %token EOF
 
 %left MINUS PLUS
-%left TIMES DIV 
+%left MUL DIV 
 
 %start program
 
@@ -32,14 +32,14 @@ stmt:
     {Sprint e}
 
 expr:
-| c = CST                        { Econst c }
+| c = INT                        { Econst c }
 | e1 = expr o = op e2 = expr     { Ebinop (o, e1, e2) }
 ;
 
 %inline op:
-| PLUS  { Add }
-| MINUS { Sub }
-| TIMES { Mul }
+| ADD  { Add }
+| SUB { Sub }
+| MUL { Mul }
 | DIV   { Div }
 
 
