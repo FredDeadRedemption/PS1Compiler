@@ -46,6 +46,8 @@
 %token <string> STRING
 %token <string> ID
 
+ 
+
 %left ADD SUB LESSER GREATER
 %left MUL DIV MOD
 %left AND OR
@@ -54,6 +56,9 @@
 %start program
 
 %type <Ast.program> program
+%type <Ast.stmt> stmt
+%type <Ast.def> def
+%type <Ast.expr> expr
 
 
 %%

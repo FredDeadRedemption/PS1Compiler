@@ -70,12 +70,12 @@ let rec print_expr expr =
       | Sub -> "-"
       | Mul -> "*"
       | Div -> "/" 
-      | Lesser -> "/" 
-      | Greater -> "/" 
-      | Mod -> "/" 
-      | And -> "/" 
-      | Or -> "/" 
-      | Equal -> "="
+      | Lesser -> "<" 
+      | Greater -> ">" 
+      | Mod -> "%" 
+      | And -> "&&" 
+      | Or -> "||" 
+      | Equal -> "=="
     in 
     Printf.printf "Ebinop(%s)" op_str;
     print_expr e1;
@@ -117,6 +117,7 @@ let main () =
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
   print_program prog
+    
 
 let () = main ()
 
