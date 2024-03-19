@@ -36,16 +36,22 @@ let newline = '\r' | '\n' | "\r\n"
 rule tokenize = parse
   | whitespace { tokenize lexbuf } (* skip whitespace *)
   | newline { increase(); tokenize lexbuf } (* skip newline *)
-  | '+'         { ADD }
-  | '-'         { SUB }
-  | '*'         { MUL }
-  | '/'         { DIV }
-  | '='         { EQ }
-  | '('         { LPAREN }
-  | ')'         { RPAREN }
-  | '{'         { LBRACK }
-  | '}'         { RBRACK }
-  | ';'         { SEMICOLON }
+  | '+'     { ADD }
+  | '-'     { SUB }
+  | '*'     { MUL }
+  | '/'     { DIV }
+  | "%"     { MOD }
+  | "="     { EQ }
+  | "!"     { EXCL }
+  | "&&"    { AND }
+  | "||"    { OR }
+  | ">"     { RANGLE }
+  | "<"     { LANGLE }
+  | '('     { LPAREN }
+  | ')'     { RPAREN }
+  | '{'     { LBRACK }
+  | '}'     { RBRACK }
+  | ';'     { SEMICOLON }
   | "int" as i  { TYPE_INT i}
   | "float" as f  { TYPE_FLOAT f}
   | "//" { read_comment lexbuf }

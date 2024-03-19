@@ -7,16 +7,21 @@
 %token VAR
 %token <int> INT
 %token <string> ID
-%token ADD SUB MUL DIV
-%token EQ LESSER GREATER
+%token ADD SUB MUL DIV 
+%token MOD EQ EXCL
+%token AND OR
+%token LANGLE RANGLE
 %token LPAREN RPAREN
 %token LBRACK RBRACK
 %token SEMICOLON
 %token PRINT START
 %token EOF
 
-%left MINUS PLUS
-%left MUL DIV 
+%right EQ 
+%left ADD SUB RANGLE LANGLE
+%left MUL DIV MOD
+%left AND OR  
+%nonassoc EXCL
 
 %start program
 
@@ -64,6 +69,21 @@ expr:
 ;
 
 %inline op:
+| ADD  { BinopAdd }
+| SUB { BinopSub }
+| MUL { BinopMul }
+| DIV   { BinopDiv }
+| MOD { BinopMod }
+| AND { BinopAnd }
+| OR { BinopOr }
+| LANGLE { BinopLessThan }
+| RANGLE { BinopGreaterThan }
+| LANGLE EQ { BinopLessThanEq }
+| RANGLE EQ { BinopGreaterThanEq }
+| EQ EQ { BinopEq }
+| EXCL EQ { BinopNotEq}
+
+
 | ADD  { Add }
 | SUB { Sub }
 | MUL { Mul }
@@ -75,10 +95,6 @@ variable_declaration:
         variable_name = ID;
         variable_value = expr } }
 ;
-
-
-
-
 
 
 

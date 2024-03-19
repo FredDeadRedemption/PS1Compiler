@@ -1,7 +1,17 @@
-
-(* integer expressions *)
-
-type binop = Add | Sub | Mul | Div | Lesser | Greater | Mod | And | Or | Equal
+type binop = 
+| BinopAdd 
+| BinopSub 
+| BinopMul 
+| BinopDiv
+| BinopMod
+| BinopAnd
+| BinopOr 
+| BinopLessThan 
+| BinopGreaterThan 
+| BinopLessThanEq
+| BinopGreaterThanEq
+| BinopEq
+| BinopNotEq
 
 type expr =
   | Econst of int
