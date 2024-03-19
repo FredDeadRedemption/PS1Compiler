@@ -4,7 +4,10 @@
 
 %token <int> INT
 %token <string> ID
-%token ADD SUB MUL DIV
+%token ADD SUB MUL DIV 
+%token MOD EQ EXCL
+%token AND OR
+%token LANGLE RANGLE
 %token LPAREN RPAREN
 %token LBRACK RBRACK
 %token SEMICOLON
@@ -43,12 +46,19 @@ expr:
 ;
 
 %inline op:
-| ADD  { Add }
-| SUB { Sub }
-| MUL { Mul }
-| DIV   { Div }
-
-
+| ADD  { BinopAdd }
+| SUB { BinopSub }
+| MUL { BinopMul }
+| DIV   { BinopDiv }
+| MOD { BinopMod }
+| AND { BinopAnd }
+| OR { BinopOr }
+| LANGLE { BinopLessThan }
+| RANGLE { BinopGreaterThan }
+| LANGLE EQ { BinopLessThanEq }
+| RANGLE EQ { BinopGreaterThanEq }
+| EQ EQ { BinopEq }
+| EXCL EQ { BinopNotEq}
 
 
 

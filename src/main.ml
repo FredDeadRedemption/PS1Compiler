@@ -6,16 +6,19 @@ let rec print_expr expr =
   | Evar v -> Printf.printf "Evar(%s)" v
   | Ebinop (op, e1, e2) -> 
     let op_str = match op with
-      | Add -> "+"
-      | Sub -> "-"
-      | Mul -> "*"
-      | Div -> "/" 
-      | Lesser -> "<" 
-      | Greater -> ">" 
-      | Mod -> "%" 
-      | And -> "&&" 
-      | Or -> "||" 
-      | Equal -> "=="
+      | BinopAdd -> "+"
+      | BinopSub -> "-"
+      | BinopMul -> "*"
+      | BinopDiv -> "/" 
+      | BinopMod -> "%" 
+      | BinopAnd -> "&&" 
+      | BinopOr -> "||"
+      | BinopLessThan -> "<" 
+      | BinopGreaterThan -> ">"
+      | BinopLessThanEq -> "<=" 
+      | BinopGreaterThanEq -> ">="
+      | BinopEq -> "=="
+      | BinopNotEq -> "!="
     in 
     Printf.printf "Ebinop(%s, " op_str;
     print_expr e1;

@@ -39,6 +39,13 @@ rule tokenize = parse
   | '-'     { SUB }
   | '*'     { MUL }
   | '/'     { DIV }
+  | "%"     { MOD }
+  | "="     { EQ }
+  | "!"     { EXCL }
+  | "&&"    { AND }
+  | "||"    { OR }
+  | ">"     { RANGLE }
+  | "<"     { LANGLE }
   | '('     { LPAREN }
   | ')'     { RPAREN }
   | '{'     { LBRACK }
