@@ -4,6 +4,14 @@ let rec print_expr expr =
   match expr with
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
+  | Eunop (o, e) ->
+    let uop_str = match o with
+      | UnOpNot -> "!"
+      | UnOpNeg -> "-"
+    in
+    Printf.printf "Eunop(%s" uop_str;
+    print_expr e;
+    Printf.printf ")"  
   | Ebinop (op, e1, e2) -> 
     let op_str = match op with
       | BinopAdd -> "+"

@@ -1,3 +1,4 @@
+(* binary operations *)
 type binop = 
 | BinopAdd 
 | BinopSub 
@@ -13,42 +14,42 @@ type binop =
 | BinopEq
 | BinopNotEq
 
+(* unary operations *)
+type unop =
+| UnOpNot
+| UnOpNeg
+
+(* expression *)
 type expr =
   | Econst of int
   | Evar   of string
+  | Eunop of unop * expr
   | Ebinop of binop * expr * expr
 
-  (*
-  (2 * 2 + 4)
-
-  (mul, 2, (add, 2, 4))
-  *)
-
+(* variable declaration *)
 type variable_declaration = {
   variable_type : string;
   variable_name : string;
   variable_value : expr; }
-(* statements *)
 
+(* statement *)
 type stmt =
   | Sprint of expr
   | Sstart of stmt list
   | Sblock of stmt list
-  | Sexpr of expr                          (* Expression statement *)
-  | Svardef of variable_declaration   
-  
+  | Sexpr of expr
+  | Svardef of variable_declaration  
 
-  
-(* funktion declaration *)
-
+(* function declaration *)
 type def = {
   name    : string;
   formals : string list; (* arguments *)
   body    : stmt; }
 
 (* program *)
-
 type program = {
   defs : def list;
-  main : stmt; }   
+  main : stmt; }  
+
+
 

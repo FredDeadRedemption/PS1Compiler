@@ -18,7 +18,7 @@
 %token EOF
 
 %right EQ 
-%left ADD SUB RANGLE LANGLE
+%left ADD SUB LANGLE RANGLE
 %left MUL DIV MOD
 %left AND OR  
 %nonassoc EXCL
@@ -35,12 +35,6 @@ program:
   EOF
   { { defs = [];
       main = Sblock main;} }
-;
-
-
-type_specification:
-| TYPE_INT { "int" }
-| TYPE_FLOAT { "float" }
 ;
 
 stmt:
@@ -70,10 +64,15 @@ type_specification:
 expr:
 | c = INT                        { Econst c }
 | id = ID                        { Evar id}
-| e1 = expr o = op e2 = expr     { Ebinop (o, e1, e2) }
+| o = unop e = expr              { Eunop (o, e) }
+| e1 = expr o = binop e2 = expr  { Ebinop (o, e1, e2) }
 ;
 
-%inline op:
+%inline unop:
+| EXCL      { UnOpNot }
+| SUB       { UnOpNeg }
+
+%inline binop:
 | ADD       { BinopAdd }
 | SUB       { BinopSub }
 | MUL       { BinopMul }
