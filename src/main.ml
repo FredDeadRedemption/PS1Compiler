@@ -9,7 +9,7 @@ let rec print_expr expr =
       | UnOpNot -> "!"
       | UnOpNeg -> "-"
     in
-    Printf.printf "Eunop(%s" uop_str;
+    Printf.printf "Eunop(%s, " uop_str;
     print_expr e;
     Printf.printf ")"  
   | Ebinop (op, e1, e2) -> 
