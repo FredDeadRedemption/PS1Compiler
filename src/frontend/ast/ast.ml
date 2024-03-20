@@ -19,7 +19,7 @@ type expr =
   | Ebinop of binop * expr * expr
 
   (*
-  (2 * 3 + 4)
+  (2 * 2 + 4)
 
   (mul, 2, (add, 2, 4))
   *)

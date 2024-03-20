@@ -2,8 +2,9 @@
   open Ast
 %}
 
-%token <string> TYPE_INT
-%token <string> TYPE_FLOAT
+%token TYPE_INT
+%token TYPE_FLOAT
+%token VAR
 %token <int> INT
 %token <string> ID
 %token ADD SUB MUL DIV 
@@ -37,6 +38,10 @@ program:
 ;
 
 
+type_specification:
+| TYPE_INT { "int" }
+| TYPE_FLOAT { "float" }
+;
 
 stmt:
 | def = def
@@ -69,19 +74,19 @@ expr:
 ;
 
 %inline op:
-| ADD   { BinopAdd }
-| SUB   { BinopSub }
-| MUL   { BinopMul }
-| DIV   { BinopDiv }
-| MOD   { BinopMod }
-| AND   { BinopAnd }
-| OR    { BinopOr }
-| LANGLE { BinopLessThan }
-| RANGLE { BinopGreaterThan }
+| ADD       { BinopAdd }
+| SUB       { BinopSub }
+| MUL       { BinopMul }
+| DIV       { BinopDiv }
+| MOD       { BinopMod }
+| AND       { BinopAnd }
+| OR        { BinopOr }
+| LANGLE    { BinopLessThan }
+| RANGLE    { BinopGreaterThan }
 | LANGLE EQ { BinopLessThanEq }
 | RANGLE EQ { BinopGreaterThanEq }
-| EQ EQ { BinopEq }
-| EXCL EQ { BinopNotEq}
+| EQ EQ     { BinopEq }
+| EXCL EQ   { BinopNotEq}
 
 
 
