@@ -23,6 +23,7 @@ type unop =
 type expr = 
   | Econst of int
   | Evar   of string
+  | Ebool of bool
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
   | Eparen of expr

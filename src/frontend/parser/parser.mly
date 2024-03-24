@@ -10,6 +10,7 @@
 %token ADD SUB MUL DIV 
 %token MOD EQ EXCL
 %token AND OR
+%token TRUE FALSE
 %token LANGLE RANGLE
 %token LPAREN RPAREN
 %token LBRACK RBRACK
@@ -65,6 +66,8 @@ expr:
 | LPAREN e = expr RPAREN         { Eparen e }
 | c = INT                        { Econst c }
 | id = ID                        { Evar id}
+| TRUE                           { Ebool (true) }
+| FALSE                          { Ebool (false) }
 | o = unop e = expr              { Eunop (o, e) }
 | e1 = expr o = binop e2 = expr  { Ebinop (o, e1, e2) }
 ;

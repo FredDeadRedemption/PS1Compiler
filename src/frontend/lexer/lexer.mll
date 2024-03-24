@@ -52,6 +52,8 @@ rule tokenize = parse
   | '{'     { LBRACK }
   | '}'     { RBRACK }
   | ';'     { SEMICOLON }
+  | "true"  { TRUE }
+  | "false" { FALSE }
   | "int"   { TYPE_INT }
   | "float" { TYPE_FLOAT }
   | "//" { read_comment lexbuf }
