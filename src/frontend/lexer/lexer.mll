@@ -1,19 +1,6 @@
 {
   open Parser
 
-  let kwd_tbl =
-    [ "print", PRINT;
-      "start", START;
-      (*"int", TYPE_INT;*)
-      ]
-
-  let id_or_kwd =
-    let h = Hashtbl.create 17 in
-    List.iter (fun (s,t) -> Hashtbl.add h s t) kwd_tbl;
-    fun s ->
-      let s = String.lowercase_ascii s in
-      try List.assoc s kwd_tbl with _ -> ID s
-
   let line = ref 1 (* ref = mutable*)
 
   let increase () =
@@ -52,6 +39,8 @@ rule tokenize = parse
   | '{'     { LBRACK }
   | '}'     { RBRACK }
   | ';'     { SEMICOLON }
+  | "print" { PRINT }
+  | "start" { START }
   | "true"  { TRUE }
   | "false" { FALSE }
   | "int"   { TYPE_INT }
@@ -59,7 +48,7 @@ rule tokenize = parse
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }
-  | identifier as s { id_or_kwd s }
+  | identifier as s { ID s }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 
