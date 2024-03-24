@@ -26,7 +26,6 @@ type expr =
   | Ebool of bool
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
-  | Eparen of expr
 
 (* variable declaration *)
 type variable_declaration = {

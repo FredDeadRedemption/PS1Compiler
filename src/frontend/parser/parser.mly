@@ -63,7 +63,7 @@ type_specification:
 ;
 
 expr:
-| LPAREN e = expr RPAREN         { Eparen e }
+| LPAREN e = expr RPAREN         { e }
 | c = INT                        { Econst c }
 | id = ID                        { Evar id}
 | TRUE                           { Ebool (true) }

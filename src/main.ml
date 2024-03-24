@@ -2,7 +2,6 @@ open Ast
 
 let rec print_expr expr =
   match expr with
-  | Eparen e -> Printf.printf "Eparen("; print_expr e; Printf.printf ")";
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
   | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
