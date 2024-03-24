@@ -62,6 +62,7 @@ type_specification:
 ;
 
 expr:
+| LPAREN e = expr RPAREN         { Eparen e }
 | c = INT                        { Econst c }
 | id = ID                        { Evar id}
 | o = unop e = expr              { Eunop (o, e) }
@@ -69,8 +70,8 @@ expr:
 ;
 
 %inline unop:
-| EXCL      { UnOpNot }
-| SUB       { UnOpNeg }
+| EXCL      { UnopNot }
+| SUB       { UnopNeg }
 
 %inline binop:
 | ADD       { BinopAdd }

@@ -2,12 +2,13 @@ open Ast
 
 let rec print_expr expr =
   match expr with
+  | Eparen e -> Printf.printf "Eparen("; print_expr e; Printf.printf ")";
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
   | Eunop (o, e) ->
     let uop_str = match o with
-      | UnOpNot -> "!"
-      | UnOpNeg -> "-"
+      | UnopNot -> "!"
+      | UnopNeg -> "-"
     in
     Printf.printf "Eunop(%s, " uop_str;
     print_expr e;

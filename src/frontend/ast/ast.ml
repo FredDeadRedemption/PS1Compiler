@@ -16,15 +16,16 @@ type binop =
 
 (* unary operations *)
 type unop =
-| UnOpNot
-| UnOpNeg
+| UnopNot
+| UnopNeg
 
 (* expression *)
-type expr =
+type expr = 
   | Econst of int
   | Evar   of string
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
+  | Eparen of expr
 
 (* variable declaration *)
 type variable_declaration = {
