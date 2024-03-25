@@ -36,8 +36,10 @@ rule tokenize = parse
   | "<"     { LANGLE }
   | '('     { LPAREN }
   | ')'     { RPAREN }
-  | '{'     { LBRACK }
-  | '}'     { RBRACK }
+  | "["     { LSQBRACK }
+  | "]"     { RSQBRACK }
+  | '{'     { LCURBRACK }
+  | '}'     { RCURBRACK }
   | ';'     { SEMICOLON }
   | "print" { PRINT }
   | "start" { START }

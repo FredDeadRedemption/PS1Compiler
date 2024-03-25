@@ -26,6 +26,11 @@ type expr =
   | Ebool of bool
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
+(* expr and expre_block are mutually recursive types. 
+The "and" keyword is used to define both types simultaneously.
+and expr_block = 
+  | expr list 
+*)
 
 (* variable declaration *)
 type variable_declaration = {
@@ -39,10 +44,12 @@ type stmt =
   | Sstart of stmt list
   | Sblock of stmt list
   | Sexpr of expr
-  | Svardef of variable_declaration  
+  | Svardef of variable_declaration 
+  (*| Sfundef of def*)
 
 (* function declaration *)
 type def = {
+  rtype   : string;
   name    : string;
   formals : string list; (* arguments *)
   body    : stmt; }

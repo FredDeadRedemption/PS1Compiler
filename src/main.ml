@@ -37,9 +37,9 @@ let rec print_expr expr =
 
 let rec print_stmt stmt =
   match stmt with
-  | Sblock stmts ->
+  | Sblock block ->
       Printf.printf "Sblock [\n";
-      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") stmts; (* SEMI COLON VED ALLE BLOCKS*)
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") block; (* SEMI COLON VED ALLE BLOCKS*)
       Printf.printf "\t]"
   | Sprint stmt ->
       Printf.printf "\tSprint: \"";

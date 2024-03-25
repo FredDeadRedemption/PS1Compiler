@@ -13,7 +13,8 @@
 %token TRUE FALSE
 %token LANGLE RANGLE
 %token LPAREN RPAREN
-%token LBRACK RBRACK
+%token LSQBRACK RSQBRACK
+%token LCURBRACK RCURBRACK
 %token SEMICOLON
 %token PRINT START
 %token EOF
@@ -29,6 +30,10 @@
 %type <Ast.program> program
 
 
+%type <unop> unop
+%type <binop> binop
+
+
 %%
 
 program: 
@@ -39,38 +44,48 @@ program:
 ;
 
 stmt:
-| def = def
-    {Svardef def}
-| expr = expr SEMICOLON
-    { Sexpr expr }
-| PRINT LPAREN e = expr RPAREN SEMICOLON 
-    {Sprint e}
-| START LPAREN RPAREN LBRACK
-    body = stmt*
-  RBRACK
-    {Sstart body}
+| block = block         { Sblock block } // skal slettes
+| def = def             { Svardef def }
+| expr = expr SEMICOLON { Sexpr expr }
+| PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
+| START LPAREN RPAREN block = block { Sstart block }
+;
+/*
+| fundef = fundef       { Sfundef fundef }
 ;
 
+fundef:
+| rtype = typespec name = ID formals = params body = block
+
+params:
+| LPAREN separated_list(COMMA, expr) RPAREN;
+*/
+
 def:
-| variable_type = type_specification variable_name = ID EQ variable_value = expr SEMICOLON
+| variable_type = typespec variable_name = ID EQ variable_value = expr SEMICOLON
     { { variable_type = variable_type;
         variable_name = variable_name;
         variable_value = variable_value; } }
 
-type_specification:
-| TYPE_INT {"int"}
-| TYPE_FLOAT {"float"}
+typespec:
+| TYPE_INT   { "int" }
+| TYPE_FLOAT { "float" }
 ;
+
+// Expressions
 
 expr:
 | LPAREN e = expr RPAREN         { e }
 | c = INT                        { Econst c }
-| id = ID                        { Evar id}
+| id = ID                        { Evar id }
 | TRUE                           { Ebool (true) }
 | FALSE                          { Ebool (false) }
 | o = unop e = expr              { Eunop (o, e) }
 | e1 = expr o = binop e2 = expr  { Ebinop (o, e1, e2) }
 ;
+
+block:
+| LCURBRACK stmts = stmt* RCURBRACK { stmts }
 
 %inline unop:
 | EXCL      { UnopNot }
@@ -89,7 +104,7 @@ expr:
 | LANGLE EQ { BinopLessThanEq }
 | RANGLE EQ { BinopGreaterThanEq }
 | EQ EQ     { BinopEq }
-| EXCL EQ   { BinopNotEq}
+| EXCL EQ   { BinopNotEq }
 
 
 
