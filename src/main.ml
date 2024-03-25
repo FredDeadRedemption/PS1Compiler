@@ -54,9 +54,16 @@ let rec print_stmt stmt =
       print_expr stmt;
       Printf.printf ""           
   | Svardef stmt ->
-      Printf.printf "\tvariable: type : %s, " stmt.variable_type;
-      Printf.printf "name : %s, " stmt.variable_name;
-      Printf.printf "value : "; print_expr stmt.variable_value; Printf.printf ""
+      Printf.printf "\tvariable: type : %s, " stmt.typespec;
+      Printf.printf "name : %s, " stmt.name;
+      Printf.printf "value : "; print_expr stmt.value; Printf.printf ""
+  | Sfundef func ->
+      Printf.printf "\tfunction: type : %s, " func.typespec;
+      Printf.printf "name : %s, " func.name;
+      (*Printf.printf "args : "; print_expr func.value; Printf.printf ""
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") block;*)
+      Printf.printf "body : " ;
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") func.body
 
 let extract_def_name def =
   def.name

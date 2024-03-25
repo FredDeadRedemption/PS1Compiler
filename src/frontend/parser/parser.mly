@@ -15,7 +15,7 @@
 %token LPAREN RPAREN
 %token LSQBRACK RSQBRACK
 %token LCURBRACK RCURBRACK
-%token SEMICOLON
+%token COMMA SEMICOLON
 %token PRINT START
 %token EOF
 
@@ -29,11 +29,6 @@
 
 %type <Ast.program> program
 
-
-%type <unop> unop
-%type <binop> binop
-
-
 %%
 
 program: 
@@ -45,7 +40,8 @@ program:
 
 stmt:
 | block = block         { Sblock block } // skal slettes
-| def = def             { Svardef def }
+| vardef = vardef       { Svardef vardef }
+| fundef = fundef       { Sfundef fundef }
 | expr = expr SEMICOLON { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
 | START LPAREN RPAREN block = block { Sstart block }
@@ -61,11 +57,16 @@ params:
 | LPAREN separated_list(COMMA, expr) RPAREN;
 */
 
-def:
-| variable_type = typespec variable_name = ID EQ variable_value = expr SEMICOLON
-    { { variable_type = variable_type;
-        variable_name = variable_name;
-        variable_value = variable_value; } }
+vardef:
+| typespec = typespec name = ID EQ value = expr SEMICOLON
+    {{ typespec = typespec; name = name; value = value; }}
+
+fundef:
+| typespec = typespec name = ID LPAREN args = separated_list(COMMA, typedarg) RPAREN body = block
+    {{ typespec = typespec; name = name; args = args; body = body }}
+
+typedarg:
+| typespec = typespec name = ID {{ typespec = typespec; name = name }}
 
 typespec:
 | TYPE_INT   { "int" }

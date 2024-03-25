@@ -33,10 +33,17 @@ and expr_block =
 *)
 
 (* variable declaration *)
-type variable_declaration = {
-  variable_type : string;
-  variable_name : string;
-  variable_value : expr; }
+type vardef = {
+  typespec : string;
+  name     : string;
+  value    : expr; 
+}
+
+type typedarg = {
+  typespec : string;
+  name : string;
+}
+
 
 (* statement *)
 type stmt =
@@ -44,20 +51,23 @@ type stmt =
   | Sstart of stmt list
   | Sblock of stmt list
   | Sexpr of expr
-  | Svardef of variable_declaration 
+  | Svardef of vardef 
+  | Sfundef of fundef
   (*| Sfundef of def*)
-
 (* function declaration *)
-type def = {
-  rtype   : string;
-  name    : string;
-  formals : string list; (* arguments *)
-  body    : stmt; }
+and fundef = {
+  typespec : string;
+  name     : string;
+  args     : typedarg list; (* arguments *)
+  body     : stmt list; 
+}
+
 
 (* program *)
 type program = {
-  defs : def list;
-  main : stmt; }  
+  defs : fundef list;
+  main : stmt; 
+}  
 
 
 
