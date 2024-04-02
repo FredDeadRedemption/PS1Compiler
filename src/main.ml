@@ -64,8 +64,10 @@ let rec print_stmt stmt =
   | Sfundef func ->
       Printf.printf "\tfunction: type : "; print_typespec func.typespec;
       Printf.printf ", name : %s, " func.name;
-      (*Printf.printf "args : "; print_expr func.value; Printf.printf ""
-      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") block;*)
+      let list = types_and_names func.args in
+      List.iter (fun (typespec, name) ->
+        Printf.printf "Type: %s, Name: %s\n" (string_of_typespec typespec) name
+      ) list;
       Printf.printf "body : " ;
       List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") func.body
 
