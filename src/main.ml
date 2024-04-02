@@ -66,9 +66,9 @@ let rec print_stmt stmt =
       Printf.printf ", name : %s, " func.name;
       let list = types_and_names func.args in
       List.iter (fun (typespec, name) ->
-        Printf.printf "Type: %s, Name: %s\n" (string_of_typespec typespec) name
+        Printf.printf "\nargument: %s, Name: %s" (string_of_typespec typespec) name
       ) list;
-      Printf.printf "body : " ;
+      Printf.printf "\nbody : " ;
       List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") func.body
 
 let extract_def_name def =
