@@ -59,18 +59,18 @@ params:
 
 vardef:
 | typespec = typespec name = ID EQ value = expr SEMICOLON
-    {{ typespec = typespec; name = name; value = value; }}
+    {{ typespec; name; value; }}
 
 fundef:
 | typespec = typespec name = ID LPAREN args = separated_list(COMMA, typedarg) RPAREN body = block
-    {{ typespec = typespec; name = name; args = args; body = body }}
+    {{ typespec; name; args; body; }}
 
 typedarg:
-| typespec = typespec name = ID {{ typespec = typespec; name = name }}
+| typespec = typespec name = ID {{ typespec; name; }}
 
 typespec:
-| TYPE_INT   { "int" }
-| TYPE_FLOAT { "float" }
+| TYPE_INT   { Int }
+| TYPE_FLOAT { Float }
 ;
 
 // Expressions

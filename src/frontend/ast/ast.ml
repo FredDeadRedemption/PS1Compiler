@@ -32,15 +32,24 @@ and expr_block =
   | expr list 
 *)
 
+type typespec = 
+| Int
+| Float
+
+let string_of_typespec = function 
+| Int -> "int" 
+| Float -> "float"
+
 (* variable declaration *)
 type vardef = {
-  typespec : string;
+  typespec : typespec;
   name     : string;
   value    : expr; 
 }
 
-type typedarg = {
-  typespec : string;
+(* formal i.e. a typed argument for function / method definiton *)
+type formal = {
+  typespec : typespec;
   name : string;
 }
 
@@ -56,9 +65,9 @@ type stmt =
   (*| Sfundef of def*)
 (* function declaration *)
 and fundef = {
-  typespec : string;
+  typespec : typespec;
   name     : string;
-  args     : typedarg list; (* arguments *)
+  args     : formal list; (* arguments *)
   body     : stmt list; 
 }
 

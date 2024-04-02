@@ -35,6 +35,10 @@ let rec print_expr expr =
     print_expr e2;
     Printf.printf ")"
 
+let print_typespec ts =
+  let str = string_of_typespec ts in
+  Printf.printf "%s" str
+
 let rec print_stmt stmt =
   match stmt with
   | Sblock block ->
@@ -54,12 +58,12 @@ let rec print_stmt stmt =
       print_expr stmt;
       Printf.printf ""           
   | Svardef stmt ->
-      Printf.printf "\tvariable: type : %s, " stmt.typespec;
-      Printf.printf "name : %s, " stmt.name;
+      Printf.printf "\tvariable: type : "; print_typespec stmt.typespec;
+      Printf.printf ", name : %s, " stmt.name;
       Printf.printf "value : "; print_expr stmt.value; Printf.printf ""
   | Sfundef func ->
-      Printf.printf "\tfunction: type : %s, " func.typespec;
-      Printf.printf "name : %s, " func.name;
+      Printf.printf "\tfunction: type : "; print_typespec func.typespec;
+      Printf.printf ", name : %s, " func.name;
       (*Printf.printf "args : "; print_expr func.value; Printf.printf ""
       List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") block;*)
       Printf.printf "body : " ;
