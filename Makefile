@@ -18,7 +18,7 @@ main3:
 	cd _build/default/src && ./main.exe ../../../code3.psx
 
 test:
-	cd _build/default/src && ./main.exe ../../../expr.psx
+	cd _build/default/src && ./main.exe ../../../tests/expr.psx && ./main.exe ../../../tests/functions.psx
 
 
 
