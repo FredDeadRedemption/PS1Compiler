@@ -53,10 +53,11 @@ type formal = {
   name : string;
 }
 
-let extract_typespec_and_name formal =
-  (formal.typespec, formal.name)
-
-let types_and_names params = List.map extract_typespec_and_name params
+let map_formals params = 
+  let get_info formal =
+    (formal.typespec, formal.name) 
+  in 
+  List.map get_info params
 
 
 (* statement *)
