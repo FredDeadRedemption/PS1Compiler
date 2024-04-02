@@ -7,6 +7,10 @@ let rec print_expr expr =
   | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
   | Efuncall fc -> Printf.printf "Efuncall(name: %s" fc.name;
     List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) fc.args; 
+  | Eassign (id, e) ->
+    Printf.printf "\nassign: ";
+    Printf.printf "varname: %s" id; 
+    Printf.printf "newValue: "; print_expr e; 
   | Eunop (o, e) ->
     let uop_str = match o with
       | UnopNot -> "!"
@@ -54,6 +58,14 @@ let rec print_stmt stmt =
   | Sstart stmts ->
       Printf.printf "\tSstart [\n";
       List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
+      Printf.printf "\t]"
+  | Sif (_cond, _then, _else) ->
+      Printf.printf "\tSif [\n";
+      Printf.printf "cond: "; print_expr _cond;
+      Printf.printf "then: "; 
+      List.iter (fun stmt -> print_stmt stmt) _then;
+      Printf.printf "else: ";
+      List.iter (fun stmt -> print_stmt stmt) _else;
       Printf.printf "\t]"
   | Sexpr stmt ->
     Printf.printf "\tSexpr: ";

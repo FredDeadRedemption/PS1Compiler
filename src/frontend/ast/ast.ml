@@ -27,15 +27,13 @@ type expr =
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
   | Efuncall of funcall
+  | Eassign of string * expr 
+(* and is for mutually recursive types *)
 and funcall = {
   name : string;
   args : expr list;
 }
-(* expr and expre_block are mutually recursive types. 
-The "and" keyword is used to define both types simultaneously.
-and expr_block = 
-  | expr list 
-*)
+
 
 type typespec = 
 | Int
@@ -75,7 +73,7 @@ type stmt =
   | Sexpr of expr
   | Svardef of vardef 
   | Sfundef of fundef
-  (*| Sfundef of def*)
+  | Sif of expr * stmt list * stmt list
 (* function declaration *)
 and fundef = {
   typespec : typespec;

@@ -1,9 +1,6 @@
-start(){
-  
-  bool defi(int x, float y){
-    print((2 + 2) * 3);
-  }
 
-  defi(3, (3 * 3));
-  
-} 
+  if(2 + 2){
+    int x = 0;
+  } else {
+    x = 10;
+  }  

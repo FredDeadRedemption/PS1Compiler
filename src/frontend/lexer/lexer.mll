@@ -43,6 +43,8 @@ rule tokenize = parse
   | '}'     { RCURBRACK }
   | ','     { COMMA }
   | ';'     { SEMICOLON }
+  | "if"    { IF }
+  | "else"  { ELSE }
   | "print" { PRINT }
   | "start" { START }
   | "true"  { TRUE }

@@ -15,9 +15,11 @@
 %token LSQBRACK RSQBRACK
 %token LCURBRACK RCURBRACK
 %token COMMA SEMICOLON
+%token IF ELSE 
 %token PRINT START
 %token EOF
 
+%right ID // er lidt sketchy på den her?? men det virker
 %right EQ 
 %left ADD SUB LANGLE RANGLE
 %left MUL DIV MOD
@@ -44,21 +46,22 @@ stmt:
 | expr = expr SEMICOLON { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
 | START LPAREN RPAREN block = block { Sstart block }
+| IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
 ;
 
 vardef:
 | typespec = typespec name = ID EQ value = expr SEMICOLON
   {{ typespec; name; value; }}
 
-fundef:
-| typespec = typespec name = ID LPAREN formals = separated_list(COMMA, typedarg) RPAREN body = block
+fundef: 
+| typespec = typespec name = ID LPAREN formals = separated_list(COMMA, formal) RPAREN body = block
   {{ typespec; name; formals; body; }}
 
 funcall:
 | name = ID LPAREN args = separated_list(COMMA, expr) RPAREN
   {{ name; args; }}
 
-typedarg:
+formal:
 | typespec = typespec name = ID 
   {{ typespec; name; }}
 
@@ -72,8 +75,9 @@ typespec:
 
 expr:
 | LPAREN e = expr RPAREN         { e }
-| fc = funcall              { Efuncall fc }
+| fc = funcall                   { Efuncall fc }
 | c = INT                        { Econst c }
+| id = ID EQ e = expr            { Eassign (id, e) }
 | id = ID                        { Evar id }
 | TRUE                           { Ebool (true) }
 | FALSE                          { Ebool (false) }
