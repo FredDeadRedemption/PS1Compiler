@@ -2,8 +2,7 @@
   open Ast
 %}
 
-%token TYPE_INT
-%token TYPE_FLOAT
+%token TYPE_INT TYPE_FLOAT TYPE_BOOL
 %token VAR
 %token <int> INT
 %token <string> ID
@@ -71,6 +70,7 @@ typedarg:
 typespec:
 | TYPE_INT   { Int }
 | TYPE_FLOAT { Float }
+| TYPE_BOOL  { Bool }
 ;
 
 // Expressions

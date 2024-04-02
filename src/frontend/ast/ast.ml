@@ -35,10 +35,12 @@ and expr_block =
 type typespec = 
 | Int
 | Float
+| Bool
 
 let string_of_typespec = function 
 | Int -> "int" 
 | Float -> "float"
+| Bool -> "bool"
 
 (* variable declaration *)
 type vardef = {

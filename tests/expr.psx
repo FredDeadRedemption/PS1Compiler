@@ -1,6 +1,6 @@
 start(){
   
-  int yehaw(int x, float y){
+  bool yehaw(int x, float y){
     print((2 + 2) * 3);
   }
 } 
