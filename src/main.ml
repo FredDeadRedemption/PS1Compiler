@@ -4,74 +4,91 @@ let rec print_expr expr =
   match expr with
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
-  | Ebool b -> Printf.printf "Ebool(%b)" b
+  | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
+  | Eunop (o, e) ->
+    let uop_str = match o with
+      | UnopNot -> "!"
+      | UnopNeg -> "-"
+    in
+    Printf.printf "Eunop(%s, " uop_str;
+    print_expr e;
+    Printf.printf ")"  
   | Ebinop (op, e1, e2) -> 
     let op_str = match op with
-      | Add -> "+"
-      | Sub -> "-"
-      | Mul -> "*"
-      | Div -> "/" 
-      | Lesser -> "<" 
-      | Greater -> ">" 
-      | Mod -> "%" 
-      | And -> "&&" 
-      | Or -> "||" 
-      | Equal -> "=="
+      | BinopAdd -> "+"
+      | BinopSub -> "-"
+      | BinopMul -> "*"
+      | BinopDiv -> "/" 
+      | BinopMod -> "%" 
+      | BinopAnd -> "&&" 
+      | BinopOr -> "||"
+      | BinopLessThan -> "<" 
+      | BinopGreaterThan -> ">"
+      | BinopLessThanEq -> "<=" 
+      | BinopGreaterThanEq -> ">="
+      | BinopEq -> "=="
+      | BinopNotEq -> "!="
     in 
-    Printf.printf "Ebinop(%s)" op_str;
+    Printf.printf "Ebinop(%s, " op_str;
     print_expr e1;
     Printf.printf ", ";
     print_expr e2;
     Printf.printf ")"
 
+let print_typespec ts =
+  let str = string_of_typespec ts in
+  Printf.printf "%s" str
+
 let rec print_stmt stmt =
   match stmt with
-  | Sif (e, s, else_stmt) ->
-      Printf.printf "Sif (";
-      print_expr e;
-      Printf.printf ", ";
-      print_stmt s;
-      Printf.printf ", [\n";
-      (match else_stmt with
-       | Sblock else_stmts -> print_stmt (Sblock else_stmts)
-       | _ -> print_stmt else_stmt);
-      Printf.printf ")"
-  | Sblock stmts ->
+  | Sblock block ->
       Printf.printf "Sblock [\n";
-      List.iter (fun stmt -> print_stmt stmt; Printf.printf ";\n") stmts;
-      Printf.printf "]"
-  | Sempty -> Printf.printf "Sempty"
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") block; (* SEMI COLON VED ALLE BLOCKS*)
+      Printf.printf "\t]"
+  | Sprint stmt ->
+      Printf.printf "\tSprint: \"";
+      print_expr stmt;
+      Printf.printf "\""
+  | Sstart stmts ->
+      Printf.printf "\tSstart [\n";
+      List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
+      Printf.printf "\t]"
+  | Sexpr stmt ->
+    Printf.printf "\tSexpr: ";
+      print_expr stmt;
+      Printf.printf ""           
+  | Svardef stmt ->
+      Printf.printf "\tvariable: type : "; print_typespec stmt.typespec;
+      Printf.printf ", name : %s, " stmt.name;
+      Printf.printf "value : "; print_expr stmt.value; Printf.printf ""
+  | Sfundef func ->
+      Printf.printf "\tfunction: type : "; print_typespec func.typespec;
+      Printf.printf ", name : %s, " func.name;
+      let formals = map_formals func.args in
+      List.iter (fun (typespec, name) ->
+        Printf.printf "\nargument: %s, Name: %s" (string_of_typespec typespec) name
+      ) formals;
+      Printf.printf "\nbody : " ;
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") func.body
 
 let extract_def_name def =
   def.name
 
-  (*
+  
 let print_program program =
-  Printf.printf "{\n  defs = [";
+  Printf.printf "{\n\tdefs = [";
   List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
-  Printf.printf "];\n  main = ";
+  Printf.printf "];\n\tmain = ";
   print_stmt program.main;
-  Printf.printf "\n}\n"9
-*)
-let print_program program =
-    let rec print_exprs = function
-      | [] -> ()
-      | expr :: rest ->
-          (* print each expression *)
-          print_endline "\nExpression: "; (* print your expression here *)
-          print_expr expr;
-          print_exprs rest
-    in
-    print_endline "Program:";
-    print_exprs program.exprs
-
+  Printf.printf "\n}\n"
 
 let () =
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  print_program prog
+  print_program prog;
+  (*Interp.program prog               TODO:*)
 
 
 

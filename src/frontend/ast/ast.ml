@@ -1,56 +1,88 @@
+(* binary operations *)
+type binop = 
+| BinopAdd 
+| BinopSub 
+| BinopMul 
+| BinopDiv
+| BinopMod
+| BinopAnd
+| BinopOr 
+| BinopLessThan 
+| BinopGreaterThan 
+| BinopLessThanEq
+| BinopGreaterThanEq
+| BinopEq
+| BinopNotEq
 
-(* integer expressions *)
+(* unary operations *)
+type unop =
+| UnopNot
+| UnopNeg
 
-type binop = Add | Sub | Mul | Div | Lesser | Greater | Mod | And | Or | Equal
-
-type expr =
+(* expression *)
+type expr = 
   | Econst of int
   | Evar   of string
-  | Ebool  of bool
+  | Ebool of bool
+  | Eunop of unop * expr
   | Ebinop of binop * expr * expr
+(* expr and expre_block are mutually recursive types. 
+The "and" keyword is used to define both types simultaneously.
+and expr_block = 
+  | expr list 
+*)
 
-  (*
-  (2 * 3 + 4)
+type typespec = 
+| Int
+| Float
 
-  (mul, 2, (add, 2, 4))
-  *)
+let string_of_typespec = function 
+| Int -> "int" 
+| Float -> "float"
 
-(* statements *)
+(* variable declaration *)
+type vardef = {
+  typespec : typespec;
+  name     : string;
+  value    : expr; 
+}
 
+(* formal i.e. a typed argument for function / method definiton *)
+type formal = {
+  typespec : typespec;
+  name : string;
+}
+
+let map_formals params = 
+  let get_info formal =
+    (formal.typespec, formal.name) 
+  in 
+  List.map get_info params
+
+
+(* statement *)
 type stmt =
-  | Sif      of expr * stmt * stmt
-  | Sblock   of stmt list
-  | Sempty 
-  (*| Scall    of string * expr list*)
+  | Sprint of expr
+  | Sstart of stmt list
+  | Sblock of stmt list
+  | Sexpr of expr
+  | Svardef of vardef 
+  | Sfundef of fundef
+  (*| Sfundef of def*)
+(* function declaration *)
+and fundef = {
+  typespec : typespec;
+  name     : string;
+  args     : formal list; (* arguments *)
+  body     : stmt list; 
+}
 
-  (*
-    Sif(expr: 2 > 1){
-      stmt 1
-    } else {
-      stmt 2
-    }
-
-    Scall = (foo, [(add, 2, (minus, 2, 3))])
-
-    foo(2 + 2 - 3)
-    moveSprite(x, y, z, æ)
-
-  *)
-
-(* funktion declaration *)
-
-type def = {
-  name    : string;
-  formals : string list; (* arguments *)
-  body    : stmt; }
 
 (* program *)
-
 type program = {
-  exprs : expr list }
+  defs : fundef list;
+  main : stmt; 
+}  
 
-(*
-type program = {
-  defs : def list;
-  main : stmt; }   
-*)
+
+

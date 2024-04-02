@@ -1,11 +1,10 @@
 {
-open Parser
-(*open Lexing*)
+  open Parser
 
-let line = ref 1 (* ref = mutable*)
+  let line = ref 1 (* ref = mutable*)
 
-let increase () =
-  line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
+  let increase () =
+    line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
 }
 
 let digit = ['0'-'9']
@@ -21,55 +20,38 @@ let identifier = (alpha|'_') (alpha|digit|'_')* (* must start with alpha char. t
 let whitespace = [' ' '\t']
 let newline = '\r' | '\n' | "\r\n"
 
-(* lexbuf = skip without returning token *)
-
 rule tokenize = parse
   | whitespace { tokenize lexbuf } (* skip whitespace *)
   | newline { increase(); tokenize lexbuf } (* skip newline *)
-  | "(" { LPAREN }
-  | ")" { RPAREN }
-  | "{" { LBRACE }
-  | "}" { RBRACE }
-  | "[" { LBRACK }
-  | "]" { RBRACK }
-  | "." { DOT }
-  | "," { COMMA }
-  | ":" { COLON }
-  | ";" { SEMICOLON }
-  | "=" { EQ }
-  | "+" { ADD }
-  | "-" { SUB }
-  | "*" { MUL } 
-  | "/" { DIV }
-  | "%" { MOD }
-  | "<" { LANGLE }
-  | ">" { RANGLE }
-  | "&&" { AND }
-  | "||" { OR }
-  | "!" { NOT }
-  | "let" { LET }
-  | "const" {CONST }
-  | "function" { FUN }
-  | "int" { TYPE_INT }
-  | "float" { TYPE_FLOAT }
-  | "bool" { TYPE_BOOL } 
-  | "void" { TYPE_VOID }
-  | "null" { TYPE_NULL }
-  | "true" { TRUE }
+  | '+'     { ADD }
+  | '-'     { SUB }
+  | '*'     { MUL }
+  | '/'     { DIV }
+  | "%"     { MOD }
+  | "="     { EQ }
+  | "!"     { EXCL }
+  | "&&"    { AND }
+  | "||"    { OR }
+  | ">"     { RANGLE }
+  | "<"     { LANGLE }
+  | '('     { LPAREN }
+  | ')'     { RPAREN }
+  | '['     { LSQBRACK }
+  | ']'     { RSQBRACK }
+  | '{'     { LCURBRACK }
+  | '}'     { RCURBRACK }
+  | ','     { COMMA }
+  | ';'     { SEMICOLON }
+  | "print" { PRINT }
+  | "start" { START }
+  | "true"  { TRUE }
   | "false" { FALSE }
-  | "while" { WHILE }
-  | "if" { IF }
-  | "else" { ELSE }
-  | "for" { FOR }
-  | "main" { MAIN }
-  | "print" { PRINT } 
-  | "return" { RETURN }
+  | "int"   { TYPE_INT }
+  | "float" { TYPE_FLOAT }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
-  | integer as i { INT(int_of_string i) }
-  | float as i { FLOAT(float_of_string i) }
-  | string as s { STRING(s) }
-  | identifier as s { ID(s) }
+  | integer as i { INT (int_of_string i) }
+  | identifier as s { ID s }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 

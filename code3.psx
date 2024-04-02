@@ -1,5 +1,6 @@
-2 + 2
-Hallo
-difar
-2
-(6)
+start() {
+    print (5);
+    print (10);
+    int x = 10;
+    float xf = 5;
+}
