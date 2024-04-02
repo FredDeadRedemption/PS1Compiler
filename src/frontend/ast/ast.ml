@@ -55,12 +55,12 @@ type formal = {
   name : string;
 }
 
+(* creates a map containing typespecification and name for each formal *)
 let map_formals params = 
   let get_info formal =
     (formal.typespec, formal.name) 
   in 
   List.map get_info params
-
 
 (* statement *)
 type stmt =
@@ -75,10 +75,9 @@ type stmt =
 and fundef = {
   typespec : typespec;
   name     : string;
-  args     : formal list; (* arguments *)
+  args     : formal list; (* formal arguments *)
   body     : stmt list; 
 }
-
 
 (* program *)
 type program = {
