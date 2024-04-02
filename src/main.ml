@@ -5,6 +5,8 @@ let rec print_expr expr =
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
   | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
+  | Efuncall fc -> Printf.printf "Efuncall(name: %s" fc.name;
+    List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) fc.args; 
   | Eunop (o, e) ->
     let uop_str = match o with
       | UnopNot -> "!"
@@ -64,7 +66,7 @@ let rec print_stmt stmt =
   | Sfundef func ->
       Printf.printf "\tfunction: type : "; print_typespec func.typespec;
       Printf.printf ", name : %s, " func.name;
-      let formals = map_formals func.args in
+      let formals = map_formals func.formals in
       List.iter (fun (typespec, name) ->
         Printf.printf "\nargument: %s, Name: %s" (string_of_typespec typespec) name
       ) formals;
@@ -77,7 +79,7 @@ let extract_def_name def =
   
 let print_program program =
   Printf.printf "{\n\tdefs = [";
-  List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;
+  (*List.iter (fun def -> Printf.printf "\"%s\"; " (extract_def_name def)) program.defs;*)
   Printf.printf "];\n\tmain = ";
   print_stmt program.main;
   Printf.printf "\n}\n"

@@ -1,6 +1,9 @@
 start(){
   
-  bool yehaw(int x, float y){
+  bool defi(int x, float y){
     print((2 + 2) * 3);
   }
+
+  defi(3, (3 * 3));
+  
 } 

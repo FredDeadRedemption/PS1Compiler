@@ -26,6 +26,11 @@ type expr =
   | Ebool of bool
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
+  | Efuncall of funcall
+and funcall = {
+  name : string;
+  args : expr list;
+}
 (* expr and expre_block are mutually recursive types. 
 The "and" keyword is used to define both types simultaneously.
 and expr_block = 
@@ -75,7 +80,7 @@ type stmt =
 and fundef = {
   typespec : typespec;
   name     : string;
-  args     : formal list; (* formal arguments *)
+  formals     : formal list; (* formal arguments *)
   body     : stmt list; 
 }
 

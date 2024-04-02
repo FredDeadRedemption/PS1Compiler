@@ -7,11 +7,12 @@
     line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
 }
 
+(* regex helpers*)
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
 let fraction = '.' digit+ (* måske lave float uden decimaltal *)
 
-(* Regexes for tokens *)
+(* regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
 let float = (integer) (fraction) 
 let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)

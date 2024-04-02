@@ -45,27 +45,22 @@ stmt:
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
 | START LPAREN RPAREN block = block { Sstart block }
 ;
-/*
-| fundef = fundef       { Sfundef fundef }
-;
-
-fundef:
-| rtype = typespec name = ID formals = params body = block
-
-params:
-| LPAREN separated_list(COMMA, expr) RPAREN;
-*/
 
 vardef:
 | typespec = typespec name = ID EQ value = expr SEMICOLON
-    {{ typespec; name; value; }}
+  {{ typespec; name; value; }}
 
 fundef:
-| typespec = typespec name = ID LPAREN args = separated_list(COMMA, typedarg) RPAREN body = block
-    {{ typespec; name; args; body; }}
+| typespec = typespec name = ID LPAREN formals = separated_list(COMMA, typedarg) RPAREN body = block
+  {{ typespec; name; formals; body; }}
+
+funcall:
+| name = ID LPAREN args = separated_list(COMMA, expr) RPAREN
+  {{ name; args; }}
 
 typedarg:
-| typespec = typespec name = ID {{ typespec; name; }}
+| typespec = typespec name = ID 
+  {{ typespec; name; }}
 
 typespec:
 | TYPE_INT   { Int }
@@ -77,6 +72,7 @@ typespec:
 
 expr:
 | LPAREN e = expr RPAREN         { e }
+| fc = funcall              { Efuncall fc }
 | c = INT                        { Econst c }
 | id = ID                        { Evar id }
 | TRUE                           { Ebool (true) }
