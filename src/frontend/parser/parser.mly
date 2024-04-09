@@ -44,11 +44,11 @@ program:
 stmt:
 | block = block                               { Sblock block } // skal slettes
 | ts = typespec id = ID EQ v = expr SEMICOLON { Svardef (ts, id, v) }
-| fundef = fundef                             { Sfundef fundef }
+| ts = typespec id = ID LPAREN f = separated_list(COMMA, formal) RPAREN b = block { Sfundef (ts, id, f, b) }
 | id = ID EQ e = expr SEMICOLON               { Sassign (id, e) }
 | expr = expr SEMICOLON                       { Sexpr expr }
-| PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
-| START LPAREN RPAREN block = block { Sstart block } 
+| PRINT LPAREN e = expr RPAREN SEMICOLON      { Sprint e }
+| START LPAREN RPAREN block = block           { Sstart block } 
 | IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
 ;
 
@@ -64,21 +64,15 @@ expr:
 | e1 = expr o = binop e2 = expr                        { Ebinop (o, e1, e2) }
 ;
 
-// stmst
-fundef: 
-| typespec = typespec name = ID LPAREN formals = separated_list(COMMA, formal) RPAREN body = block
-  {{ typespec; name; formals; body; }}
-
-formal:
-| typespec = typespec name = ID 
-  {{ typespec; name; }}
-
 // Reusables
 typespec:
 | TYPE_INT   { Int }
 | TYPE_FLOAT { Float }
 | TYPE_BOOL  { Bool }
 ;
+
+formal:
+| ts = typespec id = ID { (ts, id) } 
 
 block:
 | LCURBRACK stmts = stmt* RCURBRACK { stmts }

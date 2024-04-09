@@ -8,30 +8,13 @@ let rec print_expr expr =
   | Efuncall (n, a) -> Printf.printf "Efuncall(name: %s" n;
     List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) a; 
   | Eunop (o, e) ->
-    let uop_str = match o with
-      | UnopNot -> "!"
-      | UnopNeg -> "-"
-    in
-    Printf.printf "Eunop(%s, " uop_str;
+    let opii = string_of_unop o in
+    Printf.printf "Eunop(%s, " opii;
     print_expr e;
     Printf.printf ")"  
   | Ebinop (op, e1, e2) -> 
-    let op_str = match op with
-      | BinopAdd -> "+"
-      | BinopSub -> "-"
-      | BinopMul -> "*"
-      | BinopDiv -> "/" 
-      | BinopMod -> "%" 
-      | BinopAnd -> "&&" 
-      | BinopOr -> "||"
-      | BinopLessThan -> "<" 
-      | BinopGreaterThan -> ">"
-      | BinopLessThanEq -> "<=" 
-      | BinopGreaterThanEq -> ">="
-      | BinopEq -> "=="
-      | BinopNotEq -> "!="
-    in 
-    Printf.printf "Ebinop(%s, " op_str;
+    let opii = string_of_binop op in
+    Printf.printf "Ebinop(%s, " opii;
     print_expr e1;
     Printf.printf ", ";
     print_expr e2;
@@ -75,19 +58,15 @@ let rec print_stmt stmt =
       Printf.printf "\tvariable: type : "; print_typespec ts;
       Printf.printf ", name : %s, " id;
       Printf.printf "value : "; print_expr v; Printf.printf ""
-  | Sfundef func ->
-      Printf.printf "\tfunction: type : "; print_typespec func.typespec;
-      Printf.printf ", name : %s, " func.name;
-      let formals = map_formals func.formals in
-      List.iter (fun (typespec, name) ->
-        Printf.printf "\nargument: %s, Name: %s" (string_of_typespec typespec) name
-      ) formals;
+  | Sfundef (ts, id, f, b) ->
+      Printf.printf "\tfunction: type : "; print_typespec ts;
+      Printf.printf ", name : %s, " id;
+      (*let formals = map_formals f in*)
+      List.iter (fun (ts, id) ->
+        Printf.printf "\nargument: %s, Name: %s" (string_of_typespec ts) id
+      ) f;
       Printf.printf "\nbody : " ;
-      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") func.body
-
-let extract_def_name def =
-  def.name
-
+      List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") b
   
 let print_program program =
   Printf.printf "{\n\tdefs = [";

@@ -1,5 +1,5 @@
-int double(int x){
-  x + x;
+int double(int x, bool b){
+  x = x <= !x;
 }
 
 bool y = true;

@@ -1,23 +1,23 @@
 (* binary operations *)
 type binop = 
-| BinopAdd 
-| BinopSub 
-| BinopMul 
-| BinopDiv
-| BinopMod
-| BinopAnd
-| BinopOr 
-| BinopLessThan 
-| BinopGreaterThan 
-| BinopLessThanEq
-| BinopGreaterThanEq
-| BinopEq
-| BinopNotEq
+  | BinopAdd 
+  | BinopSub 
+  | BinopMul 
+  | BinopDiv
+  | BinopMod
+  | BinopAnd
+  | BinopOr 
+  | BinopLessThan 
+  | BinopGreaterThan 
+  | BinopLessThanEq
+  | BinopGreaterThanEq
+  | BinopEq
+  | BinopNotEq
 
 (* unary operations *)
 type unop =
-| UnopNot
-| UnopNeg
+  | UnopNot
+  | UnopNeg
 
 (* expression *)
 type expr = 
@@ -30,27 +30,12 @@ type expr =
 
 
 type typespec = 
-| Int
-| Float
-| Bool
-
-let string_of_typespec = function 
-| Int -> "int" 
-| Float -> "float"
-| Bool -> "bool"
+  | Int
+  | Float
+  | Bool
 
 (* formal i.e. a typed argument for function / method definiton *)
-type formal = {
-  typespec : typespec;
-  name : string;
-}
-
-(* creates a map containing typespecification and name for each formal *)
-let map_formals params = 
-  let get_info formal =
-    (formal.typespec, formal.name) 
-  in 
-  List.map get_info params
+type formal = typespec * string
 
 (* statement *)
 type stmt =
@@ -59,22 +44,40 @@ type stmt =
   | Sblock of stmt list
   | Sexpr of expr
   | Svardef of typespec * string * expr 
-  | Sfundef of fundef
   | Sif of expr * stmt list * stmt list
   | Sassign of string * expr 
+  | Sfundef of typespec * string * formal list * stmt list
 (* function declaration *)
-and fundef = {
-  typespec : typespec;
-  name     : string;
-  formals  : formal list; (* formal arguments *)
-  body     : stmt list; 
-}
 
 (* program *)
 type program = {
-  defs : fundef list;
+  defs : stmt list;
   main : stmt; 
 }  
 
+(*                   *)
+(* String formatting *)
+(*                   *)
+let string_of_typespec = function
+  | Int -> "Int"
+  | Float -> "Float"
+  | Bool -> "Bool"
 
-
+let string_of_unop = function
+  | UnopNot -> "!"
+  | UnopNeg -> "-"
+    
+let string_of_binop = function
+  | BinopAdd -> "+"
+  | BinopSub -> "-"
+  | BinopMul -> "*"
+  | BinopDiv -> "/" 
+  | BinopMod -> "%" 
+  | BinopAnd -> "&&" 
+  | BinopOr -> "||"
+  | BinopLessThan -> "<" 
+  | BinopGreaterThan -> ">"
+  | BinopLessThanEq -> "<=" 
+  | BinopGreaterThanEq -> ">="
+  | BinopEq -> "=="
+  | BinopNotEq -> "!="
