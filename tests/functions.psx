@@ -1,5 +1,6 @@
 int double(int x, bool b){
   x = x <= !x;
+  return x;
 }
 
 bool y = true;

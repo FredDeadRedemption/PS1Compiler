@@ -58,6 +58,8 @@ let rec print_stmt stmt =
       Printf.printf "\tvariable: type : "; print_typespec ts;
       Printf.printf ", name : %s, " id;
       Printf.printf "value : "; print_expr v; Printf.printf ""
+  | Sreturn v -> 
+      Printf.printf "\tReturn Statement: "; print_expr v;
   | Sfundef (ts, id, f, b) ->
       Printf.printf "\tfunction: type : "; print_typespec ts;
       Printf.printf ", name : %s, " id;

@@ -39,7 +39,7 @@ type formal = typespec * string
 
 (* statement *)
 type stmt =
-  | Sprint of expr
+  | Sprint of expr 
   | Sstart of stmt list
   | Sblock of stmt list
   | Sexpr of expr
@@ -47,6 +47,7 @@ type stmt =
   | Sif of expr * stmt list * stmt list
   | Sassign of string * expr 
   | Sfundef of typespec * string * formal list * stmt list
+  | Sreturn of expr
 (* function declaration *)
 
 (* program *)

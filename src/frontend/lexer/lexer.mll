@@ -23,35 +23,36 @@ let newline = '\r' | '\n' | "\r\n"
 
 rule tokenize = parse
   | whitespace { tokenize lexbuf } (* skip whitespace *)
-  | newline { increase(); tokenize lexbuf } (* skip newline *)
-  | '+'     { ADD }
-  | '-'     { SUB }
-  | '*'     { MUL }
-  | '/'     { DIV }
-  | "%"     { MOD }
-  | "="     { EQ }
-  | "!"     { EXCL }
-  | "&&"    { AND }
-  | "||"    { OR }
-  | ">"     { RANGLE }
-  | "<"     { LANGLE }
-  | '('     { LPAREN }
-  | ')'     { RPAREN }
-  | '['     { LSQBRACK }
-  | ']'     { RSQBRACK }
-  | '{'     { LCURBRACK }
-  | '}'     { RCURBRACK }
-  | ','     { COMMA }
-  | ';'     { SEMICOLON }
-  | "if"    { IF }
-  | "else"  { ELSE }
-  | "print" { PRINT }
-  | "start" { START }
-  | "true"  { TRUE }
-  | "false" { FALSE }
-  | "int"   { TYPE_INT }
-  | "float" { TYPE_FLOAT }
-  | "bool"  { TYPE_BOOL }
+  | newline    { increase(); tokenize lexbuf } (* skip newline *)
+  | '+'        { ADD }
+  | '-'        { SUB }
+  | '*'        { MUL }
+  | '/'        { DIV }
+  | "%"        { MOD }
+  | "="        { EQ }
+  | "!"        { EXCL }
+  | "&&"       { AND }
+  | "||"       { OR }
+  | ">"        { RANGLE }
+  | "<"        { LANGLE }
+  | '('        { LPAREN }
+  | ')'        { RPAREN }
+  | '['        { LSQBRACK }
+  | ']'        { RSQBRACK }
+  | '{'        { LCURBRACK }
+  | '}'        { RCURBRACK }
+  | ','        { COMMA }
+  | ';'        { SEMICOLON }
+  | "return"   { RETURN }
+  | "if"       { IF }
+  | "else"     { ELSE }
+  | "print"    { PRINT }
+  | "start"    { START }
+  | "true"     { TRUE }
+  | "false"    { FALSE }
+  | "int"      { TYPE_INT }
+  | "float"    { TYPE_FLOAT }
+  | "bool"     { TYPE_BOOL }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }

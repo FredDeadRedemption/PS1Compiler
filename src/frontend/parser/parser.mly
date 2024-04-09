@@ -17,6 +17,7 @@
 %token COMMA SEMICOLON
 %token IF ELSE 
 %token PRINT START
+%token RETURN
 %token EOF
 
 %right ID // er lidt sketchy på den her?? men det virker
@@ -42,7 +43,6 @@ program:
 
 // Statements
 stmt:
-| block = block                               { Sblock block } // skal slettes
 | ts = typespec id = ID EQ v = expr SEMICOLON { Svardef (ts, id, v) }
 | ts = typespec id = ID LPAREN f = separated_list(COMMA, formal) RPAREN b = block { Sfundef (ts, id, f, b) }
 | id = ID EQ e = expr SEMICOLON               { Sassign (id, e) }
@@ -50,6 +50,7 @@ stmt:
 | PRINT LPAREN e = expr RPAREN SEMICOLON      { Sprint e }
 | START LPAREN RPAREN block = block           { Sstart block } 
 | IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
+| RETURN v = expr SEMICOLON                   { Sreturn v }
 ;
 
 // Expressions
