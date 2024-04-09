@@ -71,10 +71,10 @@ let rec print_stmt stmt =
     Printf.printf "\nassign: ";
     Printf.printf "varname: %s" id; 
     Printf.printf "newValue: "; print_expr e;           
-  | Svardef stmt ->
-      Printf.printf "\tvariable: type : "; print_typespec stmt.typespec;
-      Printf.printf ", name : %s, " stmt.name;
-      Printf.printf "value : "; print_expr stmt.value; Printf.printf ""
+  | Svardef (ts, id, v) ->
+      Printf.printf "\tvariable: type : "; print_typespec ts;
+      Printf.printf ", name : %s, " id;
+      Printf.printf "value : "; print_expr v; Printf.printf ""
   | Sfundef func ->
       Printf.printf "\tfunction: type : "; print_typespec func.typespec;
       Printf.printf ", name : %s, " func.name;

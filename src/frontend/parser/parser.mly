@@ -42,11 +42,11 @@ program:
 
 // Statements
 stmt:
-| block = block         { Sblock block } // skal slettes
-| vardef = vardef       { Svardef vardef }
-| fundef = fundef       { Sfundef fundef }
-| id = ID EQ e = expr   { Sassign (id, e) }
-| expr = expr SEMICOLON { Sexpr expr }
+| block = block                               { Sblock block } // skal slettes
+| ts = typespec id = ID EQ v = expr SEMICOLON { Svardef (ts, id, v) }
+| fundef = fundef                             { Sfundef fundef }
+| id = ID EQ e = expr SEMICOLON               { Sassign (id, e) }
+| expr = expr SEMICOLON                       { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
 | START LPAREN RPAREN block = block { Sstart block } 
 | IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
@@ -65,10 +65,6 @@ expr:
 ;
 
 // stmst
-vardef:
-| typespec = typespec name = ID EQ value = expr SEMICOLON
-  {{ typespec; name; value; }}
-
 fundef: 
 | typespec = typespec name = ID LPAREN formals = separated_list(COMMA, formal) RPAREN body = block
   {{ typespec; name; formals; body; }}

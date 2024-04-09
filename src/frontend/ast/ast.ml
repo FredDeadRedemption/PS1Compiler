@@ -39,13 +39,6 @@ let string_of_typespec = function
 | Float -> "float"
 | Bool -> "bool"
 
-(* variable declaration *)
-type vardef = {
-  typespec : typespec;
-  name     : string;
-  value    : expr; 
-}
-
 (* formal i.e. a typed argument for function / method definiton *)
 type formal = {
   typespec : typespec;
@@ -65,7 +58,7 @@ type stmt =
   | Sstart of stmt list
   | Sblock of stmt list
   | Sexpr of expr
-  | Svardef of vardef 
+  | Svardef of typespec * string * expr 
   | Sfundef of fundef
   | Sif of expr * stmt list * stmt list
   | Sassign of string * expr 
