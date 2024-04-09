@@ -32,6 +32,7 @@
 
 %%
 
+// Main program
 program: 
   main = stmt* 
   EOF
@@ -39,16 +40,35 @@ program:
       main = Sblock main;} }
 ;
 
+// Statements
 stmt:
 | block = block         { Sblock block } // skal slettes
 | vardef = vardef       { Svardef vardef }
 | fundef = fundef       { Sfundef fundef }
 | expr = expr SEMICOLON { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
-| START LPAREN RPAREN block = block { Sstart block }
+| START LPAREN RPAREN block = block { Sstart block } 
 | IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
 ;
 
+// Expressions
+expr:
+| LPAREN e = expr RPAREN                               { e }
+| n = ID LPAREN a = separated_list(COMMA, expr) RPAREN { Efuncall (n, a) }
+| c = INT                                              { Econst c }
+| id = ID EQ e = expr                                  { Eassign (id, e) }
+| id = ID                                              { Evar id }
+| TRUE                                                 { Ebool (true) }
+| FALSE                                                { Ebool (false) }
+| o = unop e = expr                                    { Eunop (o, e) }
+| e1 = expr o = binop e2 = expr                        { Ebinop (o, e1, e2) }
+;
+
+funcall:
+| name = ID LPAREN args = separated_list(COMMA, expr) RPAREN
+  {{ name; args; }}
+
+// stmst
 vardef:
 | typespec = typespec name = ID EQ value = expr SEMICOLON
   {{ typespec; name; value; }}
@@ -57,37 +77,21 @@ fundef:
 | typespec = typespec name = ID LPAREN formals = separated_list(COMMA, formal) RPAREN body = block
   {{ typespec; name; formals; body; }}
 
-funcall:
-| name = ID LPAREN args = separated_list(COMMA, expr) RPAREN
-  {{ name; args; }}
-
 formal:
 | typespec = typespec name = ID 
   {{ typespec; name; }}
 
+// Reusables
 typespec:
 | TYPE_INT   { Int }
 | TYPE_FLOAT { Float }
 | TYPE_BOOL  { Bool }
 ;
 
-// Expressions
-
-expr:
-| LPAREN e = expr RPAREN         { e }
-| fc = funcall                   { Efuncall fc }
-| c = INT                        { Econst c }
-| id = ID EQ e = expr            { Eassign (id, e) }
-| id = ID                        { Evar id }
-| TRUE                           { Ebool (true) }
-| FALSE                          { Ebool (false) }
-| o = unop e = expr              { Eunop (o, e) }
-| e1 = expr o = binop e2 = expr  { Ebinop (o, e1, e2) }
-;
-
 block:
 | LCURBRACK stmts = stmt* RCURBRACK { stmts }
 
+// Inline
 %inline unop:
 | EXCL      { UnopNot }
 | SUB       { UnopNeg }

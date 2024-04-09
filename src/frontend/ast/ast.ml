@@ -26,13 +26,8 @@ type expr =
   | Ebool of bool
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
-  | Efuncall of funcall
+  | Efuncall of string * expr list
   | Eassign of string * expr 
-(* and is for mutually recursive types *)
-and funcall = {
-  name : string;
-  args : expr list;
-}
 
 
 type typespec = 
@@ -78,7 +73,7 @@ type stmt =
 and fundef = {
   typespec : typespec;
   name     : string;
-  formals     : formal list; (* formal arguments *)
+  formals  : formal list; (* formal arguments *)
   body     : stmt list; 
 }
 

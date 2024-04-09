@@ -5,8 +5,8 @@ let rec print_expr expr =
   | Econst c -> Printf.printf "Econst(%d)" c
   | Evar v -> Printf.printf "Evar(%s)" v
   | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
-  | Efuncall fc -> Printf.printf "Efuncall(name: %s" fc.name;
-    List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) fc.args; 
+  | Efuncall (n, a) -> Printf.printf "Efuncall(name: %s" n;
+    List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) a; 
   | Eassign (id, e) ->
     Printf.printf "\nassign: ";
     Printf.printf "varname: %s" id; 
