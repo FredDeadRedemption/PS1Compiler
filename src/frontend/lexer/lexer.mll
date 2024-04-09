@@ -43,6 +43,7 @@ rule tokenize = parse
   | '}'        { RCURBRACK }
   | ','        { COMMA }
   | ';'        { SEMICOLON }
+  | ':'        { COLON }
   | "return"   { RETURN }
   | "break"    { BREAK }
   | "if"       { IF }
@@ -57,6 +58,7 @@ rule tokenize = parse
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }
+  | float as f { FLOAT (float_of_string f) }
   | identifier as s { ID s }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }

@@ -22,6 +22,7 @@ type unop =
 (* expression *)
 type expr = 
   | Econst of int
+  | Efloat of float
   | Evar   of string
   | Ebool of bool
   | Eunop of unop * expr
@@ -40,15 +41,16 @@ type formal = typespec * string
 (* statement *)
 type stmt =
   | Sprint of expr 
-  | Sstart of stmt list
-  | Sblock of stmt list
+  | Sstart of block
+  | Sblock of block
   | Sexpr of expr
   | Svardef of typespec * string * expr 
-  | Sif of expr * stmt list * stmt list
+  | Sif of expr * block * block option
   | Sassign of string * expr 
-  | Sfundef of typespec * string * formal list * stmt list
+  | Sfundef of typespec * string * formal list * block
   | Sreturn of expr
   | Sbreak
+and block = stmt list
 (* function declaration *)
 
 (* program *)

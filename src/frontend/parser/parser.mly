@@ -6,6 +6,7 @@
 %token VAR
 %token <int> INT
 %token <string> ID
+%token <float> FLOAT
 %token ADD SUB MUL DIV 
 %token MOD EQ EXCL
 %token AND OR
@@ -15,6 +16,7 @@
 %token LSQBRACK RSQBRACK
 %token LCURBRACK RCURBRACK
 %token COMMA SEMICOLON
+%token COLON
 %token IF ELSE 
 %token PRINT START
 %token RETURN BREAK
@@ -49,16 +51,29 @@ stmt:
 | expr = expr SEMICOLON                       { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON      { Sprint e }
 | START LPAREN RPAREN block = block           { Sstart block } 
-| IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
+| IF LPAREN _cond = expr RPAREN _then = block _else = option(else_block) { Sif(_cond, _then, _else) }
 | RETURN v = expr SEMICOLON                   { Sreturn v }
 | BREAK SEMICOLON                             { Sbreak }
 ;
+
+else_block:
+| ELSE option(IF) b = block { (b) }
+
+ // IF STATEMENTS
+  | IF expr s = suite stmt
+    { Sif($2, s, $4) }
+  | ELSEIF expr s = suite stmt
+    { Selseif($2, s, $4) }
+  | ELSE s = suite 
+    { Selse(s) }
+
 
 // Expressions
 expr:
 | LPAREN e = expr RPAREN                               { e }
 | n = ID LPAREN a = separated_list(COMMA, expr) RPAREN { Efuncall (n, a) }
 | c = INT                                              { Econst c }
+| f = FLOAT                                            { Efloat f }
 | id = ID                                              { Evar id }
 | TRUE                                                 { Ebool (true) }
 | FALSE                                                { Ebool (false) }

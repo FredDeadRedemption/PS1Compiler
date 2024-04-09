@@ -3,6 +3,7 @@ open Ast
 let rec print_expr expr =
   match expr with
   | Econst c -> Printf.printf "Econst(%d)" c
+  | Efloat f -> Printf.printf "Efloat(%f)" f
   | Evar v -> Printf.printf "Evar(%s)" v
   | Ebool b -> Printf.printf "Ebool(%s)" (string_of_bool b);
   | Efuncall (n, a) -> Printf.printf "Efuncall(name: %s" n;
@@ -44,8 +45,12 @@ let rec print_stmt stmt =
       Printf.printf "then: "; 
       List.iter (fun stmt -> print_stmt stmt) _then;
       Printf.printf "else: ";
-      List.iter (fun stmt -> print_stmt stmt) _else;
-      Printf.printf "\t]"
+      (match _else with 
+      | Some(else_stmts)->
+        List.iter (fun stmt -> print_stmt stmt) else_stmts;
+        Printf.printf "\t]"
+      | None ->
+        Printf.printf "no else statement")
   | Sexpr stmt ->
     Printf.printf "\tSexpr: ";
       print_expr stmt;
