@@ -1,20 +1,28 @@
 int double(int x, bool b){
 
-  if(x <= !b){
-    return true;
-  } else {
-    return true;
-  }
 
-  if(x <= !b){
-    return true;
-  } else if {
-    return true;
-  } 
 
   if(x < b){
     return true;
+  } else if(x + x) {
+
+  } else if(x > uj){
+
+  } else if(x > uj){
+
   }
+
+  if(true){
+
+  }
+
+  if(true){
+    
+  } else {
+
+  }
+
+  
   
   break;
 }
