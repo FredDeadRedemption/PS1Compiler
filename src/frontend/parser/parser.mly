@@ -45,6 +45,7 @@ stmt:
 | block = block         { Sblock block } // skal slettes
 | vardef = vardef       { Svardef vardef }
 | fundef = fundef       { Sfundef fundef }
+| id = ID EQ e = expr   { Sassign (id, e) }
 | expr = expr SEMICOLON { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON {Sprint e}
 | START LPAREN RPAREN block = block { Sstart block } 
@@ -56,17 +57,12 @@ expr:
 | LPAREN e = expr RPAREN                               { e }
 | n = ID LPAREN a = separated_list(COMMA, expr) RPAREN { Efuncall (n, a) }
 | c = INT                                              { Econst c }
-| id = ID EQ e = expr                                  { Eassign (id, e) }
 | id = ID                                              { Evar id }
 | TRUE                                                 { Ebool (true) }
 | FALSE                                                { Ebool (false) }
 | o = unop e = expr                                    { Eunop (o, e) }
 | e1 = expr o = binop e2 = expr                        { Ebinop (o, e1, e2) }
 ;
-
-funcall:
-| name = ID LPAREN args = separated_list(COMMA, expr) RPAREN
-  {{ name; args; }}
 
 // stmst
 vardef:

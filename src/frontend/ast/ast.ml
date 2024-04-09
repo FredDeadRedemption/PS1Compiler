@@ -27,7 +27,6 @@ type expr =
   | Eunop of unop * expr
   | Ebinop of binop * expr * expr
   | Efuncall of string * expr list
-  | Eassign of string * expr 
 
 
 type typespec = 
@@ -69,6 +68,7 @@ type stmt =
   | Svardef of vardef 
   | Sfundef of fundef
   | Sif of expr * stmt list * stmt list
+  | Sassign of string * expr 
 (* function declaration *)
 and fundef = {
   typespec : typespec;

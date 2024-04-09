@@ -2,4 +2,8 @@ int double(int x){
   x + x;
 }
 
+bool y = true;
+
 double(10);
+
+y = false;
