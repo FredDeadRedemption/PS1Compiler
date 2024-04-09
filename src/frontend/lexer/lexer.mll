@@ -44,6 +44,7 @@ rule tokenize = parse
   | ','        { COMMA }
   | ';'        { SEMICOLON }
   | "return"   { RETURN }
+  | "break"    { BREAK }
   | "if"       { IF }
   | "else"     { ELSE }
   | "print"    { PRINT }

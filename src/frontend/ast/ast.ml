@@ -48,6 +48,7 @@ type stmt =
   | Sassign of string * expr 
   | Sfundef of typespec * string * formal list * stmt list
   | Sreturn of expr
+  | Sbreak
 (* function declaration *)
 
 (* program *)

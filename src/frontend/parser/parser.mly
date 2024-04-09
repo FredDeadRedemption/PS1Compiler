@@ -17,7 +17,7 @@
 %token COMMA SEMICOLON
 %token IF ELSE 
 %token PRINT START
-%token RETURN
+%token RETURN BREAK
 %token EOF
 
 %right ID // er lidt sketchy på den her?? men det virker
@@ -51,6 +51,7 @@ stmt:
 | START LPAREN RPAREN block = block           { Sstart block } 
 | IF LPAREN _cond = expr RPAREN _then = block ELSE _else = block { Sif(_cond, _then, _else) }
 | RETURN v = expr SEMICOLON                   { Sreturn v }
+| BREAK SEMICOLON                             { Sbreak }
 ;
 
 // Expressions

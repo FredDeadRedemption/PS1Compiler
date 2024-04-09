@@ -60,6 +60,7 @@ let rec print_stmt stmt =
       Printf.printf "value : "; print_expr v; Printf.printf ""
   | Sreturn v -> 
       Printf.printf "\tReturn Statement: "; print_expr v;
+  | Sbreak -> Printf.printf "Break";
   | Sfundef (ts, id, f, b) ->
       Printf.printf "\tfunction: type : "; print_typespec ts;
       Printf.printf ", name : %s, " id;
