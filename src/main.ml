@@ -39,18 +39,21 @@ let rec print_stmt stmt =
       Printf.printf "\tSstart [\n";
       List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
       Printf.printf "\t]"
-  | Sif (_cond, _then, _else) ->
+  | Sif (e, b) ->
       Printf.printf "\tSif [\n";
-      Printf.printf "cond: "; print_expr _cond;
+      Printf.printf "expr: "; print_expr e;
       Printf.printf "then: "; 
-      List.iter (fun stmt -> print_stmt stmt) _then;
-      Printf.printf "else: ";
-      (match _else with 
-      | Some(else_stmts)->
-        List.iter (fun stmt -> print_stmt stmt) else_stmts;
-        Printf.printf "\t]"
-      | None ->
-        Printf.printf "no else statement")
+      List.iter (fun stmt -> print_stmt stmt) b;
+  | Selseif (e, b) ->
+      Printf.printf "\tSelseif [\n";
+      Printf.printf "expr: "; print_expr e;
+      Printf.printf "then: "; 
+      List.iter (fun stmt -> print_stmt stmt) b;
+  | Selse (b) ->
+    Printf.printf "\tSelse [\n";
+    Printf.printf "then: "; 
+    List.iter (fun stmt -> print_stmt stmt) b;
+      
   | Sexpr stmt ->
     Printf.printf "\tSexpr: ";
       print_expr stmt;

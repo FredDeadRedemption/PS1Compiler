@@ -45,7 +45,9 @@ type stmt =
   | Sblock of block
   | Sexpr of expr
   | Svardef of typespec * string * expr 
-  | Sif of expr * block * block option
+  | Sif of expr * block
+  | Selseif of expr * block
+  | Selse of block
   | Sassign of string * expr 
   | Sfundef of typespec * string * formal list * block
   | Sreturn of expr

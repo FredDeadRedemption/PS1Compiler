@@ -51,21 +51,14 @@ stmt:
 | expr = expr SEMICOLON                       { Sexpr expr }
 | PRINT LPAREN e = expr RPAREN SEMICOLON      { Sprint e }
 | START LPAREN RPAREN block = block           { Sstart block } 
-| IF LPAREN _cond = expr RPAREN _then = block _else = option(else_block) { Sif(_cond, _then, _else) }
+| IF LPAREN e = expr RPAREN b = block         { Sif (e, b) }
+| ELSE IF LPAREN e = expr RPAREN b = block    { Selseif (e, b) }
+| ELSE b = block                              { Selse (b) }
 | RETURN v = expr SEMICOLON                   { Sreturn v }
 | BREAK SEMICOLON                             { Sbreak }
 ;
 
-else_block:
-| ELSE option(IF) b = block { (b) }
 
- // IF STATEMENTS
-  | IF expr s = suite stmt
-    { Sif($2, s, $4) }
-  | ELSEIF expr s = suite stmt
-    { Selseif($2, s, $4) }
-  | ELSE s = suite 
-    { Selse(s) }
 
 
 // Expressions
