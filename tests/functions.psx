@@ -8,9 +8,11 @@ int double(int x, bool b){
 
   if(x <= !b){
     return true;
-  } else if {
+  } else if(true) {
     return true;
-  } 
+  } else if(true) {
+    return true;
+  }
 
   if(x < b){
     return true;
