@@ -24,4 +24,6 @@ start(){
       break;
     }
   }
+
+  print(yeehaw(sad, arraydef[255]));
 }
