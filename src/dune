@@ -1,6 +1,7 @@
 (executable
  (name main)
- (libraries lexer parser)) ; out name
+ (libraries str lexer parser)
+ ) ; out name
  
 ;(rule
  ;(targets lexer.ml) ; out type

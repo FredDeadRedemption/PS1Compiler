@@ -126,10 +126,20 @@ let string_of_program program =
   Buffer.contents buffer
 
 
-let print_to_file prog =
+let split_string str =
+    Str.split (Str.regexp "\\.") str
+
+let get_output_filename input_filename =
+  let parts = split_string input_filename in
+  match parts with
+  | first :: _ -> "output_" ^ first ^ ".c"
+  | _ -> failwith "File has no name."
+
+
+let print_to_file filename prog =
   let prog_string = string_of_program prog in
-  let filename = "output.txt" in
-  let out_channel = open_out filename in
+  let output_filename = get_output_filename filename in
+  let out_channel = open_out output_filename in
   output_string out_channel prog_string;
   close_out out_channel;;
 

@@ -1,6 +1,7 @@
 start() {
-    print (5);
-    print (10);
-    int x = 10;
-    float xf = 5;
+    if (true) {
+        print(5);
+    } else if (false) {
+        print(10);
+    }
 }
