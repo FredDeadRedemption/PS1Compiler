@@ -3,7 +3,6 @@
 %}
 
 %token TYPE_INT TYPE_FLOAT TYPE_BOOL
-%token VAR
 %token <int> INT
 %token <string> ID
 %token <float> FLOAT
@@ -39,7 +38,7 @@ program:
   stmt* EOF { Main($1) }
 ;
 
-// Statements
+// Expressions
 expr:
 | LPAREN expr RPAREN                                   { ParenExpr($2) }
 | ID LPAREN separated_list(COMMA, expr) RPAREN         { FuncCall($1, $3) }
@@ -53,6 +52,7 @@ expr:
 | expr binop expr                                      { BinaryOp($2, $1, $3) }
 ;
 
+// Statements
 stmt:
 | typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
