@@ -22,7 +22,7 @@ type unop =
 (* expression *)
 type expr = 
   | ParenExpr   of expr
-  | FuncCall    of string * expr list
+  | FuncCall    of string * params
   | ArrayAccess of string * int
   | ConstInt    of int
   | ConstFloat  of float
@@ -30,8 +30,8 @@ type expr =
   | Bool        of bool
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
+and params = expr list
   
-
 type typespec = 
   | Int
   | Float
@@ -39,13 +39,14 @@ type typespec =
 
 (* formal i.e. a typed argument for function / method definiton *)
 type formal = typespec * string
+type formals = formal list
 
 (* statement *)
 type stmt =
   | VarDef      of typespec * string * expr 
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
-  | FuncDef     of typespec * string * formal list * block
+  | FuncDef     of typespec * string * formals * block
   | Assign      of string * expr 
   | PrintStmt   of expr 
   | StartStmt   of block
@@ -55,7 +56,6 @@ type stmt =
   | ReturnStmt  of expr
   | BreakStmt
 and block = stmt list
-(* function declaration *)
 
 (* program *)
 type program = 

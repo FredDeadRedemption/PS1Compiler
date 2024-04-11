@@ -7,7 +7,7 @@
     line := !line + 1 (* := used for assigning mutables ! is derefrence operator*)
 }
 
-(* regex helpers*)
+(* regex helpers *)
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
 let fraction = '.' digit+ (* måske lave float uden decimaltal *)
@@ -71,5 +71,5 @@ and read_comment = parse
 and read_multi_line_comment = parse
   | "*/" { tokenize lexbuf } (* go back to tokenization on */ *)
   | newline { increase(); read_multi_line_comment lexbuf } 
-  | eof { failwith (Printf.sprintf "Syntax error: unexpected eof, please terminate comment") }
+  | eof { failwith (Printf.sprintf "Syntax error: unexpected eof, please terminate comment on line: %d" !line) }
   | _ { read_multi_line_comment lexbuf } (* read all kinds of chars within comment *)
