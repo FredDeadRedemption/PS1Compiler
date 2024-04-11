@@ -1,18 +1,27 @@
-int main(void){
-  let number = 10 + (-1.2);
+int vardef = (2 + 2) * 3;
 
-// COMMENT 1¤!¤"?=`?Ø 
+float arraydef[255];
 
-/* yeehaw
+arraydef[0] = vardef;   // <-- TYPE CHECKING ERROR
 
+bool sad = true;
 
+sad = false;
 
- */
+print(sad);
 
-  function(float f){
-    return f;
-  } 
+sad = arraydef[100];
 
- -2.12
- let string = "string";
+start(){
+
+  bool yeehaw(int x, int y){
+    
+    if(x != -y){
+      return true;
+    } else if(y + (200 * 2 / x)){
+      return false;
+    } else {
+      break;
+    }
+  }
 }

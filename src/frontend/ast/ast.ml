@@ -21,14 +21,16 @@ type unop =
 
 (* expression *)
 type expr = 
-  | Econst of int
-  | Efloat of float
-  | Evar   of string
-  | Ebool of bool
-  | Eunop of unop * expr
-  | Ebinop of binop * expr * expr
-  | Efuncall of string * expr list
-
+  | ParenExpr   of expr
+  | FuncCall    of string * expr list
+  | ArrayAccess of string * int
+  | ConstInt    of int
+  | ConstFloat  of float
+  | Var         of string
+  | Bool        of bool
+  | UnaryOp     of unop * expr
+  | BinaryOp    of binop * expr * expr
+  
 
 type typespec = 
   | Int
@@ -40,26 +42,25 @@ type formal = typespec * string
 
 (* statement *)
 type stmt =
-  | Sprint of expr 
-  | Sstart of block
-  | Sblock of block
-  | Sexpr of expr
-  | Svardef of typespec * string * expr 
-  | Sif of expr * block
-  | Selseif of expr * block
-  | Selse of block
-  | Sassign of string * expr 
-  | Sfundef of typespec * string * formal list * block
-  | Sreturn of expr
-  | Sbreak
+  | VarDef      of typespec * string * expr 
+  | ArrayDef    of typespec * string * int
+  | ArrayAssign of string * int * expr
+  | FuncDef     of typespec * string * formal list * block
+  | Assign      of string * expr 
+  | PrintStmt   of expr 
+  | StartStmt   of block
+  | IfStmt      of expr * block
+  | ElseIfStmt  of expr * block
+  | ElseStmt    of block
+  | ReturnStmt  of expr
+  | BreakStmt
 and block = stmt list
 (* function declaration *)
 
 (* program *)
-type program = {
-  defs : stmt list;
-  main : stmt; 
-}  
+type program = 
+  | Defs of block
+  | Main of block
 
 (*                   *)
 (* String formatting *)

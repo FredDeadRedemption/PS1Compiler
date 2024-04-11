@@ -22,7 +22,6 @@
 %token RETURN BREAK
 %token EOF
 
-%right ID // er lidt sketchy på den her?? men det virker
 %right EQ 
 %left ADD SUB LANGLE RANGLE
 %left MUL DIV MOD
@@ -37,41 +36,36 @@
 
 // Main program
 program: 
-  main = stmt* 
-  EOF
-  { { defs = [];
-      main = Sblock main;} }
+  stmt* EOF { Main($1) }
 ;
 
 // Statements
-stmt:
-| ts = typespec id = ID EQ v = expr SEMICOLON { Svardef (ts, id, v) }
-| ts = typespec id = ID LPAREN f = separated_list(COMMA, formal) RPAREN b = block { Sfundef (ts, id, f, b) }
-| id = ID EQ e = expr SEMICOLON               { Sassign (id, e) }
-| expr = expr SEMICOLON                       { Sexpr expr }
-| PRINT LPAREN e = expr RPAREN SEMICOLON      { Sprint e }
-| START LPAREN RPAREN block = block           { Sstart block } 
-| IF LPAREN e = expr RPAREN b = block         { Sif (e, b) }
-| ELSE IF LPAREN e = expr RPAREN b = block    { Selseif (e, b) }
-| ELSE b = block                              { Selse (b) }
-| RETURN v = expr SEMICOLON                   { Sreturn v }
-| BREAK SEMICOLON                             { Sbreak }
+expr:
+| LPAREN expr RPAREN                                   { ParenExpr($2) }
+| ID LPAREN separated_list(COMMA, expr) RPAREN         { FuncCall($1, $3) }
+| ID LSQBRACK INT RSQBRACK                             { ArrayAccess($1, $3) }
+| INT                                                  { ConstInt($1) }
+| FLOAT                                                { ConstFloat($1) }
+| ID                                                   { Var($1) }
+| TRUE                                                 { Bool(true) }
+| FALSE                                                { Bool(false) }
+| unop expr                                            { UnaryOp($1, $2) }
+| expr binop expr                                      { BinaryOp($2, $1, $3) }
 ;
 
-
-
-
-// Expressions
-expr:
-| LPAREN e = expr RPAREN                               { e }
-| n = ID LPAREN a = separated_list(COMMA, expr) RPAREN { Efuncall (n, a) }
-| c = INT                                              { Econst c }
-| f = FLOAT                                            { Efloat f }
-| id = ID                                              { Evar id }
-| TRUE                                                 { Ebool (true) }
-| FALSE                                                { Ebool (false) }
-| o = unop e = expr                                    { Eunop (o, e) }
-| e1 = expr o = binop e2 = expr                        { Ebinop (o, e1, e2) }
+stmt:
+| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
+| typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
+| ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
+| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
+| ID EQ expr SEMICOLON                                 { Assign($1, $3) }
+| PRINT LPAREN expr RPAREN SEMICOLON                   { PrintStmt($3) }
+| START LPAREN RPAREN block                            { StartStmt($4) } 
+| IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
+| ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
+| ELSE block                                           { ElseStmt($2) }
+| RETURN expr SEMICOLON                                { ReturnStmt($2) }
+| BREAK SEMICOLON                                      { BreakStmt }
 ;
 
 // Reusables
@@ -82,10 +76,10 @@ typespec:
 ;
 
 formal:
-| ts = typespec id = ID { (ts, id) } 
+| typespec ID { ($1, $2) } 
 
 block:
-| LCURBRACK stmts = stmt* RCURBRACK { stmts }
+| LCURBRACK stmt* RCURBRACK { ($2) }
 
 // Inline
 %inline unop:
