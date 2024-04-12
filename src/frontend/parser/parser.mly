@@ -54,18 +54,18 @@ expr:
 
 // Statements
 stmt:
-| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
-| typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
-| ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
+| typespec ID EQ expr                         { VarDef($1, $2, $4) }
+| typespec ID LSQBRACK INT RSQBRACK           { ArrayDef($1, $2, $4) }
+| ID LSQBRACK INT RSQBRACK EQ expr            { ArrayAssign($1, $3, $6) }
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
-| ID EQ expr SEMICOLON                                 { Assign($1, $3) }
-| PRINT LPAREN expr RPAREN SEMICOLON                   { PrintStmt($3) }
+| ID EQ expr                                  { Assign($1, $3) }
+| PRINT LPAREN expr RPAREN                    { PrintStmt($3) }
 | START LPAREN RPAREN block                            { StartStmt($4) } 
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
 | ELSE block                                           { ElseStmt($2) }
-| RETURN expr SEMICOLON                                { ReturnStmt($2) }
-| BREAK SEMICOLON                                      { BreakStmt }
+| RETURN expr                                 { ReturnStmt($2) }
+| BREAK                                       { BreakStmt }
 ;
 
 // Reusables

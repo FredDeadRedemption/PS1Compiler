@@ -1,28 +1,28 @@
-int vardef = (2 + 2) * 3;
+int vardef = (2 + 2) * 3
 
-float arraydef[255];
+float arraydef[255]
 
-arraydef[0] = vardef;   // <-- TYPE CHECKING ERROR
+arraydef[0] = vardef   // <-- TYPE CHECKING ERROR
 
-bool sad = true;
+bool sad = true
 
-sad = false;
+sad = false
 
-print(sad);
+print(sad)
 
-sad = arraydef[100];
+sad = arraydef[100]
 
 
 
 bool yeehaw(int x, int y){
   
   if(x != -y){
-    return true;
+    return true
   } else if(y + (200 * 2 / x)){
-    return false;
+    return false
   } else {
-    return false;
+    return false
   }
 }
 
-print(yeehaw(sad, arraydef[255]));
+print(yeehaw(sad, arraydef[255]))
