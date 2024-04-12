@@ -35,10 +35,17 @@ let () =
 let () =
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
+  (*Frontend: *)
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  
   Ast_printer.print_program prog;
+  (*Backend: *)
+
+  (*
+  Libary_import.import
+  Printing.print
+  let progv1 = Declassify.declassify prog;
+  Demethodify.skrt;*)
   Compile.print_to_file filename prog
  
   

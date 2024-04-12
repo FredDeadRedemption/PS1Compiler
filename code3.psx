@@ -1,7 +1,27 @@
-start() {
-    if (true) {
-        print(5);
-    } else if (false) {
-        print(10);
-    }
+int double(int x, bool b){
+  if(x < b){
+    return true;
+  } else if(x + x) {
+
+  } else if(x > uj){
+
+  } else if(x > uj){
+
+  }
+  if(true){
+
+  }
+  if(true){
+    
+  } else {
+
+  }
+  break;
 }
+
+float y = -2.2;
+print(10);
+
+double(10);
+
+y = false;
