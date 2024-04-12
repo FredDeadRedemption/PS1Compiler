@@ -1,27 +1,27 @@
 open Ast
 
-let rec string_of_expr expr =
+let rec generate_expr expr =
   let buffer = Buffer.create 128 in 
-  let add_str s = Buffer.add_string buffer s in
-  let rec print_args args =
+  let add_str str = Buffer.add_string buffer str in
+  let rec generate_args args =
     match args with
     | [] -> ()
-    | [x] -> add_str (string_of_expr x)
+    | [x] -> add_str (generate_expr x)
     | hd :: tl ->
-        add_str (string_of_expr hd);
+        add_str (generate_expr hd);
         add_str ", ";
-        print_args tl
+        generate_args tl
   in
   match expr with
   | ParenExpr ex -> 
     add_str ("("); 
-    add_str (string_of_expr ex); 
+    add_str (generate_expr ex); 
     add_str(")"); 
     Buffer.contents buffer
   | FuncCall (id, args) ->
     add_str (id);
     add_str ("(");
-    print_args args;
+    generate_args args;
     add_str ")"; 
     Buffer.contents buffer 
   | ArrayAccess (id, ind) ->
@@ -44,26 +44,21 @@ let rec string_of_expr expr =
     Buffer.contents buffer
   | UnaryOp (op, ex) ->
     add_str (string_of_unop op);
-    add_str (string_of_expr ex);
+    add_str (generate_expr ex);
     Buffer.contents buffer
   | BinaryOp (op, ex1, ex2) ->
-    add_str (string_of_expr ex1);
+    add_str (generate_expr ex1);
     add_str (string_of_binop op);
-    add_str (string_of_expr ex2);
+    add_str (generate_expr ex2);
     Buffer.contents buffer
 
-let print_typespec ts =
-  let str = string_of_typespec ts in
-  Printf.printf "%s" str
-
-let rec string_of_stmt stmt =
+let rec generate_stmt stmt =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
   let add_stmt stmt =
-    add_str (string_of_stmt stmt);
-    add_str "\n"
+    add_str (generate_stmt stmt);
   in
-  let rec print_formals formals =
+  let rec generate_formals formals =
     match formals with
     | [] -> 
       add_str "void"
@@ -76,50 +71,70 @@ let rec string_of_stmt stmt =
       add_str " ";
       add_str id;
       add_str ", ";
-      print_formals tl
+      generate_formals tl
   in
   match stmt with
-  | StartStmt body ->
-    add_str "\tSTART [\n";
-    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
-    add_str "\t]";
-    Buffer.contents buffer
-  
-  | ArrayAssign (id, ind, ex) ->
+  | VarDef (ts, id, va) ->
+    add_str (string_of_typespec ts);
+    add_str " ";
     add_str id;
-    add_str "[";
-    add_str (string_of_int ind);
-    add_str "]";
     add_str " = ";
-    add_str (string_of_expr ex);
-    add_str ";";
+    add_str (generate_expr va);
+    add_str ";\n"; 
     Buffer.contents buffer
-  
   | ArrayDef (ts, id, size) ->
     add_str (string_of_typespec ts);
     add_str " ";
     add_str id;
     add_str "[";
     add_str (string_of_int size);
-    add_str "];";
+    add_str "];\n";
     Buffer.contents buffer
-  
+  | ArrayAssign (id, ind, ex) ->
+    add_str id;
+    add_str "[";
+    add_str (string_of_int ind);
+    add_str "]";
+    add_str " = ";
+    add_str (generate_expr ex);
+    add_str ";\n";
+    Buffer.contents buffer
+  | FuncDef (ts, id, args, body) ->
+    add_str (string_of_typespec ts);
+    add_str " ";
+    add_str id;
+    add_str "(";
+    generate_formals args;
+    add_str "){\n";
+    List.iter (fun stmt -> add_stmt stmt) body;
+    add_str "\n}\n";
+    Buffer.contents buffer
+  | Assign (id, ex) ->
+    add_str id;
+    add_str " = ";
+    add_str (generate_expr ex);
+    add_str ";\n"; 
+    Buffer.contents buffer
   | PrintStmt expr ->
-      add_str "printf(";
-      add_str (string_of_expr expr);
-      add_str ");";
-      Buffer.contents buffer
-
+    add_str "printf(";
+    add_str (generate_expr expr);
+    add_str ");\n";
+    Buffer.contents buffer
+  | StartStmt body ->
+    add_str "\tSTART [\n";
+    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+    add_str "\t]";
+    Buffer.contents buffer
   | IfStmt (con, body) ->
       add_str "if(";
-      add_str (string_of_expr con);
+      add_str (generate_expr con);
       add_str "){\n";
       List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
       add_str "\n}";
       Buffer.contents buffer
   | ElseIfStmt (con, body) ->
       add_str "else if(";
-      add_str (string_of_expr con);
+      add_str (generate_expr con);
       add_str "){\n";
       List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
       add_str "\n}";
@@ -129,125 +144,60 @@ let rec string_of_stmt stmt =
       List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
       add_str "\n}";
       Buffer.contents buffer
-  | Assign (id, ex) ->
-      add_str id;
-      add_str " = ";
-      add_str (string_of_expr ex);
-      add_str ";"; 
-      Buffer.contents buffer
-  | VarDef (ts, id, va) ->
-      add_str (string_of_typespec ts);
-      add_str " ";
-      add_str id;
-      add_str " = ";
-      add_str (string_of_expr va);
-      add_str ";"; 
-      Buffer.contents buffer
   | ReturnStmt ex ->
       add_str "return"; 
       add_str " ";
-      add_str (string_of_expr ex);
+      add_str (generate_expr ex);
       add_str ";";
       Buffer.contents buffer
   | BreakStmt -> 
     add_str "break";
     add_str ";"; 
     Buffer.contents buffer
-  | FuncDef (ts, id, args, body) ->
-    add_str (string_of_typespec ts);
-    add_str " ";
-    add_str id;
-    add_str "(";
-    print_formals args;
-    add_str "){\n";
-    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
-    add_str "\n}";
-    Buffer.contents buffer
+ 
 
-let add_imports =
+let generate_imports =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
   add_str "#include <stdio.h>\n"; Buffer.contents buffer
 
-(*let extract_funcs program =
+let hoist_functions program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
   let add_stmt stmt =
-    add_str (string_of_stmt stmt);
-    add_str "\n"
+    add_str "\n";
+    add_str (generate_stmt stmt)
   in
-  let rec print_formals formals =
-    match formals with
-    | [] -> 
-      add_str "void"
-    | [(ts, id)] -> 
-      add_str (string_of_typespec ts);
-      add_str " ";
-      add_str id
-    | (ts, id) :: tl ->
-      add_str (string_of_typespec ts);
-      add_str " ";
-      add_str id;
-      add_str ", ";
-      print_formals tl
-  in
-  match program with 
-  | Main m ->
-    List.iter (fun stmt -> 
+  match program with
+  | Main stmts ->
+    List.iter (fun stmt ->
       match stmt with
-      | FuncDef (ts, id, args, body) ->
-        add_str (string_of_typespec ts);
-        add_str " ";
-        add_str id;
-        add_str "(";
-        print_formals args;
-        add_str "){\n";
-        List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
-        add_str "\n}";
-        Buffer.contents buffer
-      | _ -> ()
-    ) m*)
+      | FuncDef _ -> add_stmt stmt
+      | _ -> ()) stmts;
+    Buffer.contents buffer
 
-    let extract_funcs program =
-      let buffer = Buffer.create 128 in
-      let add_str s = Buffer.add_string buffer s in
-      let add_stmt stmt =
-        add_str "\n\t";
-        add_str (string_of_stmt stmt)
-      in
-      match program with
-      | Main stmts ->
-        List.iter (fun stmt ->
-          match stmt with
-          | FuncDef _ -> add_stmt stmt
-          | _ -> ()) stmts;
-        Buffer.contents buffer
-
-let string_of_program program =
+let generate_program program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
   let add_stmt stmt =
     add_str "\n\t";
-    add_str (string_of_stmt stmt)
+    add_str (generate_stmt stmt)
   in
-  (*  Compile and print libaries  *)
-  add_str add_imports;
-  add_str "\n";
+  (*  Compile and generate imports  *)
+  add_str generate_imports;
 
-  (*  Compile and print function declarations  *)
-  add_str (extract_funcs program);
-  (*List.iter (fun stmt -> add_str "\t"; add_stmt stmt) funcs;*)
- 
+  (*  Compile and generate function declarations  *)
+  add_str (hoist_functions program);
 
   (*  Compile and print main  *)
   match program with
-  | Main m ->
-    add_str "int main(void){\n";
+  | Main stmts ->
+    add_str "\nint main(void){\n";
     List.iter (fun stmt -> 
       match stmt with 
       | FuncDef _ -> ()
-      | _ -> add_str "\t"; add_stmt stmt) m;
-    add_str "\nreturn 0;\n}";
+      | _ -> add_stmt stmt) stmts;
+    add_str "\n\treturn 0;\n}";
     Buffer.contents buffer
 
     
@@ -262,7 +212,7 @@ let get_output_filename input_filename =
 
 
 let print_to_file filename prog =
-  let prog_string = string_of_program prog in
+  let prog_string = generate_program prog in
   let output_filename = get_output_filename filename in
   let out_channel = open_out output_filename in
   output_string out_channel prog_string;

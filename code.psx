@@ -25,4 +25,9 @@ bool yeehaw(int x, int y){
   }
 }
 
+int x(){
+
+  print(2);
+}
+
 print(yeehaw(sad, arraydef[255]));
