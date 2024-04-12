@@ -40,8 +40,8 @@ let rec string_of_expr expr =
     add_str (v); 
     Buffer.contents buffer 
   | Bool b -> 
-    add_str (string_of_bool b); 
-    Buffer.contents buffer 
+    add_str (int_of_bool b);
+    Buffer.contents buffer
   | UnaryOp (op, ex) ->
     add_str (string_of_unop op);
     add_str (string_of_expr ex);
@@ -164,6 +164,11 @@ let rec string_of_stmt stmt =
     add_str "\n}";
     Buffer.contents buffer
 
+let add_imports =
+  let buffer = Buffer.create 128 in
+  let add_str s = Buffer.add_string buffer s in
+  add_str "#include <stdio.h>\n"; Buffer.contents buffer
+
 let string_of_program program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
@@ -171,6 +176,8 @@ let string_of_program program =
     add_str "\n\t";
     add_str (string_of_stmt stmt)
   in
+  add_str add_imports;
+  add_str "\n";
   match program with
   | Main m ->
     add_str "int main(void){\n";

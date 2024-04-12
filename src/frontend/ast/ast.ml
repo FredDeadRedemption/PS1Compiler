@@ -65,10 +65,14 @@ type program =
 (*                   *)
 (* String formatting *)
 (*                   *)
+let int_of_bool = function 
+  | true -> "1"
+  | false -> "0"
+
 let string_of_typespec = function
   | Int -> "int"
   | Float -> "float"
-  | Bool -> "bool"
+  | Bool -> "int"
 
 let string_of_unop = function
   | UnopNot -> "!"

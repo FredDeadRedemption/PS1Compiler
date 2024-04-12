@@ -12,18 +12,17 @@ print(sad);
 
 sad = arraydef[100];
 
-start(){
 
-  bool yeehaw(int x, int y){
-    
-    if(x != -y){
-      return true;
-    } else if(y + (200 * 2 / x)){
-      return false;
-    } else {
-      break;
-    }
+
+bool yeehaw(int x, int y){
+  
+  if(x != -y){
+    return true;
+  } else if(y + (200 * 2 / x)){
+    return false;
+  } else {
+    return false;
   }
-
-  print(yeehaw(sad, arraydef[255]));
 }
+
+print(yeehaw(sad, arraydef[255]));
