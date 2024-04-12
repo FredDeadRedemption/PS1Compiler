@@ -59,7 +59,6 @@ and block = stmt list
 
 (* program *)
 type program = 
-  | Defs of block
   | Main of block
 
 (*                   *)

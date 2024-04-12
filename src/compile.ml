@@ -169,6 +169,60 @@ let add_imports =
   let add_str s = Buffer.add_string buffer s in
   add_str "#include <stdio.h>\n"; Buffer.contents buffer
 
+(*let extract_funcs program =
+  let buffer = Buffer.create 128 in
+  let add_str s = Buffer.add_string buffer s in
+  let add_stmt stmt =
+    add_str (string_of_stmt stmt);
+    add_str "\n"
+  in
+  let rec print_formals formals =
+    match formals with
+    | [] -> 
+      add_str "void"
+    | [(ts, id)] -> 
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id
+    | (ts, id) :: tl ->
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id;
+      add_str ", ";
+      print_formals tl
+  in
+  match program with 
+  | Main m ->
+    List.iter (fun stmt -> 
+      match stmt with
+      | FuncDef (ts, id, args, body) ->
+        add_str (string_of_typespec ts);
+        add_str " ";
+        add_str id;
+        add_str "(";
+        print_formals args;
+        add_str "){\n";
+        List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+        add_str "\n}";
+        Buffer.contents buffer
+      | _ -> ()
+    ) m*)
+
+    let extract_funcs program =
+      let buffer = Buffer.create 128 in
+      let add_str s = Buffer.add_string buffer s in
+      let add_stmt stmt =
+        add_str "\n\t";
+        add_str (string_of_stmt stmt)
+      in
+      match program with
+      | Main stmts ->
+        List.iter (fun stmt ->
+          match stmt with
+          | FuncDef _ -> add_stmt stmt
+          | _ -> ()) stmts;
+        Buffer.contents buffer
+
 let string_of_program program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
@@ -176,16 +230,24 @@ let string_of_program program =
     add_str "\n\t";
     add_str (string_of_stmt stmt)
   in
+  (*  Compile and print libaries  *)
   add_str add_imports;
   add_str "\n";
+
+  (*  Compile and print function declarations  *)
+  add_str (extract_funcs program);
+  (*List.iter (fun stmt -> add_str "\t"; add_stmt stmt) funcs;*)
+ 
+
+  (*  Compile and print main  *)
   match program with
   | Main m ->
     add_str "int main(void){\n";
-    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) m;
+    List.iter (fun stmt -> 
+      match stmt with 
+      | FuncDef _ -> ()
+      | _ -> add_str "\t"; add_stmt stmt) m;
     add_str "\nreturn 0;\n}";
-    Buffer.contents buffer
-  | Defs x ->
-    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) x;
     Buffer.contents buffer
 
     

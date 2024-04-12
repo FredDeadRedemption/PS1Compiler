@@ -105,7 +105,3 @@ let print_program program =
     Printf.printf "];\n\tMAIN = ";
     List.iter (fun stmt -> print_stmt stmt) m;
     Printf.printf "\n}\n"
-  | Defs x ->
-    Printf.printf "{\n\tdefs = [";
-    List.iter (fun def -> print_stmt def) x;
-    Printf.printf "\n}\n"
