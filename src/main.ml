@@ -39,7 +39,7 @@ let () =
   let prog = Parser.program Lexer.tokenize lexbuf in
   
   Ast_printer.print_program prog;
-  (*Compile.print_to_file filename prog*)
+  Compile.print_to_file filename prog
  
   
   (*Ast_printer.print_program prog;

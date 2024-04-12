@@ -9,8 +9,8 @@ let rec print_expr expr =
   | FuncCall (id, args) -> 
     Printf.printf "FuncCall(name: %s" id;
     List.iter (fun arg -> Printf.printf " arg: "; print_expr arg) args
-  | ArrayAccess (id, i) -> 
-    Printf.printf "ArrayAcces(id: %s index: %d)" id i
+  | ArrayAccess (id, ind) -> 
+    Printf.printf "ArrayAcces(id: %s index: %d)" id ind
   | ConstInt i -> 
     Printf.printf "ConstInt(%d)" i
   | ConstFloat f -> 
