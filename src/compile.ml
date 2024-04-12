@@ -1,10 +1,11 @@
 open Ast
 
-let buffer = Buffer.create 128 
-let add_str s = Buffer.add_string buffer s
+
 
 
 let rec string_of_expr expr =
+  let buffer = Buffer.create 128 
+  let add_str s = Buffer.add_string buffer s
   let rec print_args args =
     match args with
     | [] -> ()
@@ -59,6 +60,8 @@ let print_typespec ts =
   Printf.printf "%s" str
 
 let rec string_of_stmt stmt =
+  let buffer = Buffer.create 128 
+  let add_str s = Buffer.add_string buffer s
   let rec print_formals formals =
     match formals with
     | [] -> 
@@ -169,6 +172,8 @@ let add_imports =
 
 
 let hoist_funcs program =
+  let buffer = Buffer.create 128 
+  let add_str s = Buffer.add_string buffer s
   match program with
   | Main stmts ->
     List.iter (fun stmt ->
