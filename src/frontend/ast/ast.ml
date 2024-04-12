@@ -66,9 +66,9 @@ type program =
 (* String formatting *)
 (*                   *)
 let string_of_typespec = function
-  | Int -> "Int"
-  | Float -> "Float"
-  | Bool -> "Bool"
+  | Int -> "int"
+  | Float -> "float"
+  | Bool -> "bool"
 
 let string_of_unop = function
   | UnopNot -> "!"

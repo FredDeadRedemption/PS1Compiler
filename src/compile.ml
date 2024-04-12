@@ -63,10 +63,25 @@ let rec string_of_stmt stmt =
     add_str (string_of_stmt stmt);
     add_str "\n"
   in
+  let rec print_formals formals =
+    match formals with
+    | [] -> 
+      add_str "void"
+    | [(ts, id)] -> 
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id
+    | (ts, id) :: tl ->
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id;
+      add_str ", ";
+      print_formals tl
+  in
   match stmt with
   | StartStmt body ->
     add_str "\tSTART [\n";
-    add_block body;
+    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
     add_str "\t]";
     Buffer.contents buffer
   
@@ -90,64 +105,64 @@ let rec string_of_stmt stmt =
     Buffer.contents buffer
   
   | PrintStmt expr ->
-      add_str "\tSprint: \"";
+      add_str "printf(";
       add_str (string_of_expr expr);
-      add_str "\"";
+      add_str ");";
       Buffer.contents buffer
 
-  | IfStmt (e, b) ->
-      add_str "\tSif [\n";
-      add_str "expr: "; add_str (string_of_expr e);
-      add_str "then: ";
-      List.iter (fun stmt -> add_stmt stmt) b;
-      add_str "\t]";
+  | IfStmt (con, body) ->
+      add_str "if(";
+      add_str (string_of_expr con);
+      add_str "){\n";
+      List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+      add_str "\n}";
       Buffer.contents buffer
-  | ElseIfStmt (e, b) ->
-      add_str "\tSelseif [\n";
-      add_str "expr: "; add_str (string_of_expr e);
-      add_str "then: ";
-      List.iter (fun stmt -> add_stmt stmt) b;
-      add_str "\t]";
+  | ElseIfStmt (con, body) ->
+      add_str "else if(";
+      add_str (string_of_expr con);
+      add_str "){\n";
+      List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+      add_str "\n}";
       Buffer.contents buffer
-  | ElseStmt (b) ->
-      add_str "\tSelse [\n";
-      add_str "then: ";
-      List.iter (fun stmt -> add_stmt stmt) b;
-      add_str "\t]";
+  | ElseStmt (body) ->
+      add_str "else{\n";
+      List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+      add_str "\n}";
       Buffer.contents buffer
-  | Assign (id, e) ->
-      add_str "\nassign: ";
-      add_str "varname: "; add_str id;
-      add_str "newValue: "; add_str (string_of_expr e);
+  | Assign (id, ex) ->
+      add_str id;
+      add_str " = ";
+      add_str (string_of_expr ex);
+      add_str ";"; 
       Buffer.contents buffer
-  | VarDef (ts, id, v) ->
-      add_str "\tvariable: type : "; add_str (string_of_typespec ts);
-      add_str ", name : "; add_str id;
-      add_str ", value : "; add_str (string_of_expr v);
+  | VarDef (ts, id, va) ->
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id;
+      add_str " = ";
+      add_str (string_of_expr va);
+      add_str ";"; 
       Buffer.contents buffer
-  | ReturnStmt v ->
-      add_str "\tReturn Statement: "; add_str (string_of_expr v);
+  | ReturnStmt ex ->
+      add_str "return"; 
+      add_str " ";
+      add_str (string_of_expr ex);
+      add_str ";";
       Buffer.contents buffer
   | BreakStmt -> 
-    add_str "break"; 
+    add_str "break";
+    add_str ";"; 
     Buffer.contents buffer
-  | FuncDef (ts, id, f, b) ->
-      add_str "\tfunction: type : "; add_str (string_of_typespec ts);
-      add_str ", name : "; add_str id;
-      List.iter (fun (ts, id) ->
-        add_str "\nargument: "; add_str (string_of_typespec ts); add_str ", Name: "; add_str id
-      ) f;
-      add_str "\nbody : ";
-      List.iter (fun stmt -> add_stmt stmt) b;
-      Buffer.contents buffer
-and add_block block =
-  let buffer = Buffer.create 128 in 
-  let add_str s = Buffer.add_string buffer s in
-  let add_stmt stmt =
-    add_str "\n\t";
-    add_str (string_of_stmt stmt)
-  in
-  List.iter (fun stmt -> add_str "\t"; add_stmt stmt) block    
+  | FuncDef (ts, id, args, body) ->
+    add_str (string_of_typespec ts);
+    add_str " ";
+    add_str id;
+    add_str "(";
+    print_formals args;
+    add_str "){\n";
+    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
+    add_str "\n}";
+    Buffer.contents buffer
 
 let string_of_program program =
   let buffer = Buffer.create 128 in
@@ -158,7 +173,9 @@ let string_of_program program =
   in
   match program with
   | Main m ->
+    add_str "int main(void){\n";
     List.iter (fun stmt -> add_str "\t"; add_stmt stmt) m;
+    add_str "\nreturn 0;\n}";
     Buffer.contents buffer
   | Defs x ->
     List.iter (fun stmt -> add_str "\t"; add_stmt stmt) x;
