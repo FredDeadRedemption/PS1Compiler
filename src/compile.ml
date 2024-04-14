@@ -121,9 +121,10 @@ let rec generate_stmt stmt =
     add_str ");\n";
     Buffer.contents buffer
   | StartStmt body ->
-    add_str "\tSTART [\n";
+    add_str "START()";
+    add_str " {\n";
     List.iter (fun stmt -> add_str "\t"; add_stmt stmt) body;
-    add_str "\t]";
+    add_str "\t}";
     Buffer.contents buffer
   | IfStmt (con, body) ->
       add_str "if(";
