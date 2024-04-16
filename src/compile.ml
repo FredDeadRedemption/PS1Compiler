@@ -162,6 +162,7 @@ let generate_imports =
   let add_str s = Buffer.add_string buffer s in
   add_str "#include <stdio.h>\n"; Buffer.contents buffer
 
+
 let hoist_functions program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
@@ -186,6 +187,7 @@ let generate_program program =
   in
   (*  Compile and generate imports  *)
   add_str generate_imports;
+  add_str Graphics_import.graphic_imports;
 
   (*  Compile and generate function declarations  *)
   add_str (hoist_functions program);
