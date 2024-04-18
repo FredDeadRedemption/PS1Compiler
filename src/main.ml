@@ -4,7 +4,7 @@ let () =
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
   
-  Ast_printer.print_program prog;
+  (*Ast_printer.print_program prog;*)
   Compile.print_to_file filename prog
 
   (*let usage = "usage: ./main [options] file.psx"

@@ -98,6 +98,17 @@ let rec print_stmt stmt =
       Printf.printf "\tReturn Statement: "; 
       print_expr ex
   | BreakStmt -> Printf.printf "Break"
+  | ClassStmt (id) ->
+     Printf.printf "\nClass [ name: ";
+     Printf.printf "%s" id;
+     Printf.printf "]"
+  | ClassInherStmt (id, inher_id) ->
+  Printf.printf "\nClass [ name: ";
+  Printf.printf "%s" id;
+  Printf.printf ", Id of inheretance: ";
+  Printf.printf "%s" inher_id;
+  Printf.printf "]"
+  
   
 let print_program program =
   match program with

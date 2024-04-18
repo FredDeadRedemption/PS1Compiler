@@ -2,7 +2,7 @@
   open Ast
 %}
 
-%token TYPE_INT TYPE_FLOAT TYPE_BOOL
+%token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_CLASS
 %token <int> INT
 %token <string> ID
 %token <float> FLOAT
@@ -54,7 +54,7 @@ expr:
 
 // Statements
 stmt:
-| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
+| typespec ID initialize? SEMICOLON                    { VarDef($1, $2, $4) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
@@ -66,6 +66,8 @@ stmt:
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
+| TYPE_CLASS ID classblock                             { ClassStmt($2, $3) }
+//| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
 ;
 
 // Reusables
@@ -80,6 +82,33 @@ formal:
 
 block:
 | LCURBRACK stmt* RCURBRACK { ($2) }
+
+classblock:
+| LCURBRACK fields methods RCURBRACK { ($2, $3) }
+;
+
+fields: 
+| field* { ($1) }
+;
+
+field:
+| typespec ID initialize? SEMICOLON {($1, $2, $3)}
+;
+
+initialize:
+| EQ expr { $2 }
+;
+
+methods:
+| _method* { ($1) }
+;
+
+_method:
+| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { ($1, $2, $4, $6) }
+;
+
+
+
 
 // Inline
 %inline unop:

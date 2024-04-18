@@ -1,6 +1,10 @@
-start(){
-  2 + 2 * 3;
-  (2 + 2) * 3;
-  3 * 2 + 2;
-  3 * (2 + 2);
+class MyClass {
+    int x;
+    int y = 10;
+    
+    int getX(int x, int difar) {
+      
+    }
+    
+    
 }

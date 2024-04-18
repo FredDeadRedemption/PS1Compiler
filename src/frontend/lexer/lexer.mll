@@ -55,6 +55,7 @@ rule tokenize = parse
   | "int"      { TYPE_INT }
   | "float"    { TYPE_FLOAT }
   | "bool"     { TYPE_BOOL }
+  | "class"    { TYPE_CLASS }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }

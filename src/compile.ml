@@ -73,6 +73,17 @@ let rec generate_stmt stmt =
       add_str ", ";
       generate_formals tl
   in
+  let generate_field (ts, id, ex) =
+    add_str (string_of_typespec ts);
+    add_str " ";
+    add_str id;
+    match ex with
+    | Some(expr) ->
+        add_str " = ";
+        add_str (generate_expr expr);
+        add_str ";"
+    | _ -> add_str ";"
+  in
   match stmt with
   | VarDef (ts, id, va) ->
     add_str (string_of_typespec ts);
@@ -155,12 +166,42 @@ let rec generate_stmt stmt =
     add_str "break";
     add_str ";"; 
     Buffer.contents buffer
+  | ClassStmt (id, (fields, methods)) -> 
+    add_str "class ";
+    add_str id;
+    add_str " {";
+    (* Fields*)
+    List.iter (fun field -> add_str "\t"; generate_field field) fields;
+    (* Methods *)
+    List.iter ( fun (ts, id, args, body) ->
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id;
+      add_str "(";
+      generate_formals args;
+      add_str "){\n";
+      List.iter (fun stmt -> add_stmt stmt) body;
+      add_str "\n}\n";
+    ) methods;
+
+    add_str "\n}";
+    Buffer.contents buffer
+  (*| ClassInherStmt (id, inher_id) -> 
+    add_str "class ";
+    add_str id;
+    add_str " : ";
+    add_str inher_id;
+    add_str " {";
+    add_str "\n}";
+    Buffer.contents buffer*)
+
  
 
 let generate_imports =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
-  add_str "#include <stdio.h>\n"; Buffer.contents buffer
+  add_str "#include <stdio.h>\n";
+  Buffer.contents buffer
 
 let hoist_functions program =
   let buffer = Buffer.create 128 in
@@ -189,6 +230,11 @@ let generate_program program =
 
   (*  Compile and generate function declarations  *)
   add_str (hoist_functions program);
+  (*  Compile and generate class declarations  *)
+
+  (*  Compile and generate start  *)
+
+  (*  Compile and generate update  *)
 
   (*  Compile and print main  *)
   match program with
