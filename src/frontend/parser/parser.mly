@@ -54,7 +54,7 @@ expr:
 
 // Statements
 stmt:
-| typespec ID initialize? SEMICOLON                    { VarDef($1, $2, $4) }
+| typespec ID EQ expr SEMICOLON                    { VarDef($1, $2, $4) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }

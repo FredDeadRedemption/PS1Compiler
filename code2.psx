@@ -2,6 +2,7 @@ class MyClass {
     int x;
     int y = 10;
     
+    
     int getX(int x, int difar) {
       
     }

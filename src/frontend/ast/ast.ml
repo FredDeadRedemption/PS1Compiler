@@ -42,10 +42,8 @@ type formal = typespec * string
 type formals = formal list
 
 (* class fields*)
+
 type field = typespec * string * expr option
-type fields = field list
-
-
 
 (* statement *)
 type stmt =
@@ -61,13 +59,12 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  | ClassStmt   of string * classblock
+  | ClassStmt   of string * classblock 
   (*| ClassInherStmt of string * string*)
 and block = stmt list
-and classblock = fields * methods
+and classblock = field list * _method list
 (* class methods*)
 and _method = typespec * string * formals * block
-and methods = _method list
 
 
 (* program *)
