@@ -10,13 +10,16 @@
 (* regex helpers *)
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
+let lilAlpha = ['a'-'z']
+let bigAlpha = ['A'-'z']
 let fraction = '.' digit+ (* måske lave float uden decimaltal *)
 
 (* regexes for tokens *)
 let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any length *)
 let float = (integer) (fraction) 
 let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)
-let identifier = (alpha|'_') (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
+let identifier = (lilAlpha|'_') (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
+let generic = (bigAlpha) (alpha|digit|'-')*
 
 let whitespace = [' ' '\t']
 let newline = '\r' | '\n' | "\r\n"
@@ -55,12 +58,13 @@ rule tokenize = parse
   | "int"      { TYPE_INT }
   | "float"    { TYPE_FLOAT }
   | "bool"     { TYPE_BOOL }
-  | "class"    { TYPE_CLASS }
+  | "class"    { CLASS }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }
   | float as f { FLOAT (float_of_string f) }
   | identifier as s { ID s }
+  | generic as g { TYPE_GENERIC g }
   | eof { EOF }
   | _ as c { failwith (Printf.sprintf "Syntax error: unexpected character: %C, on line: %d" c !line) }
 

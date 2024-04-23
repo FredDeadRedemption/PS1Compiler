@@ -36,6 +36,7 @@ type typespec =
   | Int
   | Float
   | Bool
+  | Generic of string
 
 (* formal i.e. a typed argument for function / method definiton *)
 type formal = typespec * string
@@ -85,6 +86,7 @@ let string_of_typespec = function
   | Int -> "int"
   | Float -> "float"
   | Bool -> "int"
+  | Generic (g) -> g
 
 let string_of_unop = function
   | UnopNot -> "!"

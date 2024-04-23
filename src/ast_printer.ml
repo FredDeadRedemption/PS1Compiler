@@ -57,7 +57,7 @@ let rec print_stmt stmt =
     print_expr ex;
     Printf.printf "}\""
   | FuncDef (ts, id, args, body) ->
-    Printf.printf "\n\tFunction[type : "; print_typespec ts;
+   Printf.printf "\n\tFunction[type : "; print_typespec ts;
     Printf.printf ", name : %s, " id;
     List.iter (fun (ts, id) ->
       Printf.printf "arg(Type: %s, Name: %s) " (string_of_typespec ts) id
@@ -65,6 +65,12 @@ let rec print_stmt stmt =
     Printf.printf "body : " ;
     List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") body;
     Printf.printf "]\""
+  | FuncProto (_, _, _) ->
+    
+    Printf.printf " ";
+    
+    Printf.printf "(";
+    Printf.printf ");\n"
   | Assign (id, ex) ->
     Printf.printf "\nAssign{name: %s, value: " id;
     print_expr ex;
@@ -98,16 +104,14 @@ let rec print_stmt stmt =
       Printf.printf "\tReturn Statement: "; 
       print_expr ex
   | BreakStmt -> Printf.printf "Break"
-  | ClassStmt (id) ->
+  | ClassStmt (id, _ ) ->
      Printf.printf "\nClass [ name: ";
      Printf.printf "%s" id;
      Printf.printf "]"
-  | ClassInherStmt (id, inher_id) ->
-  Printf.printf "\nClass [ name: ";
-  Printf.printf "%s" id;
-  Printf.printf ", Id of inheretance: ";
-  Printf.printf "%s" inher_id;
-  Printf.printf "]"
+  | ClassProto (_) -> 
+    Printf.printf "struct ";
+    Printf.printf ";";  
+    Printf.printf "\n"
   
   
 let print_program program =

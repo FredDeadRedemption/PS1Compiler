@@ -2,9 +2,11 @@
   open Ast
 %}
 
-%token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_CLASS
+%token TYPE_INT TYPE_FLOAT TYPE_BOOL 
+%token CLASS
 %token <int> INT
 %token <string> ID
+%token <string> TYPE_GENERIC
 %token <float> FLOAT
 %token ADD SUB MUL DIV 
 %token MOD EQ EXCL
@@ -54,7 +56,7 @@ expr:
 
 // Statements
 stmt:
-| typespec ID EQ expr SEMICOLON                    { VarDef($1, $2, $4) }
+| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
@@ -66,15 +68,16 @@ stmt:
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
-| TYPE_CLASS ID classblock                             { ClassStmt($2, $3) }
+| CLASS TYPE_GENERIC classblock                        { ClassStmt($2, $3) }
 //| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
 ;
 
 // Reusables
 typespec:
-| TYPE_INT   { Int }
-| TYPE_FLOAT { Float }
-| TYPE_BOOL  { Bool }
+| TYPE_INT     { Int }
+| TYPE_FLOAT   { Float }
+| TYPE_BOOL    { Bool }
+| TYPE_GENERIC { Generic($1) }
 ;
 
 formal:
