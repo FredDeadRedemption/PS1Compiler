@@ -51,6 +51,7 @@ type stmt =
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | FuncDef     of typespec * string * formals * block
+  | FuncProto   of typespec * string * formals
   | Assign      of string * expr 
   | PrintStmt   of expr 
   | StartStmt   of block
@@ -60,9 +61,11 @@ type stmt =
   | ReturnStmt  of expr
   | BreakStmt
   | ClassStmt   of string * classblock 
+  | ClassProto  of string
+  
   (*| ClassInherStmt of string * string*)
 and block = stmt list
-and classblock = field list * _method list
+and classblock = field list * stmt list * _method list
 (* class methods*)
 and _method = typespec * string * formals * block
 

@@ -120,6 +120,14 @@ let rec generate_stmt stmt =
     List.iter (fun stmt -> add_stmt stmt) body;
     add_str "\n}\n";
     Buffer.contents buffer
+  | FuncProto (ts, id, args) ->
+    add_str (string_of_typespec ts);
+    add_str " ";
+    add_str id;
+    add_str "(";
+    generate_formals args;
+    add_str ");\n";
+    Buffer.contents buffer
   | Assign (id, ex) ->
     add_str id;
     add_str " = ";
@@ -166,12 +174,14 @@ let rec generate_stmt stmt =
     add_str "break";
     add_str ";"; 
     Buffer.contents buffer
-  | ClassStmt (id, (fields, methods)) -> 
+  | ClassStmt (id, (fields, start, methods)) -> 
     add_str "class ";
     add_str id;
     add_str " {";
     (* Fields*)
     List.iter (fun field -> add_str "\t"; generate_field field) fields;
+    (* Start*)
+    List.iter (fun stmt -> add_str "\t"; add_stmt stmt) start;
     (* Methods *)
     List.iter ( fun (ts, id, args, body) ->
       add_str (string_of_typespec ts);
@@ -183,8 +193,13 @@ let rec generate_stmt stmt =
       List.iter (fun stmt -> add_stmt stmt) body;
       add_str "\n}\n";
     ) methods;
-
     add_str "\n}";
+    Buffer.contents buffer
+  | ClassProto (id) -> 
+    add_str "struct ";
+    add_str id;
+    add_str ";";
+    add_str "\n";
     Buffer.contents buffer
   (*| ClassInherStmt (id, inher_id) -> 
     add_str "class ";
@@ -203,7 +218,38 @@ let generate_imports =
   add_str "#include <stdio.h>\n";
   Buffer.contents buffer
 
-let hoist_functions program =
+let generate_function_prototypes program =
+  let buffer = Buffer.create 128 in
+  let add_str s = Buffer.add_string buffer s in
+  let add_stmt stmt =
+    add_str (generate_stmt stmt);
+  in
+  match program with
+  | Main stmts ->
+    List.iter (fun stmt ->
+      match stmt with
+      | FuncDef (ts, id, args, _) -> 
+        let prototype = FuncProto (ts, id, args) in
+        add_stmt prototype
+      | _ -> ()) stmts;
+    Buffer.contents buffer
+
+let generate_class_prototypes program =
+  let buffer = Buffer.create 128 in
+  let add_str s = Buffer.add_string buffer s in
+  let add_stmt stmt =
+    add_str (generate_stmt stmt);
+  in
+  match program with
+  | Main stmts ->
+    List.iter (fun stmt ->
+      match stmt with
+      | ClassStmt (id, _) -> 
+        let prototype = ClassProto (id) in
+        add_stmt prototype
+      | _ -> ()) stmts;
+    Buffer.contents buffer
+(*let generate_class_fields program =
   let buffer = Buffer.create 128 in
   let add_str s = Buffer.add_string buffer s in
   let add_stmt stmt =
@@ -214,9 +260,29 @@ let hoist_functions program =
   | Main stmts ->
     List.iter (fun stmt ->
       match stmt with
-      | FuncDef _ -> add_stmt stmt
+      | fields ->
       | _ -> ()) stmts;
     Buffer.contents buffer
+let hoist_class_start program =
+
+let generate_class_update program =
+
+let generate_class_methods program =
+  let buffer = Buffer.create 128 in
+  let add_str s = Buffer.add_string buffer s in
+  let add_stmt stmt =
+    add_str (generate_stmt stmt);
+  in
+  match program with
+  | Main stmts ->
+    List.iter (fun stmt ->
+      match stmt with
+      | ClassStmt (id, _) -> 
+        let prototype = ClassProto (id) in
+        add_stmt prototype
+      | _ -> ()) stmts;
+    Buffer.contents buffer
+  *)
 
 let generate_program program =
   let buffer = Buffer.create 128 in
@@ -229,9 +295,9 @@ let generate_program program =
   add_str generate_imports;
 
   (*  Compile and generate function declarations  *)
-  add_str (hoist_functions program);
+  add_str (generate_function_prototypes program);
   (*  Compile and generate class declarations  *)
-
+  add_str (generate_class_prototypes program);
   (*  Compile and generate start  *)
 
   (*  Compile and generate update  *)

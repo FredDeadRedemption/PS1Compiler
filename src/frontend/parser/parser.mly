@@ -84,8 +84,16 @@ block:
 | LCURBRACK stmt* RCURBRACK { ($2) }
 
 classblock:
-| LCURBRACK fields methods RCURBRACK { ($2, $3) }
+| LCURBRACK fields start methods RCURBRACK { ($2, $3, $4) }
 ;
+
+/*
+member:
+| field   { $1 }
+| start   { $1 }
+| _method { $1 }
+;
+*/
 
 fields: 
 | field* { ($1) }
@@ -97,6 +105,10 @@ field:
 
 initialize:
 | EQ expr { $2 }
+;
+
+start:
+| START LPAREN RPAREN block { $4 }
 ;
 
 methods:

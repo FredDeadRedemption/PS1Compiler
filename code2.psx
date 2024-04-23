@@ -1,11 +1,15 @@
 class MyClass {
     int x;
-    int y = 10;
     
-    
-    int getX(int x, int difar) {
-      
+    start() {
+        int difar = 10;
     }
-    
-    
+
+    int y(int x) {
+      
+    }    
+}
+
+int bla(int x, int y, bool difarfar) {
+
 }
