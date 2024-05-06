@@ -103,7 +103,7 @@ fields:
 ;
 
 field:
-| typespec ID initialize? SEMICOLON {($1, $2, $3)}
+| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
 ;
 
 initialize:
@@ -119,7 +119,7 @@ methods:
 ;
 
 _method:
-| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { ($1, $2, $4, $6) }
+| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { MethodDef($1, $2, $4, $6) }
 ;
 
 

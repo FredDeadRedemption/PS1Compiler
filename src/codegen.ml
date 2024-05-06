@@ -1,5 +1,43 @@
 open Ast
 
+
+
+
+(*                   *)
+(* String formatting *)
+(*                   *)
+
+let int_of_bool = function 
+  | true -> "1"
+  | false -> "0"
+
+let string_of_typespec = function
+  | Int -> "int"
+  | Float -> "float"
+  | Bool -> "int"
+  | Generic (g) -> g
+
+let string_of_unop = function
+  | UnopNot -> "!"
+  | UnopNeg -> "-"
+    
+let string_of_binop = function
+  | BinopAdd -> "+"
+  | BinopSub -> "-"
+  | BinopMul -> "*"
+  | BinopDiv -> "/" 
+  | BinopMod -> "%" 
+  | BinopAnd -> "&&" 
+  | BinopOr -> "||"
+  | BinopLessThan -> "<" 
+  | BinopGreaterThan -> ">"
+  | BinopLessThanEq -> "<=" 
+  | BinopGreaterThanEq -> ">="
+  | BinopEq -> "=="
+  | BinopNotEq -> "!="
+
+
+
 let rec generate_expr expr =
   let buffer = Buffer.create 128 in 
   let add_str str = Buffer.add_string buffer str in
@@ -72,17 +110,6 @@ let rec generate_stmt stmt =
       add_str id;
       add_str ", ";
       generate_formals tl
-  in
-  let generate_field (ts, id, ex) =
-    add_str (string_of_typespec ts);
-    add_str " ";
-    add_str id;
-    match ex with
-    | Some(expr) ->
-        add_str " = ";
-        add_str (generate_expr expr);
-        add_str ";"
-    | _ -> add_str ";"
   in
   match stmt with
   | VarDef (ts, id, va) ->
@@ -179,11 +206,21 @@ let rec generate_stmt stmt =
     add_str id;
     add_str " {";
     (* Fields*)
-    List.iter (fun field -> add_str "\t"; generate_field field) fields;
+    List.iter (fun (FieldDef(ts, id, ex)) ->
+      add_str (string_of_typespec ts);
+      add_str " ";
+      add_str id;
+      match ex with
+      | Some(expr) ->
+          add_str " = ";
+          add_str (generate_expr expr);
+          add_str ";"
+      | _ -> add_str ";"
+      ) fields;
     (* Start*)
     List.iter (fun stmt -> add_str "\t"; add_stmt stmt) start;
     (* Methods *)
-    List.iter ( fun (ts, id, args, body) ->
+    List.iter ( fun (MethodDef (ts, id, args, body)) ->
       add_str (string_of_typespec ts);
       add_str " ";
       add_str id;

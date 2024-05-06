@@ -44,7 +44,7 @@ type formals = formal list
 
 (* class fields*)
 
-type field = typespec * string * expr option
+type field = FieldDef of typespec * string * expr option
 
 (* statement *)
 type stmt =
@@ -68,41 +68,10 @@ type stmt =
 and block = stmt list
 and classblock = field list * stmt list * _method list
 (* class methods*)
-and _method = typespec * string * formals * block
+and _method = MethodDef of typespec * string * formals * block
 
 
 (* program *)
 type program = 
   | Main of block
 
-(*                   *)
-(* String formatting *)
-(*                   *)
-let int_of_bool = function 
-  | true -> "1"
-  | false -> "0"
-
-let string_of_typespec = function
-  | Int -> "int"
-  | Float -> "float"
-  | Bool -> "int"
-  | Generic (g) -> g
-
-let string_of_unop = function
-  | UnopNot -> "!"
-  | UnopNeg -> "-"
-    
-let string_of_binop = function
-  | BinopAdd -> "+"
-  | BinopSub -> "-"
-  | BinopMul -> "*"
-  | BinopDiv -> "/" 
-  | BinopMod -> "%" 
-  | BinopAnd -> "&&" 
-  | BinopOr -> "||"
-  | BinopLessThan -> "<" 
-  | BinopGreaterThan -> ">"
-  | BinopLessThanEq -> "<=" 
-  | BinopGreaterThanEq -> ">="
-  | BinopEq -> "=="
-  | BinopNotEq -> "!="

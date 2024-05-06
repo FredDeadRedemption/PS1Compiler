@@ -1,5 +1,39 @@
 open Ast
 
+(*                   *)
+(* String formatting *)
+(*                   *)
+
+let int_of_bool = function 
+  | true -> "1"
+  | false -> "0"
+
+let string_of_typespec = function
+  | Int -> "int"
+  | Float -> "float"
+  | Bool -> "int"
+  | Generic (g) -> g
+
+let string_of_unop = function
+  | UnopNot -> "!"
+  | UnopNeg -> "-"
+    
+let string_of_binop = function
+  | BinopAdd -> "+"
+  | BinopSub -> "-"
+  | BinopMul -> "*"
+  | BinopDiv -> "/" 
+  | BinopMod -> "%" 
+  | BinopAnd -> "&&" 
+  | BinopOr -> "||"
+  | BinopLessThan -> "<" 
+  | BinopGreaterThan -> ">"
+  | BinopLessThanEq -> "<=" 
+  | BinopGreaterThanEq -> ">="
+  | BinopEq -> "=="
+  | BinopNotEq -> "!="
+
+
 let rec print_expr expr =
   match expr with
   | ParenExpr ex -> 
@@ -116,7 +150,7 @@ let rec print_stmt stmt =
   
 let print_program program =
   match program with
-  | Main m ->
+  | b->
     Printf.printf "];\n\tMAIN = ";
-    List.iter (fun stmt -> print_stmt stmt) m;
+    List.iter (fun stmt -> print_stmt stmt) b;
     Printf.printf "\n}\n"

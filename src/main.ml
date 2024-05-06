@@ -3,8 +3,10 @@ let () =
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
+  let ctree = Cformatter.format_to_c prog in
   
-  Ast_printer.print_program prog;
+  
+  Ast_printer.print_program ctree;
   Codegen.print_to_file filename prog
 
   (*let usage = "usage: ./main [options] file.psx"

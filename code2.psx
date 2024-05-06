@@ -1,13 +1,17 @@
 class MyClass {
     int x;
     
+    
+
+
     start() {
         int difar = 10;
     }
 
     int y(int x) {
       
-    }    
+    } 
+    
 }
 
 int bla(int x, int y, bool difarfar) {
