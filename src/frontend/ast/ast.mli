@@ -47,8 +47,6 @@ type stmt =
   | VarDef      of typespec * string * expr 
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
-  | FuncDef     of typespec * string * formals * block
-  | FuncProto   of typespec * string * formals
   | Assign      of string * expr 
   | PrintStmt   of expr 
   | IfStmt      of expr * block
