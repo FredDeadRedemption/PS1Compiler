@@ -1,11 +1,13 @@
-class MyClass {
+class Game {
     int x;
     
-    
-
 
     start() {
         int difar = 10;
+    }
+
+    update() {
+        
     }
 
     int y(int x) {
@@ -14,6 +16,21 @@ class MyClass {
     
 }
 
-int bla(int x, int y, bool difarfar) {
 
+class Difar {
+    int x;
+    
+
+    start() {
+        int difar = 10;
+    }
+
+    update() {
+        
+    }
+
+    int y(int x) {
+      
+    } 
+    
 }

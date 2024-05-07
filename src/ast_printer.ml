@@ -113,10 +113,6 @@ let rec print_stmt stmt =
     Printf.printf "\tPrintStmt: \"";
     print_expr stmt;
     Printf.printf "\""
-  | StartStmt stmts ->
-    Printf.printf "\tStartStmt [\n";
-    List.iter (fun stmt -> Printf.printf "\t"; print_stmt stmt; Printf.printf ";\n") stmts;
-    Printf.printf "\t]"
   | IfStmt (con, body) ->
       Printf.printf "\tIfStmt [\n";
       Printf.printf "condition: "; print_expr con;
@@ -138,19 +134,31 @@ let rec print_stmt stmt =
       Printf.printf "\tReturn Statement: "; 
       print_expr ex
   | BreakStmt -> Printf.printf "Break"
-  | ClassStmt (id, _ ) ->
-     Printf.printf "\nClass [ name: ";
-     Printf.printf "%s" id;
-     Printf.printf "]"
-  | ClassProto (_) -> 
-    Printf.printf "struct ";
-    Printf.printf ";";  
-    Printf.printf "\n"
   
+
+let print_class clas index =
+  Printf.printf "Class%d: " !index; 
+  match clas with
+  | _ -> 
+    Printf.printf "Suck a fat one"
+  (*| Field (ts, id, va) ->
+    Printf.printf "\n\tVarDef{type: "; 
+    print_typespec ts;
+    Printf.printf ", name: %s, " id;
+    Printf.printf "value: "; print_expr va; 
+    Printf.printf "}\""*)
+     
   
 let print_program program =
+  let index = ref 0 in
   match program with
-  | b->
-    Printf.printf "];\n\tMAIN = ";
-    List.iter (fun stmt -> print_stmt stmt) b;
-    Printf.printf "\n}\n"
+  | (gameClass, classes) ->
+  Printf.printf "Game Class = ";
+  index := !index + 1;
+  print_class gameClass index;
+  (* Iterate through the remaining classes *)
+  List.iter (fun clas ->
+    index := !index + 1; (* Increment the index *)
+    print_class clas index
+  ) classes;
+  Printf.printf "\n}\n"

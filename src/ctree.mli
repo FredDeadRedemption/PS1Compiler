@@ -56,25 +56,31 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  | StructDef   of string
+  | StructProto of string 
+
 and block = stmt list
 
-(* class fields*)
-type field = FieldDef of typespec * string * expr option
+type ptypes =
+  stmt list
 
-(* class start *)
-type start = StartDef of block
+type funcs = 
+  stmt list
 
-(* class update *)
-type update = UpdateDef of block
+type vars =
+  stmt list
 
-(* class methods*)
-type _method = MethodDef of typespec * string * formals * block
+type structs =
+  stmt list
 
-type classblock = field list * start * update * _method list
+type start = 
+  stmt list
 
-type _class = ClassStmt of string * classblock 
+type update = 
+  stmt list
 
-(* program *)
+type main =
+ start * update 
+
 type program = 
-  _class * _class list
-
+  ptypes * funcs * vars * structs * main

@@ -19,7 +19,8 @@
 %token COMMA SEMICOLON
 %token COLON
 %token IF ELSE 
-%token PRINT START
+%token PRINT 
+%token START UPDATE
 %token RETURN BREAK
 %token EOF
 
@@ -37,7 +38,49 @@
 
 // Main program
 program: 
-  stmt* EOF { Main($1) }
+  gameClass _class* EOF { ($1, $2) }
+;
+
+// GameClass
+gameClass:
+| _class { $1 }
+;
+
+// Class
+_class:
+| CLASS TYPE_GENERIC classblock                        { ClassStmt($2, $3) }
+;
+
+classblock:
+| LCURBRACK fields start update methods RCURBRACK { ($2, $3, $4, $5) }
+;
+
+fields: 
+| field* { ($1) }
+;
+
+field:
+| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
+;
+
+initialize:
+| EQ expr { $2 }
+;
+
+start:
+| START LPAREN RPAREN block { StartDef($4) }
+;
+
+update:
+| UPDATE LPAREN RPAREN block { UpdateDef($4) }
+;
+
+methods:
+| _method* { ($1) }
+;
+
+_method:
+| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { MethodDef($1, $2, $4, $6) }
 ;
 
 // Expressions
@@ -62,13 +105,11 @@ stmt:
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
 | ID EQ expr SEMICOLON                                 { Assign($1, $3) }
 | PRINT LPAREN expr RPAREN SEMICOLON                   { PrintStmt($3) }
-| START LPAREN RPAREN block                            { StartStmt($4) } 
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
-| CLASS TYPE_GENERIC classblock                        { ClassStmt($2, $3) }
 //| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
 ;
 
@@ -85,44 +126,6 @@ formal:
 
 block:
 | LCURBRACK stmt* RCURBRACK { ($2) }
-
-classblock:
-| LCURBRACK fields start methods RCURBRACK { ($2, $3, $4) }
-;
-
-/*
-member:
-| field   { $1 }
-| start   { $1 }
-| _method { $1 }
-;
-*/
-
-fields: 
-| field* { ($1) }
-;
-
-field:
-| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
-;
-
-initialize:
-| EQ expr { $2 }
-;
-
-start:
-| START LPAREN RPAREN block { $4 }
-;
-
-methods:
-| _method* { ($1) }
-;
-
-_method:
-| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { MethodDef($1, $2, $4, $6) }
-;
-
-
 
 
 // Inline

@@ -53,6 +53,7 @@ rule tokenize = parse
   | "else"     { ELSE }
   | "print"    { PRINT }
   | "start"    { START }
+  | "update"   { UPDATE }
   | "true"     { TRUE }
   | "false"    { FALSE }
   | "int"      { TYPE_INT }
