@@ -120,8 +120,11 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
-  | StructDef (name, _) ->
-    printf "\nStructDef{name: %s}" name
+  | StructDef (name, fields) ->
+    printf "\nStructDef{name: %s" name;
+    printf ", fields:";
+    List.iter(print_stmt )fields;
+    printf "\n}"
   | StructProto name ->
     printf "\nStructProto{name: %s}" name
   | Update block ->

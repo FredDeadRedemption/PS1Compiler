@@ -1,11 +1,18 @@
 let () =
+
+(*xXxFrontendxXx*)
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
+
+(*xXxBackendxXx*)
   let ctree = Cformatter.format_to_c prog in
-  Type_check.check_type prog
-  (*Cformatter.format_to_c prog *)
+  (*Type_check.check_type prog*)
+
+(*xXxOutputxXx*)
+  Ctree_printer.print_program ctree;
+
   
   
   (*Ast_printer.print_program ctree;*)
