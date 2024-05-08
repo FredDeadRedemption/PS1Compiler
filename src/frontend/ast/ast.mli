@@ -54,7 +54,7 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  | StructDef   of string * field list
+  
 and block = stmt list
 
 (* class fields*)

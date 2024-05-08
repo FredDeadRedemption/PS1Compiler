@@ -56,7 +56,7 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  | StructDef   of string 
+  | StructDef   of string * stmt list
   | StructProto of string 
   | Update of block (*måske gøre dette ved "type update" istedet*)
 
