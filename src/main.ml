@@ -1,4 +1,4 @@
-let () =
+(*let () =*)
 
 (*xXxFrontendxXx*)
   let filename = Sys.argv.(1) in
@@ -7,8 +7,8 @@ let () =
   let prog = Parser.program Lexer.tokenize lexbuf in
 
 (*xXxBackendxXx*)
-  let ctree = Cformatter.format_to_c prog in
-  (*Type_check.check_type prog*)
+ (* let ctree = Cformatter.format_to_c prog in*)
+  Type_check.check_type prog;
 
 (*xXxOutputxXx*)
   Ctree_printer.print_program ctree;
@@ -17,7 +17,6 @@ let () =
   
   (*Ast_printer.print_program ctree;*)
   
-
   (*let usage = "usage: ./main [options] file.psx"
 
 let parse_only = ref false
