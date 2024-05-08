@@ -54,10 +54,11 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  | StructDef   of string * field list
 and block = stmt list
 
 (* class fields*)
-type field = FieldDef of typespec * string * expr option
+and field = FieldDef of typespec * string * expr option
 
 (* class start *)
 type start = StartDef of block

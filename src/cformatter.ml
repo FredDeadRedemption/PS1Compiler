@@ -1,8 +1,14 @@
 open Ast
 
-let collect_components id (fields, start_block, update_block, methods) id_list field_list start_list update_list method_list =
+let assemble_struct id fields =
+  StructDef(id, fields)
+
+
+let collect_components id (fields, start_block, update_block, methods) id_list struct_list field_list start_list update_list method_list =
 
   id_list := id :: ! id_list;
+
+  struct_list := assemble_struct id fields :: ! struct_list;
   
   field_list := List.rev_append fields !field_list;
   
@@ -47,15 +53,20 @@ let rec construct_funcs method_list =
     Ctree.FuncDef(ts, id, formals, body);
     generate_func_pt tl
 
-let rec construct_structs 
+let rec construct_update update_list =
+  Ctree.Update(update_list)
 
-let construct_program id_list field_list start_list update_list method_list = 
+let construct_main start_list update_list =
+  let start = start_list in 
+  let update = construct_update update_list in
+  (start, update)
+
+let construct_program id_list struct_list field_list start_list update_list method_list = 
   let ptypes = construct_ptypes id_list method_list  in
   let funcs = construct_funcs method_list in
-  let vars = in
-  let structs = construct_structs id_list  in
-  let main = in
-  (ptypes, funcs, vars, structs )
+  let structs = struct_list in
+  let main = construct_main start_list update_list in
+  (ptypes, funcs, structs, main)
 
 
 let create_tree (gameClass, classes) = 
@@ -64,19 +75,20 @@ let create_tree (gameClass, classes) =
     Printf.printf "Game\n";
 
   (* Initialize lists to accumulate results*) (* TODO: Skal måske også bruges i gameClass *)
-  let id_list = ref [] in
-  let field_list = ref [] in
-  let start_list = ref [] in
+  let id_list     = ref [] in
+  let struct_list = ref [] in
+  let field_list  = ref [] in
+  let start_list  = ref [] in
   let update_list = ref [] in
   let method_list = ref [] in
 
   List.iter (fun clas ->
     match clas with
-    | ClassStmt (id, (fl, StartDef bl, UpdateDef ul, ml)) -> 
-      collect_components id (fl, bl, ul, ml) id_list field_list start_list update_list method_list
+    | ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) -> 
+      collect_components id (fl, sb, ub, ml) id_list struct_list field_list start_list update_list method_list
   ) classes;
 
-  let ctree = construct_program id_list field_list start_list update_list method_list in
+  let ctree = construct_program id_list struct_list field_list start_list update_list method_list in
   ctree
 
 

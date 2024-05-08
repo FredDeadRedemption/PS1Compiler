@@ -56,8 +56,9 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  | StructDef   of string
+  | StructDef   of string 
   | StructProto of string 
+  | Update of block (*måske gøre dette ved "type update" istedet*)
 
 and block = stmt list
 
@@ -67,8 +68,7 @@ type ptypes =
 type funcs = 
   stmt list
 
-type vars =
-  stmt list
+
 
 type structs =
   stmt list
@@ -83,4 +83,4 @@ type main =
  start * update 
 
 type program = 
-  ptypes * funcs * vars * structs * main
+  ptypes * funcs * structs * main
