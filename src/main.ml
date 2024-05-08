@@ -12,11 +12,11 @@ let () =
 
 (*xXxOutputxXx*)
   Ctree_printer.print_program ctree;
-
+  (*Codegen.print_to_file filename prog*)
   
   
   (*Ast_printer.print_program ctree;*)
-  (*Codegen.print_to_file filename prog*)
+  
 
   (*let usage = "usage: ./main [options] file.psx"
 
