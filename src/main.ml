@@ -4,8 +4,8 @@ let () =
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
   let ctree = Cformatter.format_to_c prog in
-
-  Ctree_printer.print_program ctree
+  Type_check.check_type prog
+  (*Cformatter.format_to_c prog *)
   
   
   (*Ast_printer.print_program ctree;*)

@@ -1,6 +1,7 @@
 class Game {
     int x;
     
+    
 
     start() {
         int difar = 10;
@@ -18,7 +19,9 @@ class Game {
 
 
 class Difar {
-    int x;
+    int x = true;
+    float y = true;
+    int z;
     
 
     start() {
