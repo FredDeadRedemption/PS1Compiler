@@ -12,7 +12,7 @@ let () =
 
 (*xXxOutputxXx*)
   Ctree_printer.print_program ctree;
-  (*Codegen.print_to_file filename prog*)
+  Codegen.print_to_file filename ctree
   
   
   (*Ast_printer.print_program ctree;*)

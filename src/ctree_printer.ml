@@ -132,20 +132,20 @@ let rec print_stmt stmt =
     List.iter print_stmt block;
     printf "}"
 
-let print_ptypes (funcs, structs) =
+let print_ptypes (structs, funcs) =
   printf "\nPTypes{";
-  List.iter print_stmt funcs;
   List.iter print_stmt structs;
-  printf "}"
-
-let print_funcs funcs =
-  printf "\nFuncs{";
   List.iter print_stmt funcs;
   printf "}"
 
 let print_structs structs =
   printf "\nStructs{";
   List.iter print_stmt structs;
+  printf "}"
+
+let print_funcs funcs =
+  printf "\nFuncs{";
+  List.iter print_stmt funcs;
   printf "}"
 
 let print_main (start, update) =
@@ -155,8 +155,8 @@ let print_main (start, update) =
   List.iter print_stmt update;
   printf "}"
 
-let print_program (ptypes, funcs, structs, main) =
+let print_program (ptypes, structs, funcs, main) =
   print_ptypes ptypes;
-  print_funcs funcs;
   print_structs structs;
+  print_funcs funcs;
   print_main main

@@ -152,6 +152,13 @@ let collect_components id (fields, start_block, update_block, methods) id_list s
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
 
+let rec generate_func_pt method_list =
+  match method_list with
+  | [] -> [] 
+  | (ts, id, formals, _) :: tl ->
+    let current_func_proto = Ctree.FuncProto(ts, id, formals) in
+    current_func_proto :: generate_func_pt tl
+    
 let rec generate_struct_pt id_list =
   match id_list with
   | [] -> []  
@@ -159,17 +166,10 @@ let rec generate_struct_pt id_list =
     let current_struct = Ctree.StructProto(id) in
     current_struct :: generate_struct_pt tl
       
-let rec generate_func_pt method_list =
-  match method_list with
-  | [] -> [] 
-  | (ts, id, formals, _) :: tl ->
-    let current_func_proto = Ctree.FuncProto(ts, id, formals) in
-    current_func_proto :: generate_func_pt tl
-      
 let construct_ptypes id_list method_list =
-  let func_pt = generate_func_pt method_list in
   let struct_pt = generate_struct_pt id_list in
-  (func_pt, struct_pt)
+  let func_pt = generate_func_pt method_list in
+  (struct_pt, func_pt)
 
 let rec construct_funcs method_list =
   match method_list with
@@ -189,10 +189,10 @@ let construct_main start_list update_list =
 
 let construct_program id_list struct_list start_list update_list method_list = 
   let ptypes = construct_ptypes id_list method_list  in
-  let funcs = construct_funcs method_list in
   let structs = struct_list in
+  let funcs = construct_funcs method_list in
   let main = construct_main start_list update_list in
-  (ptypes, funcs, structs, main)
+  (ptypes, structs, funcs, main)
 
 
 let create_tree (gameClass, classes) = 
