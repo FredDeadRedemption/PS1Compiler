@@ -7,7 +7,7 @@
   let prog = Parser.program Lexer.tokenize lexbuf in
 
 (*xXxBackendxXx*)
- (* let ctree = Cformatter.format_to_c prog in*)
+  let ctree = Cformatter.format_to_c prog in
   Type_check.check_type prog;
 
 (*xXxOutputxXx*)

@@ -1,7 +1,7 @@
 class Game {
     int x;
     int b = 20;
-    float g = true;
+    float g = 20.0;
     
     
 
@@ -33,7 +33,7 @@ class Difar {
     }
 
     int y(int x) {
-      
+      int i = 2 + (2);
     } 
     
 }
