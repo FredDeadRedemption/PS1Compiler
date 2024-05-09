@@ -34,37 +34,36 @@ let check_fields fields =
         | _ -> Printf.printf "fail \n"
   ) fields
 
-let check_formal_int typespec =
-  match typespec with
-  | Int -> Printf.printf "This is a formal int\n"
-  | _ -> failwith "this is not an int"
-
-let check_method_int typespec =
-  match typespec with
-  | Int -> Printf.printf "This is a method int\n"
-  | _ -> failwith "this is not an int"
-
-  
-
 let check_methods methods =
   List.iter (fun meth ->
       match meth with
       | MethodDef(typespec, _, formal, _) ->
-        match typespec with 
-        | Int -> check_method_int typespec 
-        | _ -> ();
+        (match typespec with 
+        | Int -> Printf.printf("Int\n")
+        | Float -> Printf.printf("float\n")
+        | Bool -> Printf.printf("Bool\n")
+        | Void -> Printf.printf("Void\n")
+        | _ -> failwith "method typespec error\n" );
+        
         List.iter (fun (formal_typespec, _) ->
           match formal_typespec with
-          | Int -> check_formal_int formal_typespec
-          | _ -> ()
-      ) formal;
-  ) methods
+          | Int -> Printf.printf("int\n")
+          | Float -> Printf.printf("float\n")
+          | Bool -> Printf.printf("Bool\n")
+          | Void -> Printf.printf("Void\n")
+          | _ -> failwith "method formal typespec error\n"
+        )formal;
+      ) methods
+
 
   
   
 let check_type (game_class, classes) = 
-  match game_class with
-  | ClassStmt (_, (fl,_,_,_))-> check_fields fl; 
+  (match game_class with
+  | ClassStmt (_, (fl,_,_,_))-> check_fields fl); 
+
+  match game_class with 
+  | ClassStmt (_, (_,_,_,ml)) -> check_methods ml;
 
   List.iter (fun clas ->
     match clas with 

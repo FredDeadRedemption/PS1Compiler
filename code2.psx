@@ -12,7 +12,7 @@ class Game {
         
     }
 
-    int y(int x) {
+    bool y(bool x) {
     } 
     
 }
@@ -31,9 +31,13 @@ class Difar {
         
     }
 
-    int y(int x) {
+    float y(float x) {
       
     } 
+
+    float y (int x) {
+
+    }
     
 }
 
