@@ -1,12 +1,22 @@
-let () =
+(*let () =*)
+
+(*xXxFrontendxXx*)
   let filename = Sys.argv.(1) in
   let filehandle = open_in filename in
   let lexbuf = Lexing.from_channel filehandle in
   let prog = Parser.program Lexer.tokenize lexbuf in
-  
-  Ast_printer.print_program prog;
-  Compile.print_to_file filename prog
 
+(*xXxBackendxXx*)
+  let ctree = Cformatter.format_to_c prog in
+  Type_check.check_type prog;
+
+(*xXxOutputxXx*)
+  Ctree_printer.print_program ctree;
+  Codegen.print_to_file filename ctree
+  
+  
+  (*Ast_printer.print_program ctree;*)
+  
   (*let usage = "usage: ./main [options] file.psx"
 
 let parse_only = ref false

@@ -1,6 +1,7 @@
 (executable
  (name main)
  (libraries str lexer parser)
+ (modules_without_implementation ctree)
  ) ; out name
  
 ;(rule

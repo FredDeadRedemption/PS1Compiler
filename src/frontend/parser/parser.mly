@@ -2,9 +2,11 @@
   open Ast
 %}
 
-%token TYPE_INT TYPE_FLOAT TYPE_BOOL
+%token TYPE_INT TYPE_FLOAT TYPE_BOOL 
+%token CLASS
 %token <int> INT
 %token <string> ID
+%token <string> TYPE_GENERIC
 %token <float> FLOAT
 %token ADD SUB MUL DIV 
 %token MOD EQ EXCL
@@ -17,7 +19,8 @@
 %token COMMA SEMICOLON
 %token COLON
 %token IF ELSE 
-%token PRINT START
+%token PRINT 
+%token START UPDATE
 %token RETURN BREAK
 %token EOF
 
@@ -35,7 +38,49 @@
 
 // Main program
 program: 
-  stmt* EOF { Main($1) }
+  gameClass _class* EOF { ($1, $2) }
+;
+
+// GameClass
+gameClass:
+| _class { $1 }
+;
+
+// Class
+_class:
+| CLASS TYPE_GENERIC classblock                        { ClassStmt($2, $3) }
+;
+
+classblock:
+| LCURBRACK fields start update methods RCURBRACK { ($2, $3, $4, $5) }
+;
+
+fields: 
+| field* { ($1) }
+;
+
+field:
+| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
+;
+
+initialize:
+| EQ expr { $2 }
+;
+
+start:
+| START LPAREN RPAREN block { StartDef($4) }
+;
+
+update:
+| UPDATE LPAREN RPAREN block { UpdateDef($4) }
+;
+
+methods:
+| _method* { ($1) }
+;
+
+_method:
+| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { MethodDef($1, $2, $4, $6) }
 ;
 
 // Expressions
@@ -57,22 +102,23 @@ stmt:
 | typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
-| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }
+(*| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }*)
 | ID EQ expr SEMICOLON                                 { Assign($1, $3) }
 | PRINT LPAREN expr RPAREN SEMICOLON                   { PrintStmt($3) }
-| START LPAREN RPAREN block                            { StartStmt($4) } 
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
+//| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
 ;
 
 // Reusables
 typespec:
-| TYPE_INT   { Int }
-| TYPE_FLOAT { Float }
-| TYPE_BOOL  { Bool }
+| TYPE_INT     { Int }
+| TYPE_FLOAT   { Float }
+| TYPE_BOOL    { Bool }
+| TYPE_GENERIC { Generic($1) }
 ;
 
 formal:
@@ -80,6 +126,7 @@ formal:
 
 block:
 | LCURBRACK stmt* RCURBRACK { ($2) }
+
 
 // Inline
 %inline unop:

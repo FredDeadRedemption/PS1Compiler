@@ -36,6 +36,7 @@ type typespec =
   | Int
   | Float
   | Bool
+  | Generic of string
 
 (* formal i.e. a typed argument for function / method definiton *)
 type formal = typespec * string
@@ -46,48 +47,33 @@ type stmt =
   | VarDef      of typespec * string * expr 
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
-  | FuncDef     of typespec * string * formals * block
   | Assign      of string * expr 
   | PrintStmt   of expr 
-  | StartStmt   of block
   | IfStmt      of expr * block
   | ElseIfStmt  of expr * block
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  
 and block = stmt list
+
+(* class fields*)
+and field = FieldDef of typespec * string * expr option
+
+(* class start *)
+type start = StartDef of block
+
+(* class update *)
+type update = UpdateDef of block
+
+(* class methods*)
+type _method = MethodDef of typespec * string * formals * block
+
+type classblock = field list * start * update * _method list
+
+type _class = ClassStmt of string * classblock 
 
 (* program *)
 type program = 
-  | Main of block
+  _class * _class list
 
-(*                   *)
-(* String formatting *)
-(*                   *)
-let int_of_bool = function 
-  | true -> "1"
-  | false -> "0"
-
-let string_of_typespec = function
-  | Int -> "int"
-  | Float -> "float"
-  | Bool -> "int"
-
-let string_of_unop = function
-  | UnopNot -> "!"
-  | UnopNeg -> "-"
-    
-let string_of_binop = function
-  | BinopAdd -> "+"
-  | BinopSub -> "-"
-  | BinopMul -> "*"
-  | BinopDiv -> "/" 
-  | BinopMod -> "%" 
-  | BinopAnd -> "&&" 
-  | BinopOr -> "||"
-  | BinopLessThan -> "<" 
-  | BinopGreaterThan -> ">"
-  | BinopLessThanEq -> "<=" 
-  | BinopGreaterThanEq -> ">="
-  | BinopEq -> "=="
-  | BinopNotEq -> "!="

@@ -1,6 +1,41 @@
-start(){
-  2 + 2 * 3;
-  (2 + 2) * 3;
-  3 * 2 + 2;
-  3 * (2 + 2);
+class Game {
+    int x;
+    int b = 20;
+    float g = 20.0;
+    
+    
+
+    start() {
+        int difar = 10;
+    }
+
+    update() {
+        
+    }
+
+    int y(int x) {
+      
+    } 
+    
 }
+
+
+class Difar {
+    
+    
+
+    start() {
+        int difar = 10;
+    }
+
+    update() {
+        
+    }
+
+    int y(int x) {
+      int i = 2 + (2);
+    } 
+    
+}
+
+

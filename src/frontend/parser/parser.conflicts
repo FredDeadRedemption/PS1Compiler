@@ -1,0 +1,68 @@
+
+** Conflict (shift/reduce) in state 137.
+** Tokens involved: TYPE_INT TYPE_FLOAT TYPE_BOOL
+** The following explanations concentrate on token TYPE_INT.
+** This state is reached from program after reading:
+
+TYPE_CLASS ID LCURBRACK field
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+program 
+list(stmt) EOF 
+stmt list(stmt) 
+TYPE_CLASS ID classblock 
+              (?)
+
+** In state 137, looking ahead at TYPE_INT, reducing production
+** list(field) ->
+** is permitted because of the following sub-derivation:
+
+LCURBRACK fields methods RCURBRACK // lookahead token appears because methods can begin with TYPE_INT
+          list(field) // lookahead token is inherited
+          field list(field) // lookahead token is inherited
+                . 
+
+** In state 137, looking ahead at TYPE_INT, shifting is permitted
+** because of the following sub-derivation:
+
+LCURBRACK fields methods RCURBRACK 
+          list(field) 
+          field list(field) 
+                field list(field) 
+                typespec ID option(initialize) SEMICOLON 
+                . TYPE_INT 
+
+** Conflict (shift/reduce) in state 5.
+** Tokens involved: TYPE_INT TYPE_FLOAT TYPE_BOOL
+** The following explanations concentrate on token TYPE_INT.
+** This state is reached from program after reading:
+
+TYPE_CLASS ID LCURBRACK
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+program 
+list(stmt) EOF 
+stmt list(stmt) 
+TYPE_CLASS ID classblock 
+              (?)
+
+** In state 5, looking ahead at TYPE_INT, reducing production
+** list(field) ->
+** is permitted because of the following sub-derivation:
+
+LCURBRACK fields methods RCURBRACK // lookahead token appears because methods can begin with TYPE_INT
+          list(field) // lookahead token is inherited
+          . 
+
+** In state 5, looking ahead at TYPE_INT, shifting is permitted
+** because of the following sub-derivation:
+
+LCURBRACK fields methods RCURBRACK 
+          list(field) 
+          field list(field) 
+          typespec ID option(initialize) SEMICOLON 
+          . TYPE_INT 
