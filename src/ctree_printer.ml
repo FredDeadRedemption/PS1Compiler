@@ -7,6 +7,7 @@ let string_of_typespec = function
   | Int -> "int"
   | Float -> "float"
   | Bool -> "int"  (* Boolean values often use integers *)
+  | Void -> "void"
   | Generic g -> g
 
 let string_of_unop = function

@@ -54,6 +54,7 @@
     | Ast.Int -> Ctree.Int
     | Ast.Float -> Ctree.Float
     | Ast.Bool -> Ctree.Bool
+    | Ast.Void -> Ctree.Void
     | Ast.Generic s -> Ctree.Generic s
   
   (* Helper function to convert Ast expressions to Ctree expressions *)
@@ -118,6 +119,7 @@ let convert_ast_method_to_ctree (Ast.MethodDef (ts, name, formals, body)) : (Ctr
     | Ast.Int -> Ctree.Int
     | Ast.Float -> Ctree.Float
     | Ast.Bool -> Ctree.Bool
+    | Ast.Void -> Ctree.Void
     | Ast.Generic s -> Ctree.Generic s
   in
 
@@ -126,6 +128,7 @@ let convert_ast_method_to_ctree (Ast.MethodDef (ts, name, formals, body)) : (Ctr
     | Ast.Int -> (Ctree.Int, s)
     | Ast.Float -> (Ctree.Float, s)
     | Ast.Bool -> (Ctree.Bool, s)
+    | Ast.Void -> (Ctree.Void, s)
     | Ast.Generic st -> (Ctree.Generic st, s)
   ) formals in
 

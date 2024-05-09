@@ -2,7 +2,7 @@
   open Ast
 %}
 
-%token TYPE_INT TYPE_FLOAT TYPE_BOOL 
+%token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token CLASS
 %token <int> INT
 %token <string> ID
@@ -118,6 +118,7 @@ typespec:
 | TYPE_INT     { Int }
 | TYPE_FLOAT   { Float }
 | TYPE_BOOL    { Bool }
+| TYPE_VOID    { Void }
 | TYPE_GENERIC { Generic($1) }
 ;
 

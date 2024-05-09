@@ -5,6 +5,7 @@ let string_of_typespec = function
   | Int -> "int"
   | Float -> "float"
   | Bool -> "int"
+  | Void -> "void"
   | Generic g -> g
 
 

@@ -36,6 +36,7 @@ type typespec =
   | Int
   | Float
   | Bool
+  | Void
   | Generic of string
 
 (* formal i.e. a typed argument for function / method definiton *)
