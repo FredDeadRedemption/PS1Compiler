@@ -6,7 +6,25 @@ class Game {
     
 
     start() {
-        int difar = 10;
+    }
+
+    update() {
+        
+    }
+
+    int y(int x) {
+    } 
+    
+}
+
+
+class Difar {
+    
+
+
+
+    start() {
+        
     }
 
     update() {
@@ -15,25 +33,6 @@ class Game {
 
     int y(int x) {
       
-    } 
-    
-}
-
-
-class Difar {
-    
-    
-
-    start() {
-        int difar = 10;
-    }
-
-    update() {
-        
-    }
-
-    int y(int x) {
-      int i = 2 + (2);
     } 
     
 }
