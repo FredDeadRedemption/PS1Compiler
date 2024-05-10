@@ -91,21 +91,7 @@ let rec print_stmt stmt =
     Printf.printf "value: ";
     print_expr ex;
     Printf.printf "}\""
-  | FuncDef (ts, id, args, body) ->
-   Printf.printf "\n\tFunction[type : "; print_typespec ts;
-    Printf.printf ", name : %s, " id;
-    List.iter (fun (ts, id) ->
-      Printf.printf "arg(Type: %s, Name: %s) " (string_of_typespec ts) id
-    ) args;
-    Printf.printf "body : " ;
-    List.iter (fun stmt ->  print_stmt stmt; Printf.printf ";\n") body;
-    Printf.printf "]\""
-  | FuncProto (_, _, _) ->
-    
-    Printf.printf " ";
-    
-    Printf.printf "(";
-    Printf.printf ");\n"
+  
   | Assign (id, ex) ->
     Printf.printf "\nAssign{name: %s, value: " id;
     print_expr ex;
@@ -150,10 +136,9 @@ let print_class clas index =
     Printf.printf "}\""*)
      
   
-let print_program program =
+let print_program (gameClass, classes) =
   let index = ref 0 in
-  match program with
-  | (gameClass, classes) ->
+  Printf.printf "AST:";
   Printf.printf "Game Class = ";
   index := !index + 1;
   print_class gameClass index;

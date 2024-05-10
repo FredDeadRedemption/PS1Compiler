@@ -21,14 +21,22 @@ class Game {
 class Difar {
     
 
-
+    int x = 2; 
 
     start() {
-        
+        if(2==2) {
+            x = 2;
+        } else if (2 == 2) {
+
+        } else {
+            
+        }
     }
 
     update() {
-        
+        if(2==2) {
+            x = 2;
+        }
     }
 
     float y(float x) {

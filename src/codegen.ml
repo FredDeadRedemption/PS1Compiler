@@ -103,22 +103,26 @@ let rec generate_stmt stmt =
     printf "\nPrintStmt{";
     print_expr expr;
     printf "}"
+    *)
   | IfStmt (cond, block) ->
-    printf "\nIfStmt{condition: "; 
-    print_expr cond;
-    printf ", then: ";
-    List.iter print_stmt block;
-    printf "}"
+    "if (" ^
+    generate_expr cond ^
+    ") {\n" ^
+    String.concat "\n" (List.map generate_stmt block) ^
+    "}"
+  
+
   | ElseIfStmt (cond, block) ->
-    printf "\nElseIfStmt{condition: "; 
-    print_expr cond;
-    printf ", then: ";
-    List.iter print_stmt block;
-    printf "}"
+    "else if (" ^
+      generate_expr cond ^
+      ") {\n" ^
+      String.concat "\n" (List.map generate_stmt block) ^
+      "}"
   | ElseStmt block ->
-    printf "\nElseStmt{then: ";
-    List.iter print_stmt block;
-    printf "}"
+    "else {\n" ^
+    String.concat "\n" (List.map generate_stmt block) ^
+    "}"
+    (*
   | ReturnStmt expr ->
     printf "\nReturnStmt{";
     print_expr expr;
@@ -175,17 +179,26 @@ let generate_funcs = function
     "\n}"
   | _ -> ""
 
-(*let generate_main = function
-  "main"*)
+let generate_main (start, update) =
+  let start_code = String.concat "\n" (List.map generate_stmt start) in
+  let update_code = String.concat "\n" (List.map generate_stmt update) in
+  (* Return string*)
+  "int main(void) {\n" ^
+  start_code ^
+  "\n" ^
+  "while(1) {\n" ^
+  update_code ^
+  "\n}\n}"
+ 
 
 let generate_program program =
-  let (ptypes, structs, funcs, _) = program in
+  let (ptypes, structs, funcs, main) = program in
   let ptypes_code = generate_ptypes ptypes in
   let structs_code = String.concat "\n\n" (List.map generate_structs structs) in
   let funcs_code = String.concat "\n\n" (List.map generate_funcs funcs) in
-  (*let main_code = generate_main main in*)
+  let main_code = generate_main main in
 
-  String.concat "\n\n" [ptypes_code; structs_code; funcs_code(*; main_code*)]
+  String.concat "\n\n" [ptypes_code; structs_code; funcs_code; main_code]
 
 
 

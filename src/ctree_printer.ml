@@ -157,6 +157,7 @@ let print_main (start, update) =
   printf "}"
 
 let print_program (ptypes, structs, funcs, main) =
+  Printf.printf "AST:";
   print_ptypes ptypes;
   print_structs structs;
   print_funcs funcs;
