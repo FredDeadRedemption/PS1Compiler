@@ -6,6 +6,7 @@ class Game {
     
 
     start() {
+        
     }
 
     update() {
@@ -29,18 +30,22 @@ class Difar {
         } else if (2 == 2) {
 
         } else {
-            
+            return x;
         }
     }
 
     update() {
         if(2==2) {
             x = 2;
+        } else if (2 == 2) {
+
+        } else {
+            return x;
         }
     }
 
     float y(float x) {
-      
+         
     } 
 
     float y (int x) {

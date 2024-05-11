@@ -122,13 +122,13 @@ let rec generate_stmt stmt =
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
     "}"
-    (*
   | ReturnStmt expr ->
-    printf "\nReturnStmt{";
-    print_expr expr;
-    printf "}"
+    "return " ^
+    generate_expr expr ^
+    ";\n" 
   | BreakStmt ->
-    printf "\nBreakStmt"
+    "break " ^ "; \n"
+    (*
   | StructDef (name, fields) ->
     printf "\nStructDef{name: %s" name;
     printf ", fields:";
@@ -136,11 +136,11 @@ let rec generate_stmt stmt =
     printf "\n}"
   | StructProto name ->
     printf "\nStructProto{name: %s}" name
+    *)
   | Update block ->
-    printf "\nUpdate{";
-    List.iter print_stmt block;
-    printf "}"
-*)
+    "Update { \n" ^ 
+    String.concat "\n" (List.map generate_stmt block) ^
+    "}"
     | _ -> ""
 
 let generate_ptypes (structs, funcs) = 
