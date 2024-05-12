@@ -195,16 +195,15 @@ let construct_program id_list struct_list start_list update_list method_list =
 
 
 let create_tree (gameClass, classes) = 
-  match gameClass with
-  | Ast.ClassStmt _ ->
-    Printf.printf "Game\n";
-
   (* Initialize lists to accumulate results*) (* TODO: Skal måske også bruges i gameClass *)
   let id_list     = ref [] in
   let struct_list = ref [] in
   let start_list  = ref [] in
   let update_list = ref [] in
   let method_list = ref [] in
+  match gameClass with
+  | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) ->
+    collect_components id (fl, sb, ub, ml) id_list struct_list start_list update_list method_list;
 
   List.iter (fun clas ->
     match clas with

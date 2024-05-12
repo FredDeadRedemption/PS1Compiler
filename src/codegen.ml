@@ -49,8 +49,8 @@ let rec generate_expr expr =
     string_of_int i
   | ConstFloat f ->
     string_of_float f
-  | Var _ ->
-    "?" (*TODO:*)
+  | Var id ->
+    id
   | Bool b ->
     int_of_bool b
   | UnaryOp (op, ex) ->
@@ -80,10 +80,10 @@ let rec generate_stmt stmt =
     "}"
   | ElseIfStmt (cond, block) ->
     "else if (" ^
-      generate_expr cond ^
-      ") {\n" ^
-      String.concat "\n" (List.map generate_stmt block) ^
-      "}"
+    generate_expr cond ^
+    ") {\n" ^
+    String.concat "\n" (List.map generate_stmt block) ^
+    "}"
   | ElseStmt block ->
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
@@ -103,7 +103,7 @@ let generate_ptype = function
   | StructProto name -> "struct " ^ name
   | FuncProto (ts, name, formals) -> 
     let formals_code = String.concat ", " (List.map generate_arg formals) in
-    (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")"
+    (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")" ^ ";"
 
 let generate_ptypes ptypes = 
   let ptype_code = String.concat "\n" (List.map generate_ptype ptypes) in

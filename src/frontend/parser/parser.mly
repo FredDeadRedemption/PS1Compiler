@@ -48,7 +48,7 @@ gameClass:
 
 // Class
 _class:
-| CLASS TYPE_GENERIC classblock                        { ClassStmt($2, $3) }
+| CLASS TYPE_GENERIC classblock { ClassStmt($2, $3) }
 ;
 
 classblock:

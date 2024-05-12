@@ -1,33 +1,41 @@
-int vardef = (2 + 2) * 3;
+class Game {
+    int x;
+    int b = 20;
+    float g = 20.0;
+    
+    Difar difar = 20;
 
-float arraydef[255];
+    start() {
+        
+    }
 
-arraydef[0] = vardef;   // <-- TYPE CHECKING ERROR
+    update() {
+        
+    }
 
-bool sad = true;
-
-sad = false;
-
-print(sad);
-
-sad = arraydef[100];
-
-
-
-bool yeehaw(int x, int y){
-  
-  if(x != -y){
-    return true;
-  } else if(y + (200 * 2 / x)){
-    return false;
-  } else {
-    return false;
-  }
+    bool y(bool x) {
+    } 
+    
 }
 
-int x(){
 
-  print(2);
+class Difar {
+    int x;
+    int b = 20;
+    float g = 20.0;
+    
+    Difar difar = 20;
+
+    start() {
+        
+    }
+
+    update() {
+        
+    }
+
+    bool y(bool x) {
+    } 
+
+    
 }
-
-print(yeehaw(sad, arraydef[255]));
