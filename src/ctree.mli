@@ -48,8 +48,6 @@ type stmt =
   | VarDef      of typespec * string * expr 
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
-  | FuncDef     of typespec * string * formals * block
-  | FuncProto   of typespec * string * formals
   | Assign      of string * expr 
   | PrintStmt   of expr 
   | IfStmt      of expr * block
@@ -57,28 +55,28 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  | StructDef   of string * stmt list
-  | StructProto of string 
-  | Update of block (*måske gøre dette ved "type update" istedet*)
-
 and block = stmt list
 
+type ptype = 
+  | StructProto of string 
+  | FuncProto   of typespec * string * formals
+
 type ptypes =
-  stmt list
+  ptype list
 
+type func = FuncDef of typespec * string * formals * block
 type funcs = 
-  stmt list
+  func list
 
 
-
+type _struct = StructDef of string * stmt list
 type structs =
-  stmt list
+  _struct list
 
-type start = 
-  stmt list
+type start = Start of block
+  
 
-type update = 
-  stmt list
+type update = Update of block 
 
 type main =
  start * update 

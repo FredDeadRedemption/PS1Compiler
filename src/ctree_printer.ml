@@ -77,20 +77,6 @@ let rec print_stmt stmt =
     printf "\nArrayAssign{name: %s, index: %d, value: " name index;
     print_expr expr;
     printf "}"
-  | FuncDef (ts, name, formals, body) ->
-    printf "\nFuncDef{type: %s, name: %s, formals: [" (string_of_typespec ts) name;
-    List.iter (fun (ftype, fname) -> 
-      printf "(type: %s, name: %s) " (string_of_typespec ftype) fname
-    ) formals;
-    printf "], body: ";
-    List.iter print_stmt body;
-    printf "}"
-  | FuncProto (ts, name, formals) ->
-    printf "\nFuncProto{type: %s, name: %s, formals: [" (string_of_typespec ts) name;
-    List.iter (fun (ftype, fname) -> 
-      printf "(type: %s, name: %s) " (string_of_typespec ftype) fname
-    ) formals;
-    printf "]}"
   | Assign (name, expr) ->
     printf "\nAssign{name: %s, value: " name;
     print_expr expr;
@@ -121,44 +107,52 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
-  | StructDef (name, fields) ->
-    printf "\nStructDef{name: %s" name;
-    printf ", fields:";
-    List.iter(print_stmt )fields;
-    printf "\n}"
+
+let print_ptype = function
   | StructProto name ->
-    printf "\nStructProto{name: %s}" name
-  | Update block ->
-    printf "\nUpdate{";
-    List.iter print_stmt block;
-    printf "}"
-
-let print_ptypes (structs, funcs) =
-  printf "\nPTypes{";
-  List.iter print_stmt structs;
-  List.iter print_stmt funcs;
-  printf "}"
-
-let print_structs structs =
-  printf "\nStructs{";
-  List.iter print_stmt structs;
-  printf "}"
-
-let print_funcs funcs =
-  printf "\nFuncs{";
-  List.iter print_stmt funcs;
-  printf "}"
-
-let print_main (start, update) =
-  printf "\nMain{start: ";
-  List.iter print_stmt start;
-  printf ", update: ";
-  List.iter print_stmt update;
-  printf "}"
-
-let print_program (ptypes, structs, funcs, main) =
-  Printf.printf "AST:";
-  print_ptypes ptypes;
-  print_structs structs;
-  print_funcs funcs;
-  print_main main
+    printf "StructProto(%s)" name
+  | FuncProto (ts, name, formals) ->
+    printf "FuncProto(type: %s, name: %s, formals: [" (string_of_typespec ts) name;
+    List.iter (fun (t, s) -> printf "(%s, %s), " (string_of_typespec t) s) formals;
+    printf "])"
+  
+  let print_func (FuncDef (ts, name, formals, body)) =
+    printf "FuncDef(type: %s, name: %s, formals: [" (string_of_typespec ts) name;
+    List.iter (fun (t, s) -> printf "(%s, %s), " (string_of_typespec t) s) formals;
+    printf "], body: [";
+    List.iter print_stmt body;
+    printf "])"
+  
+  let print_struct (StructDef (name, fields)) =
+    printf "StructDef(name: %s, fields: [" name;
+    List.iter print_stmt fields;
+    printf "])"
+  
+  (* Main printing functions for program structure *)
+  let print_ptypes ptypes =
+    List.iter print_ptype ptypes
+  
+  let print_structs structs =
+    List.iter print_struct structs
+  
+  let print_funcs funcs =
+    List.iter print_func funcs
+  
+  let print_main (start, update) =
+    printf "Main(start: [";
+    List.iter print_stmt start;
+    printf "], update: [";
+    List.iter print_stmt update;
+    printf "])"
+  
+  let print_program (ptypes, structs, funcs, main) =
+    printf "Ctree Program:";
+    printf "PTypes: [";
+    print_ptypes ptypes;
+    printf "]\nStructs: [";
+    print_structs structs;
+    printf "]\nFuncs: [";
+    print_funcs funcs;
+    printf "]\nMain: ";
+    print_main main;
+    printf "\n"

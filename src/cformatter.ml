@@ -146,10 +146,10 @@ let collect_components id (fields, start_block, update_block, methods) id_list s
   struct_list := assemble_struct id fields :: !struct_list;
   
   let converted_start = List.map convert_ast_stmt_to_ctree_stmt start_block in
-  start_list := List.rev_append converted_start !start_list;
+  start_list := !start_list @ converted_start;
   
   let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
-  update_list := List.rev_append converted_update !update_list;
+  update_list := !update_list @ converted_update;
   
   (* Add converted methods to the global method list *)
   let converted_methods = List.map convert_ast_method_to_ctree methods in
@@ -172,7 +172,7 @@ let rec generate_struct_pt id_list =
 let construct_ptypes id_list method_list =
   let struct_pt = generate_struct_pt id_list in
   let func_pt = generate_func_pt method_list in
-  (struct_pt, func_pt)
+  (struct_pt @ func_pt)
 
 let rec construct_funcs method_list =
   match method_list with

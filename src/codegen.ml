@@ -63,9 +63,6 @@ let rec generate_expr expr =
 
 
 let rec generate_stmt stmt =
-  let generate_arg (ts, id) =
-    (string_of_typespec ts) ^" "^ id 
-  in
   match stmt with
   | VarDef (ts, id, expr) ->
     (string_of_typespec ts) ^ " " ^ id ^ " " ^ generate_expr expr ^ ";"
@@ -78,15 +75,6 @@ let rec generate_stmt stmt =
     print_expr expr;
     printf "}"
   *)
-  | FuncDef (ts, id, formals, body) ->
-    let args_str = String.concat "," (List.map generate_arg formals) in
-    let body_stmts_str = List.map generate_stmt body in
-    let body_str = String.concat "\n" body_stmts_str in
-    (string_of_typespec ts) ^ " " ^ id ^
-    " (" ^ args_str ^ ")" ^
-    "{" ^
-    body_str ^
-    "}"
   (*
 
   | FuncProto (ts, name, formals) ->
@@ -110,8 +98,6 @@ let rec generate_stmt stmt =
     ") {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
     "}"
-  
-
   | ElseIfStmt (cond, block) ->
     "else if (" ^
       generate_expr cond ^
@@ -122,47 +108,37 @@ let rec generate_stmt stmt =
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
     "}"
+    
   | ReturnStmt expr ->
     "return " ^
     generate_expr expr ^
     ";\n" 
   | BreakStmt ->
-    "break " ^ "; \n"
-    (*
-  | StructDef (name, fields) ->
-    printf "\nStructDef{name: %s" name;
-    printf ", fields:";
-    List.iter(print_stmt )fields;
-    printf "\n}"
-  | StructProto name ->
-    printf "\nStructProto{name: %s}" name
-    *)
-  | Update block ->
-    "Update { \n" ^ 
-    String.concat "\n" (List.map generate_stmt block) ^
-    "}"
-    | _ -> ""
-
-let generate_ptypes (structs, funcs) = 
-  let struct_code = List.map (function
-    | StructProto _ -> "sp" 
-    | _ -> "OY"
-  ) structs in
-  let func_code = List.map (function
-    | FuncProto _ -> "fp" 
-    | _ -> "YO"
-  ) funcs in
-  String.concat "\n" (struct_code @ func_code)
-
-  
-  
-
-let generate_structs = function
-  | StructDef _ -> "struct"
+    "break;"
   | _ -> ""
-
+  
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
+  
+
+let generate_ptype = function
+  | StructProto name -> "struct" ^ name
+  | FuncProto (ts, name, formals) -> 
+    let formals_code = String.concat ", " (List.map generate_arg formals) in
+    (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")"
+
+let generate_ptypes ptypes = 
+  let ptype_code = String.concat "\n" (List.map generate_ptype ptypes) in
+  ptype_code
+
+
+let generate_structs = function
+  | StructDef (name, fields) ->
+    let field_str = String.concat "\n" (List.map generate_stmt fields) in 
+    "struct" ^ name ^  "{" ^
+    field_str ^
+    "}"
+
 
 let generate_funcs = function
   
@@ -177,7 +153,6 @@ let generate_funcs = function
     "{\n" ^
     body_str ^
     "\n}"
-  | _ -> ""
 
 let generate_main (start, update) =
   let start_code = String.concat "\n" (List.map generate_stmt start) in
