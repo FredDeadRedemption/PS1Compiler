@@ -21,10 +21,6 @@
       let converted_expr = convert_ast_expr_to_ctree_expr expr in
       Ctree.Assign (name, converted_expr)
   
-    | Ast.PrintStmt expr ->
-      let converted_expr = convert_ast_expr_to_ctree_expr expr in
-      Ctree.PrintStmt converted_expr
-  
     | Ast.IfStmt (cond, block) ->
       let converted_cond = convert_ast_expr_to_ctree_expr cond in
       let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in

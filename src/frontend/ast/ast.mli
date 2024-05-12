@@ -49,7 +49,6 @@ type stmt =
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 
-  | PrintStmt   of expr 
   | IfStmt      of expr * block
   | ElseIfStmt  of expr * block
   | ElseStmt    of block

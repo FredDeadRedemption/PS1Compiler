@@ -236,10 +236,6 @@ let rec print_stmt stmt =
     printf "\nAssign{name: %s, value: " name;
     print_expr expr;
     printf "}"
-  | PrintStmt expr ->
-    printf "\nPrintStmt{";
-    print_expr expr;
-    printf "}"
   | IfStmt (cond, block) ->
     printf "\nIfStmt{condition: "; 
     print_expr cond;

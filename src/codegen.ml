@@ -50,7 +50,7 @@ let rec generate_expr expr =
   | ConstFloat f ->
     string_of_float f
   | Var _ ->
-    "?"
+    "?" (*TODO:*)
   | Bool b ->
     int_of_bool b
   | UnaryOp (op, ex) ->
@@ -66,32 +66,12 @@ let rec generate_stmt stmt =
   match stmt with
   | VarDef (ts, id, expr) ->
     (string_of_typespec ts) ^ " " ^ id ^ " " ^ generate_expr expr ^ ";"
-    
-  (*
   | ArrayDef (ts, id, size) ->
-    printf "\nArrayDef{type: %s, id: %s, size: %d}" (string_of_typespec ts) id size
+    (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];"
   | ArrayAssign (id, index, expr) ->
-    printf "\nArrayAssign{id: %s, index: %d, value: " id index;
-    print_expr expr;
-    printf "}"
-  *)
-  (*
-
-  | FuncProto (ts, name, formals) ->
-    printf "\nFuncProto{type: %s, name: %s, formals: [" (string_of_typespec ts) name;
-    List.iter (fun (ftype, fname) -> 
-      printf "(type: %s, name: %s) " (string_of_typespec ftype) fname
-    ) formals;
-    printf "]}"
+    id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";"
   | Assign (name, expr) ->
-    printf "\nAssign{name: %s, value: " name;
-    print_expr expr;
-    printf "}"
-  | PrintStmt expr ->
-    printf "\nPrintStmt{";
-    print_expr expr;
-    printf "}"
-    *)
+    name ^ " = " ^ generate_expr expr ^ ";"
   | IfStmt (cond, block) ->
     "if (" ^
     generate_expr cond ^
@@ -108,21 +88,19 @@ let rec generate_stmt stmt =
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
     "}"
-    
   | ReturnStmt expr ->
     "return " ^
     generate_expr expr ^
     ";\n" 
   | BreakStmt ->
     "break;"
-  | _ -> ""
   
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
   
 
 let generate_ptype = function
-  | StructProto name -> "struct" ^ name
+  | StructProto name -> "struct " ^ name
   | FuncProto (ts, name, formals) -> 
     let formals_code = String.concat ", " (List.map generate_arg formals) in
     (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")"
@@ -135,7 +113,7 @@ let generate_ptypes ptypes =
 let generate_structs = function
   | StructDef (name, fields) ->
     let field_str = String.concat "\n" (List.map generate_stmt fields) in 
-    "struct" ^ name ^  "{" ^
+    "struct " ^ name ^  "{" ^
     field_str ^
     "}"
 
