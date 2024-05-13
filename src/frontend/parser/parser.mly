@@ -4,6 +4,7 @@
 
 %token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token CLASS
+%token <string> GAMEOBJECT
 %token <int> INT
 %token <string> ID
 %token <string> TYPE_GENERIC
@@ -49,6 +50,7 @@ gameClass:
 // Class
 _class:
 | CLASS TYPE_GENERIC classblock { ClassStmt($2, $3) }
+| CLASS TYPE_GENERIC COLON GAMEOBJECT classblock { ClassInherStmt($2, $4, $5) }
 ;
 
 classblock:

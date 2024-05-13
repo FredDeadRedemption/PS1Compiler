@@ -302,10 +302,17 @@ let print_classblock (fields, start, update, methods) =
   printf "]"
 
 (* Class Statement Printing *)
-let print_class (ClassStmt (name, classblock)) index =
-  printf "Class%d: %s {" index name;
-  print_classblock classblock;
-  printf "}"
+let print_class cls index =
+  match cls with
+  | ClassStmt (name, classblock) -> 
+    printf "Class%d: %s {" index name;
+    print_classblock classblock;
+    printf "}"
+  | ClassInherStmt (name, inher, classblock) -> 
+    printf "Class%d: %s" index name;
+    printf ", extends %s {" inher;
+    print_classblock classblock;
+    printf "}"
 
 (* Program Printing *)
 let print_program (gcls, clss) =
