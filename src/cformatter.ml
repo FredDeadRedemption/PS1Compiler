@@ -172,12 +172,6 @@ let collect_components_inher id inher (fields, start_block, update_block, method
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
   
-  let rec generate_func_pt method_list =
-    match method_list with
-    | [] -> [] 
-    | (ts, id, formals, _) :: tl ->
-      let current_func_proto = Ctree.FuncProto(ts, id, formals) in
-      current_func_proto :: generate_func_pt tl
       
 
 let rec generate_func_pt method_list =
@@ -207,8 +201,8 @@ let rec construct_funcs method_list =
     current_func_def :: construct_funcs tl
 
 let construct_main start_list update_list =
-  let start = start_list in 
-  let update = update_list in
+  let start = Ctree.Start(start_list) in 
+  let update = Ctree.Update(update_list) in
   (start, update)
 
 let construct_program id_list struct_list start_list update_list method_list = 
@@ -219,31 +213,36 @@ let construct_program id_list struct_list start_list update_list method_list =
   (ptypes, structs, funcs, main)
 
 
-let create_tree (gameClass, classes) = 
+  let create_tree (gameClass, classes) : Ctree.program = 
   
-  (* Initialize lists to accumulate results*) (* TODO: Skal måske også bruges i gameClass *)
-  let id_list     = ref [] in
-  let struct_list = ref [] in
-  let start_list  = ref [] in
-  let update_list = ref [] in
-  let method_list = ref [] in
-  match gameClass with
-  | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) ->
-    collect_components id (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
-  | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
-    collect_components_inher id inher (fl, sb, ub, ml) id_list struct_list start_list update_list method_list;
-
-
-  List.iter (fun clas ->
-    match clas with
-    | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) -> 
-      collect_components id (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
-    | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
-      collect_components_inher id inher (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
-  ) classes;
-
-  let ctree = construct_program !id_list !struct_list !start_list !update_list !method_list in
-  ctree
+    (* Initialize lists to accumulate results*) 
+    let id_list     = ref [] in
+    let struct_list = ref [] in
+    let start_list  = ref [] in
+    let update_list = ref [] in
+    let method_list = ref [] in
+    
+    (* Process gameClass and classes *)
+    begin
+      match gameClass with
+      | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) ->
+        collect_components id (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
+      | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
+        collect_components_inher id inher (fl, sb, ub, ml) id_list struct_list start_list update_list method_list;
+    end;
+  
+    (* Process additional classes *)
+    List.iter (fun clas ->
+      match clas with
+      | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) -> 
+        collect_components id (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
+      | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
+        collect_components_inher id inher (fl, sb, ub, ml) id_list struct_list start_list update_list method_list
+    ) classes;
+  
+    (* Construct the program *)
+    let ctree = construct_program !id_list !struct_list !start_list !update_list !method_list in
+    ctree
 
 
 let format_to_c ast = 

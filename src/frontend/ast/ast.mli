@@ -57,7 +57,7 @@ type stmt =
 and block = stmt list
 
 (* class fields*)
-and field = FieldDef of typespec * string * expr option
+type field = FieldDef of typespec * string * expr option
 
 (* class start *)
 type start = StartDef of block

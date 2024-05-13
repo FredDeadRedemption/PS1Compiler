@@ -100,7 +100,7 @@ let generate_arg (ts, id) =
   
 
 let generate_ptype = function
-  | StructProto name -> "struct " ^ name
+  | StructProto name -> "struct " ^ name ^ ";"
   | FuncProto (ts, name, formals) -> 
     let formals_code = String.concat ", " (List.map generate_arg formals) in
     (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")" ^ ";"
@@ -124,8 +124,6 @@ let generate_funcs = function
     let args_str = String.concat ", " (List.map generate_arg formals) in
     let body_stmts_str = List.map generate_stmt body in
     let body_str = String.concat "\n" body_stmts_str in
-
-    
     (string_of_typespec ts) ^ " " ^ name ^
     " (" ^ args_str ^ ") " ^
     "{\n" ^
@@ -133,8 +131,13 @@ let generate_funcs = function
     "\n}"
 
 let generate_main (start, update) =
-  let start_code = String.concat "\n" (List.map generate_stmt start) in
-  let update_code = String.concat "\n" (List.map generate_stmt update) in
+  match start with
+      | Start start_block ->
+        let start_code = String.concat "\n" (List.map generate_stmt start_block) in
+  match update with
+  | Update update_block ->
+      let update_code = String.concat "\n" (List.map generate_stmt update_block) in
+  
   (* Return string*)
   "int main(void) {\n" ^
   start_code ^
