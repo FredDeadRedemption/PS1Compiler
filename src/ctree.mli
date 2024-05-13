@@ -74,11 +74,10 @@ type structs =
 
 type start = Start of block
   
-
 type update = Update of block 
 
 type main =
  start * update 
 
 type program = 
-  ptypes * funcs * structs * main
+  ptypes * structs * funcs * main

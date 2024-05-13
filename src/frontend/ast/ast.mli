@@ -54,11 +54,10 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
-  
 and block = stmt list
 
 (* class fields*)
-and field = FieldDef of typespec * string * expr option
+type field = FieldDef of typespec * string * expr option
 
 (* class start *)
 type start = StartDef of block
@@ -71,7 +70,9 @@ type _method = MethodDef of typespec * string * formals * block
 
 type classblock = field list * start * update * _method list
 
-type _class = ClassStmt of string * classblock 
+type _class =
+  | ClassStmt of string * classblock 
+  | ClassInherStmt of string * string * classblock
 
 (* program *)
 type program = 

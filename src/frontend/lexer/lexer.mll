@@ -61,6 +61,7 @@ rule tokenize = parse
   | "bool"     { TYPE_BOOL }
   | "void"     { TYPE_VOID }
   | "class"    { CLASS }
+  | "GameObject" as s { GAMEOBJECT s }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }

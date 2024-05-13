@@ -135,11 +135,19 @@ let print_ptype = function
     List.iter print_func funcs
   
   let print_main (start, update) =
-    printf "Main(start: [";
-    List.iter print_stmt start;
-    printf "], update: [";
-    List.iter print_stmt update;
-    printf "])"
+
+      match start with
+      | Start start_block -> 
+        Printf.printf "Main(start: [";
+        List.iter print_stmt start_block;
+        Printf.printf "]";
+    
+      match update with
+      | Update update_block ->
+        Printf.printf ", update: [";
+        List.iter print_stmt update_block;
+        Printf.printf "])"
+   
   
   let print_program (ptypes, structs, funcs, main) =
     printf "Ctree Program:";
