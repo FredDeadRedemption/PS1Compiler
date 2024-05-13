@@ -65,35 +65,35 @@ let rec generate_expr expr =
 let rec generate_stmt stmt =
   match stmt with
   | VarDef (ts, id, expr) ->
-    (string_of_typespec ts) ^ " " ^ id ^ " " ^ generate_expr expr ^ ";"
+    (string_of_typespec ts) ^ " " ^ id ^ " " ^ generate_expr expr ^ ";\n"
   | ArrayDef (ts, id, size) ->
-    (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];"
+    (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
-    id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";"
+    id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";\n"
   | Assign (name, expr) ->
-    name ^ " = " ^ generate_expr expr ^ ";"
+    name ^ " = " ^ generate_expr expr ^ ";\n"
   | IfStmt (cond, block) ->
     "if (" ^
     generate_expr cond ^
     ") {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
-    "}"
+    "}\n"
   | ElseIfStmt (cond, block) ->
     "else if (" ^
     generate_expr cond ^
     ") {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
-    "}"
+    "}\n"
   | ElseStmt block ->
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
-    "}"
+    "}\n"
   | ReturnStmt expr ->
     "return " ^
     generate_expr expr ^
     ";\n" 
   | BreakStmt ->
-    "break;"
+    "break;\n"
   
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
@@ -115,7 +115,7 @@ let generate_structs = function
     let field_str = String.concat "\n" (List.map generate_stmt fields) in 
     "struct " ^ name ^  "{" ^
     field_str ^
-    "}"
+    "}\n"
 
 
 let generate_funcs = function
@@ -130,7 +130,7 @@ let generate_funcs = function
     " (" ^ args_str ^ ") " ^
     "{\n" ^
     body_str ^
-    "\n}"
+    "\n}\n"
 
 let generate_main (start, update) =
   let start_code = String.concat "\n" (List.map generate_stmt start) in

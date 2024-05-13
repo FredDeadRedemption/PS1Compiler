@@ -35,8 +35,8 @@ let check_fields fields =
   ) fields
 
 let check_methods methods =
-  List.iter (fun meth ->
-      match meth with
+  List.iter (fun metho ->
+      match metho with
       | MethodDef(typespec, _, formal, _) ->
         (match typespec with 
         | Int -> Printf.printf("Int\n")
