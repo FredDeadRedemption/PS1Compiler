@@ -3,7 +3,7 @@ class Game {
     int b = 20;
     float g = 20.0;
     
-    Difar difar = 20;
+    
 
     start() {
         
@@ -13,7 +13,7 @@ class Game {
         
     }
 
-    bool y(bool x) {
+    int y(int x) {
 
         return false;
     } 
@@ -26,6 +26,7 @@ class Difar : GameObject {
 
     int x = 2; 
     int y;
+    float y;
 
     start() {
         if(2==2) {
