@@ -106,14 +106,21 @@ let convert_ast_field_to_ctree field =
     let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
     Ctree.VarDefU (converted_ts, name)
 
+
+let convert_ast_field_init_to_uinit field =
+  match field with 
+  | Ast.FieldDefI (ts, name, _) -> Ast.FieldDefU (ts, name) 
+  | Ast.FieldDefU (ts, name) -> Ast.FieldDefU (ts, name) 
+
+
 let assemble_struct id fields =
-  let converted_fields = List.map convert_ast_field_to_ctree fields in
+  let converted_fields = List.map convert_ast_field_to_ctree (List.map convert_ast_field_init_to_uinit fields) in
   Ctree.StructDef(id, converted_fields)
 
 let assemble_inher_struct id inher fields =
   let inher_field = Ast.FieldDefU(Ast.Generic inher, "gameobject") in
   let fields_with_inher = inher_field :: fields in
-  let converted_fields = List.map convert_ast_field_to_ctree fields_with_inher in
+  let converted_fields = List.map convert_ast_field_to_ctree (List.map convert_ast_field_init_to_uinit fields_with_inher) in
   Ctree.StructDef(id, converted_fields)
 
 let assemble_constructer id fields = 
