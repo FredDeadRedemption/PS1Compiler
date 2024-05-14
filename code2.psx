@@ -25,6 +25,7 @@ class Difar : GameObject {
     
 
     int x = 2; 
+    int y;
 
     start() {
         if(2==2) {

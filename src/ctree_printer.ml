@@ -67,9 +67,12 @@ let rec print_expr expr =
 
 let rec print_stmt stmt =
   match stmt with
-  | VarDef (ts, name, expr) ->
+  | VarDefI (ts, name, expr) ->
     printf "\nVarDef{type: %s, name: %s, value: " (string_of_typespec ts) name;
     print_expr expr;
+    printf "}"
+  | VarDefU (ts, name) ->
+    printf "\nVarDef{type: %s, name: %s" (string_of_typespec ts) name;
     printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
@@ -119,17 +122,25 @@ let print_ptype = function
     List.iter print_stmt body;
     printf "])"
   
-  let print_struct (StructDef (name, fields)) =
-    printf "StructDef(name: %s, fields: [" name;
+  let print_struct (StructDef (id, fields)) =
+    printf "StructDef(name: %s, fields: [" id;
     List.iter print_stmt fields;
     printf "])"
-  
+
+  let print_constructor (Constructor(ts, id, stmts)) =
+    printf "Constructor(Typespec: %s, FuncName: %s, Fields: [" (string_of_typespec ts) id;
+    List.iter print_stmt stmts;
+    printf "])"
+    
   (* Main printing functions for program structure *)
   let print_ptypes ptypes =
     List.iter print_ptype ptypes
   
   let print_structs structs =
     List.iter print_struct structs
+  
+  let print_constructors constructors =
+    List.iter print_constructor constructors
   
   let print_funcs funcs =
     List.iter print_func funcs
@@ -149,12 +160,14 @@ let print_ptype = function
         Printf.printf "])"
    
   
-  let print_program (ptypes, structs, funcs, main) =
+  let print_program (ptypes, structs, constructors, funcs, main) =
     printf "Ctree Program:";
     printf "PTypes: [";
     print_ptypes ptypes;
     printf "]\nStructs: [";
     print_structs structs;
+    printf "]\nConstructers: [";
+    print_constructors constructors;
     printf "]\nFuncs: [";
     print_funcs funcs;
     printf "]\nMain: ";

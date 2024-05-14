@@ -62,7 +62,8 @@ fields:
 ;
 
 field:
-| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
+| typespec ID EQ expr SEMICOLON { FieldDefI($1, $2, $4) }
+| typespec ID SEMICOLON { FieldDefU($1, $2) }
 ;
 
 initialize:
@@ -101,7 +102,8 @@ expr:
 
 // Statements
 stmt:
-| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
+| typespec ID EQ expr SEMICOLON                        { VarDefI($1, $2, $4) }
+| typespec ID SEMICOLON                                { VarDefU($1, $2) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 (*| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }*)

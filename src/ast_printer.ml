@@ -222,9 +222,12 @@ let rec print_expr expr =
 (* Statement Printing *)
 let rec print_stmt stmt =
   match stmt with
-  | VarDef (ts, name, expr) ->
+  | VarDefI (ts, name, expr) ->
     printf "\nVarDef{type: %s, name: %s, value: " (string_of_typespec ts) name;
     print_expr expr;
+    printf "}"
+  | VarDefU (ts, name) ->
+    printf "\nVarDef{type: %s, name: %s" (string_of_typespec ts) name;
     printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
@@ -260,13 +263,13 @@ let rec print_stmt stmt =
     printf "\nBreakStmt"
 
 (* Field Printing *)
-let print_field (FieldDef (ts, name, expr_opt)) =
-  match expr_opt with
-  | Some expr ->
+let print_field field =
+  match field with
+  | FieldDefI (ts, name, e) ->
     printf "(type: %s, name: %s, default: " (string_of_typespec ts) name;
-    print_expr expr;
+    print_expr e;
     printf ")"
-  | None ->
+  | FieldDefU (ts, name) ->
     printf "(type: %s, name: %s) " (string_of_typespec ts) name
 
 
