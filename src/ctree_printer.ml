@@ -67,12 +67,15 @@ let rec print_expr expr =
 
 let rec print_stmt stmt =
   match stmt with
-  | VarDefI (ts, name, expr) ->
-    printf "\nVarDef{type: %s, name: %s, value: " (string_of_typespec ts) name;
+  | VarDefI (ts, id, expr) ->
+    printf "\nVarDef{type: %s, name: %s, value: " (string_of_typespec ts) id;
     print_expr expr;
     printf "}"
-  | VarDefU (ts, name) ->
-    printf "\nVarDef{type: %s, name: %s" (string_of_typespec ts) name;
+  | VarDefU (ts, id) ->
+    printf "\nVarDef{type: %s, name: %s" (string_of_typespec ts) id;
+    printf "}"
+  | StructInit (ts, id) ->
+    printf "\nStructInit{type: %s, name: %s" (string_of_typespec ts) id;
     printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
@@ -106,6 +109,8 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+ 
+
 
 let print_ptype = function
   | StructProto name ->
@@ -127,10 +132,12 @@ let print_ptype = function
     List.iter print_stmt fields;
     printf "])"
 
-  let print_constructor (Constructor(ts, id, stmts)) =
+  let print_constructor (Constructor(ts, id, stmts, return_stmt)) =
     printf "Constructor(Typespec: %s, FuncName: %s, Fields: [" (string_of_typespec ts) id;
     List.iter print_stmt stmts;
-    printf "])"
+    printf "], Return: ";
+    print_stmt return_stmt;
+    printf ")"
     
   (* Main printing functions for program structure *)
   let print_ptypes ptypes =

@@ -68,6 +68,8 @@ let rec generate_stmt stmt =
     (string_of_typespec ts) ^ " " ^ id ^ " = " ^ generate_expr expr ^ ";\n"
   | VarDefU (ts, id) ->
     (string_of_typespec ts) ^ " " ^ id ^ ";\n"
+  | StructInit (ts, id) ->
+    (string_of_typespec ts) ^ " " ^ id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
   | ArrayDef (ts, id, size) ->
     (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
@@ -120,11 +122,12 @@ let generate_structs = function
     "}" ^ name ^ ";\n"
 
   let generate_constructs = function
-  | Constructor (ts, id, stmts) ->
-    let stmt_str = String.concat "\n" (List.map generate_stmt stmts) in 
+  | Constructor (ts, id, stmts, return_stmt) ->
     let ts_str = string_of_typespec ts in 
+    let stmt_str = String.concat ("\nvar" ^ ts_str ^ ".")  (List.map generate_stmt stmts) in 
     ts_str ^ " " ^ id ^  "() { \n" ^
     stmt_str ^
+    generate_stmt return_stmt ^
     "}\n"
 
 let generate_funcs = function
@@ -157,13 +160,14 @@ let generate_main (start, update) =
 
 let generate_program program =
   let (ptypes, structs, constructors, funcs, main) = program in
+  let psx_code = Psx_imports.generate_psx_code in
   let ptypes_code = generate_ptypes ptypes in
   let structs_code = String.concat "\n\n" (List.map generate_structs structs) in
   let constructs_code = String.concat "\n\n" (List.map generate_constructs constructors) in
   let funcs_code = String.concat "\n\n" (List.map generate_funcs funcs) in
   let main_code = generate_main main in
 
-  String.concat "\n\n" [ptypes_code; structs_code; constructs_code; funcs_code; main_code]
+  String.concat "\n\n" [psx_code; ptypes_code; structs_code; constructs_code; funcs_code; main_code]
 
 
 
