@@ -17,8 +17,9 @@ main2:
 main3:
 	cd _build/default/src && ./main.exe ../../../code3.psx
 
-test:
-	cd _build/default/src && ./main.exe ../../../tests/expr.psx && ./main.exe ../../../tests/functions.psx
+test: clean
+	dune runtest
+# cd _build/default/src && ./main.exe ../../../tests/expr.psx && ./main.exe ../../../tests/functions.psx
 
 
 
