@@ -40,6 +40,9 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
 
   | Ast.BreakStmt -> Ctree.BreakStmt
   
+  | Ast.ClassInit (ts, name) ->
+    let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
+    Ctree.StructInit(converted_ts, name)
   
     
   
@@ -105,12 +108,16 @@ let convert_ast_field_to_ctree field =
   | Ast.FieldDefU (ts, name) ->
     let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
     Ctree.VarDefU (converted_ts, name)
+  | Ast.FieldClsInit (ts, name) ->
+    let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
+    Ctree.StructInit(converted_ts, name)
 
 
 let convert_ast_field_init_to_uinit field =
   match field with 
   | Ast.FieldDefI (ts, name, _) -> Ast.FieldDefU (ts, name) 
   | Ast.FieldDefU (ts, name) -> Ast.FieldDefU (ts, name) 
+  | Ast.FieldClsInit (ts, name) -> Ast.FieldClsInit (ts, name) 
 
 
 let assemble_struct id fields =
@@ -126,17 +133,19 @@ let assemble_inher_struct id inher fields =
 let assemble_constructer id fields = 
   let ts = Ctree.Generic id in
   let func_id = "initialize" ^ id in
-  let construct_list = [Ast.ReturnStmt(Ast.Var ("var" ^ id))] in
   let initialized_fields = List.fold_right (fun field acc -> 
     match field with
-    | Ast.FieldDefI (ts, id, e) -> Ast.VarDefI (ts, id, e) :: acc
+    | Ast.FieldDefI (_, id, e) -> Ast.Assign (id, e) :: acc
     | Ast.FieldDefU _ -> acc
+    | Ast.FieldClsInit (ts, id) -> Ast.ClassInit (ts, id) :: acc
+
+    
   ) fields [] in
-  let list_with_fields = initialized_fields @ construct_list in
   let struct_field = Ast.VarDefU(Ast.Generic id, "var" ^ id) in
-  let fields_with_struct = struct_field :: list_with_fields in
+  let fields_with_struct = struct_field :: initialized_fields in
   let converted_constructor = List.map convert_ast_stmt_to_ctree_stmt fields_with_struct in
-  Ctree.Constructor(ts, func_id, converted_constructor)
+  let return_stmt = Ctree.ReturnStmt(Ctree.Var ("var" ^ id)) in
+  Ctree.Constructor(ts, func_id, converted_constructor, return_stmt)
 
 
 
@@ -162,10 +171,29 @@ let convert_ast_method_to_ctree (Ast.MethodDef (ts, name, formals, body)) : (Ctr
   let converted_body = (* Convert Ast block to Ctree block *)
     List.map convert_ast_stmt_to_ctree_stmt body
   in
-
   (converted_ts, name, converted_formals, converted_body)
 
-(* Update collect_components to convert methods *)
+
+let convert_ast_field_to_stmt field =
+  match field with 
+  | Ast.FieldDefI (ts, id, e) -> Ast.VarDefI (ts, id, e) 
+  | Ast.FieldDefU (ts, id) -> Ast.VarDefU (ts, id) 
+  | Ast.FieldClsInit (ts, id) -> Ast.ClassInit(ts, id)
+
+let collect_main_components (fields, start_block, update_block, methods) start_list update_list method_list =
+  let converted_fields = List.map convert_ast_stmt_to_ctree_stmt (List.map convert_ast_field_to_stmt fields) in
+  
+  let converted_start = List.map convert_ast_stmt_to_ctree_stmt start_block in
+  start_list :=  !start_list @ converted_fields @ converted_start;
+  
+  let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
+  update_list := !update_list @ converted_update;
+  
+  let converted_methods = List.map convert_ast_method_to_ctree methods in
+  method_list := List.rev_append converted_methods !method_list
+
+
+
 let collect_components id (fields, start_block, update_block, methods) id_list struct_list construct_list start_list update_list method_list =
 
   id_list := id :: !id_list;
@@ -180,9 +208,9 @@ let collect_components id (fields, start_block, update_block, methods) id_list s
   let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
   update_list := !update_list @ converted_update;
   
-  (* Add converted methods to the global method list *)
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
+
 
 
 let collect_components_inher id inher (fields, start_block, update_block, methods) id_list struct_list construct_list start_list update_list method_list =
@@ -199,7 +227,6 @@ let collect_components_inher id inher (fields, start_block, update_block, method
   let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
   update_list := !update_list @ converted_update;
   
-  (* Add converted methods to the global method list *)
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
   
@@ -258,8 +285,8 @@ let construct_program id_list struct_list construct_list start_list update_list 
     (* Process gameClass and classes *)
     begin
       match gameClass with
-      | Ast.ClassStmt (id, (fl, StartDef sb, UpdateDef ub, ml)) ->
-        collect_components id (fl, sb, ub, ml) id_list struct_list construct_list start_list update_list method_list
+      | Ast.ClassStmt (_, (fl, StartDef sb, UpdateDef ub, ml)) ->
+        collect_main_components (fl, sb, ub, ml) start_list update_list method_list
       | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
         collect_components_inher id inher (fl, sb, ub, ml) id_list struct_list construct_list start_list update_list method_list;
     end;

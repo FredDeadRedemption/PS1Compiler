@@ -2,11 +2,12 @@ class Game {
     int x;
     int b = 20;
     float g = 20.0;
-    
-    Difar difar = 20;
+    Difar difar = new Difar();
+     
 
     start() {
-        
+        Difar eow = new Difar();
+        int x = 10; 
     }
 
     update() {
@@ -14,7 +15,7 @@ class Game {
     }
 
     bool y(bool x) {
-
+        
         return false;
     } 
     

@@ -261,6 +261,8 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+  | ClassInit (typespec, id) ->
+    printf "\nClassInit{ts: %s, id: %s}" (string_of_typespec typespec) id
 
 (* Field Printing *)
 let print_field field =
@@ -271,6 +273,9 @@ let print_field field =
     printf ")"
   | FieldDefU (ts, name) ->
     printf "(type: %s, name: %s) " (string_of_typespec ts) name
+  | FieldClsInit (typespec, id) ->
+    printf "\nClassInit{ts: %s, id: %s}" (string_of_typespec typespec) id
+
 
 
 

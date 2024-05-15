@@ -55,12 +55,14 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  | ClassInit   of typespec * string
 and block = stmt list
 
 (* class fields*)
 type field = 
-  | FieldDefI of typespec * string * expr 
-  | FieldDefU of typespec * string
+  | FieldDefI    of typespec * string * expr 
+  | FieldDefU    of typespec * string
+  | FieldClsInit of typespec * string
   
 
 (* class start *)

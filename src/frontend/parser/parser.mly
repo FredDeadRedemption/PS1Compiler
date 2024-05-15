@@ -4,6 +4,7 @@
 
 %token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token CLASS
+%token NEW
 %token <string> GAMEOBJECT
 %token <int> INT
 %token <string> ID
@@ -63,11 +64,8 @@ fields:
 
 field:
 | typespec ID EQ expr SEMICOLON { FieldDefI($1, $2, $4) }
-| typespec ID SEMICOLON { FieldDefU($1, $2) }
-;
-
-initialize:
-| EQ expr { $2 }
+| typespec ID SEMICOLON         { FieldDefU($1, $2) }
+| typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { FieldClsInit($1, $2) }
 ;
 
 start:
@@ -113,7 +111,7 @@ stmt:
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
-//| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
+| typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
 ;
 
 // Reusables
