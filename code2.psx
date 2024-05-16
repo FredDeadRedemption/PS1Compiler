@@ -49,12 +49,12 @@ class Difar : GameObject {
         }
     }
 
-    float y(float x) {
-         
+    bool y(float x) {
+        return true;
     } 
 
-    float y (int x) {
-
+    int y (int x) {
+        return 10;
     }
     
 }
