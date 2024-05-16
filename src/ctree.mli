@@ -46,8 +46,11 @@ type formals = formal list
 (* statement *)
 type stmt =
   | VarDefI     of typespec * string * expr 
-  | VarDefU     of typespec * string 
+  | VarDefU     of typespec * string
+  (*| StructDecl  of typespec * string*)
   | StructInit  of typespec * string
+  | AssignStructInit  of typespec * string
+  | AssignToStruct of string * stmt
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 

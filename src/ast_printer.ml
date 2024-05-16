@@ -299,13 +299,13 @@ let print_method (MethodDef (ts, name, formals, block)) =
 
 (* Class Block Printing *)
 let print_classblock (fields, start, update, methods) =
-  printf "Fields: [";
+  printf " Fields: [";
   List.iter print_field fields;
-  printf "] Start: ";
+  printf "]\n Start: [";
   print_start start;
-  printf " Update: ";
+  printf "]\n Update: [";
   print_update update;
-  printf " Methods: [";
+  printf "]\n Methods: [";
   List.iter print_method methods;
   printf "]"
 
@@ -313,14 +313,14 @@ let print_classblock (fields, start, update, methods) =
 let print_class cls index =
   match cls with
   | ClassStmt (name, classblock) -> 
-    printf "Class%d: %s {" index name;
+    printf "Class%d: %s {\n" index name;
     print_classblock classblock;
-    printf "}"
+    printf "}\n"
   | ClassInherStmt (name, inher, classblock) -> 
     printf "Class%d: %s" index name;
-    printf ", extends %s {" inher;
+    printf ", extends %s {\n" inher;
     print_classblock classblock;
-    printf "}"
+    printf "}\n"
 
 (* Program Printing *)
 let print_program (gcls, clss) =

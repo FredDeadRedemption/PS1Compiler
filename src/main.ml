@@ -6,12 +6,12 @@
   let prog = Parser.program Lexer.tokenize lexbuf in
 
 (*xXxBackendxXx*)
-  Type_check.check_type prog;
+  (*Type_check.check_type prog;*)
   let ctree = Cformatter.format_to_c prog in
 
 (*xXxOutputxXx*)
   Ast_printer.print_program prog;
-  Ctree_printer.print_program ctree;
+  Ctree_printer.print_program ctree;  
   
 
   Codegen.print_to_file filename ctree
