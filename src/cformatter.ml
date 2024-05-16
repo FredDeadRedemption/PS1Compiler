@@ -207,8 +207,6 @@ let rec convert_ctree_stmt_to_struct_assignment ids stmt =
   match ids with 
   | [] -> stmt
   | id :: tl ->  
-  print_endline("Det du leder efter:" ^id);
-
   Ctree.AssignToStruct (id, convert_ctree_stmt_to_struct_assignment tl stmt)
 
 
@@ -252,7 +250,6 @@ let rec instantiate_class (ts, ids) classes =
         let class_info_ref = ref None in 
         List.iter (function
           | Ast.FieldClsInit (ts, id) -> 
-            print_endline (string_of_typespec ts ^ " " ^ id);
             instantiate_class (ts, new_ids @ [id]) classes;
             class_info_ref := Some (ts, id)
           | _ -> ()
@@ -329,7 +326,6 @@ let create_tree (gameClass, classes) : Ctree.program =
     | Ast.ClassInherStmt (id, inher, (fl, _, _, ml)) ->
       collect_class_inher_components id inher (fl, ml)
   ) classes;
-  List.iter(fun (_, name) -> print_endline (name)) !inst_classes_list;
   instantiate_classes !inst_classes_list classes;
   construct_program !id_list !struct_list !construct_list !start_list !update_list !method_list
 
