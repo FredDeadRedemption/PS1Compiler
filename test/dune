@@ -1,0 +1,14 @@
+(test
+ (name test_lexer)
+ (libraries ounit2 str lexer parser)
+ (modules test_lexer))
+
+(test
+ (name test_main)
+ (libraries ounit2 str lexer parser)
+ (modules test_main))
+
+(test
+ (name test_parser)
+ (libraries ounit2 str lexer parser)
+ (modules test_parser))
