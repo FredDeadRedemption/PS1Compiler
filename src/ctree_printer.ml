@@ -77,6 +77,9 @@ let rec print_stmt stmt =
   | StructInit (ts, id) ->
     printf "\nStructInit{type: %s, name: %s" (string_of_typespec ts) id;
     printf "}"
+  | AssignStructInit (ts, id) ->
+    printf "\nAssignStructInit{type: %s, name: %s" (string_of_typespec ts) id;
+    printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
   | ArrayAssign (name, index, expr) ->
@@ -109,6 +112,11 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+  | AssignToStruct (id, stmt) ->
+    printf "\nAssignToStruct{ Stmt to assign: {";
+    print_stmt stmt;
+    printf "}, to obj: %s" id;
+    printf "}"
  
 
 

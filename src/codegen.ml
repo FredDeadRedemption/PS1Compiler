@@ -70,6 +70,8 @@ let rec generate_stmt stmt =
     (string_of_typespec ts) ^ " " ^ id ^ ";\n"
   | StructInit (ts, id) ->
     (string_of_typespec ts) ^ " " ^ id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
+  | AssignStructInit (ts, id) ->
+    id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
   | ArrayDef (ts, id, size) ->
     (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
@@ -98,7 +100,9 @@ let rec generate_stmt stmt =
     ";\n" 
   | BreakStmt ->
     "break;\n"
-  
+  | AssignToStruct (id, stmt) ->
+    id ^ "." ^ generate_stmt stmt
+      
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
   
@@ -117,7 +121,7 @@ let generate_ptypes ptypes =
 let generate_structs = function
   | StructDef (name, fields) ->
     let field_str = String.concat "\n" (List.map generate_stmt fields) in 
-    "typedef struct " ^ name ^  "{" ^
+    "typedef struct " ^ name ^  "{\n" ^
     field_str ^
     "}" ^ name ^ ";\n"
 
@@ -125,7 +129,7 @@ let generate_structs = function
   | Constructor (ts, id, stmts, return_stmt) ->
     let ts_str = string_of_typespec ts in 
     let stmt_str = String.concat ("\nvar" ^ ts_str ^ ".")  (List.map generate_stmt stmts) in 
-    ts_str ^ " " ^ id ^  "() { \n" ^
+    ts_str ^ " " ^ id ^  "() {\n" ^
     stmt_str ^
     generate_stmt return_stmt ^
     "}\n"
