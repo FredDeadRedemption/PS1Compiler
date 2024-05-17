@@ -62,6 +62,8 @@ rule tokenize = parse
   | "void"     { TYPE_VOID }
   | "class"    { CLASS }
   | "new"      { NEW }
+  | "this"     { THIS }
+  | "super"    { SUPER }
   | "GameObject" as s { GAMEOBJECT s }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 

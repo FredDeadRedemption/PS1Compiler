@@ -10,6 +10,10 @@ class Game {
     update() {
         
     }
+
+    void move() {
+        x = x + 1;
+    }
 }
 
 
@@ -28,6 +32,10 @@ class Car {
 
     update() {
         
+    }
+
+    void move() {
+        x = x + 1;
     }
 
     

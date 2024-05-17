@@ -193,8 +193,12 @@ let collect_class_components id (fields, methods) =
   id_list := id :: !id_list;
   struct_list := assemble_struct id fields :: !struct_list;
   construct_list := assemble_constructer id fields :: !construct_list;
-  let converted_methods = List.map convert_ast_method_to_ctree methods in
-  method_list := List.rev_append converted_methods !method_list
+  let methods = List.map convert_ast_method_to_ctree methods in
+  let methods_with_class = List.map (fun (ts, name, formals, body) ->
+    let updated_formals = (Ctree.Generic id, "var" ^ id) :: formals in
+    (ts, name, updated_formals, body)
+  ) methods in
+  method_list := List.rev_append methods_with_class !method_list
 
 let collect_class_inher_components id inher (fields, methods) =
   id_list := id :: !id_list;
