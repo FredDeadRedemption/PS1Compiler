@@ -1,41 +1,18 @@
 class Game {
-    int x;
-    int b = 20;
-    float g = 20.0;
-    
-    Difar difar = 20;
-
+    float x = 10.0;
     start() {
+        ++x;
+        x++;
+        x+=5;
+        x-=5;
+        x--;
+        --x;
         
+        break;
+        continue;
     }
 
     update() {
         
     }
-
-    bool y(bool x) {
-    } 
-    
-}
-
-
-class Difar {
-    int x;
-    int b = 20;
-    float g = 20.0;
-    
-    Difar difar = 20;
-
-    start() {
-        
-    }
-
-    update() {
-        
-    }
-
-    bool y(bool x) {
-    } 
-
-    
 }

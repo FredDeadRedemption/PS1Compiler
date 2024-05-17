@@ -25,7 +25,8 @@
 %token IF ELSE 
 %token PRINT 
 %token START UPDATE
-%token RETURN BREAK
+%token RETURN BREAK CONTINUE
+%token INCR DECR INCRBYVAL DECRBYVAL
 %token EOF
 
 %right EQ 
@@ -113,7 +114,15 @@ stmt:
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
+| CONTINUE SEMICOLON                                   { ContinueStmt }
 | typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
+| ID DECR SEMICOLON                                    { Decrement($1) }
+| ID INCR SEMICOLON                                    { Increment($1) }
+| DECR ID SEMICOLON                                    { DecrementPre($2) }
+| INCR ID SEMICOLON                                    { IncrementPre($2) }
+| ID INCRBYVAL expr SEMICOLON                          { IncrementVal($1, $3) }
+| ID DECRBYVAL expr SEMICOLON                          { DecrementVal($1, $3) }
+
 ;
 
 // Reusables

@@ -19,7 +19,7 @@ let integer = ('-'? digit+) (* "-?" minus is optional "digit+" digit of any leng
 let float = (integer) (fraction) 
 let string = '"' ([^ '"' '\\'] | '\\')* '"' (* [^ '"' '\\'] Any character that is not a double quote '"', a backslash, or a single quote *)
 let identifier = (lilAlpha|'_') (alpha|digit|'_')* (* must start with alpha char. the a-z 0-9 or _ is allowed 0 or infinite times *)
-let generic = (bigAlpha) (alpha|digit|'-')*
+let generic = (bigAlpha) (alpha|digit|'_')*
 
 let whitespace = [' ' '\t']
 let newline = '\r' | '\n' | "\r\n"
@@ -49,9 +49,9 @@ rule tokenize = parse
   | ':'        { COLON }
   | "return"   { RETURN }
   | "break"    { BREAK }
+  | "continue" { CONTINUE }
   | "if"       { IF }
   | "else"     { ELSE }
-  | "print"    { PRINT }
   | "start"    { START }
   | "update"   { UPDATE }
   | "true"     { TRUE }
@@ -64,6 +64,10 @@ rule tokenize = parse
   | "new"      { NEW }
   | "this"     { THIS }
   | "super"    { SUPER }
+  | "++"       { INCR }
+  | "--"       { DECR }
+  | "+="       { INCRBYVAL}
+  | "-="       { DECRBYVAL}
   | "GameObject" as s { GAMEOBJECT s }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 

@@ -112,11 +112,27 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+  | ContinueStmt ->
+    printf "\nContinueStmt"
   | AssignToStruct (id, stmt) ->
     printf "\nAssignToStruct{ Stmt to assign: {";
     print_stmt stmt;
     printf "}, to obj: %s" id;
     printf "}"
+  | Increment (id) ->
+    printf "\nIncrementSuffix{id: %s}" id
+  | Decrement (id) ->
+    printf "\nDecrementSuffix{id: %s}" id
+  | IncrementPre (id) ->
+    printf "\nIncrementPrefix{id: %s}" id
+  | DecrementPre (id) ->
+    printf "\nDecrementPrefix{id: %s}" id
+  | IncrementVal (id, expr) ->
+    printf "\nIncrementVal{id: %s}" id;
+    print_expr expr
+  | DecrementVal (id, expr) ->
+    printf "\nDecrementVal{id: %s}" id;
+    print_expr expr
  
 
 

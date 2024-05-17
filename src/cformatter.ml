@@ -91,10 +91,18 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
     let converted_expr = convert_ast_expr_to_ctree_expr expr in
     Ctree.ReturnStmt converted_expr
   | Ast.BreakStmt -> Ctree.BreakStmt
+  | Ast.ContinueStmt -> Ctree.ContinueStmt
   | Ast.ClassInit (ts, name) ->
     inst_classes_list := (ts, name) :: !inst_classes_list;
     let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
     Ctree.StructInit (converted_ts, name)
+  | Ast.Increment id -> Ctree.Increment id
+  | Ast.Decrement id -> Ctree.Decrement id
+  | Ast.IncrementPre id -> Ctree.IncrementPre id
+  | Ast.IncrementVal (id, expr) -> Ctree.IncrementVal (id, convert_ast_expr_to_ctree_expr expr)
+  | Ast.DecrementPre id -> Ctree.DecrementPre id
+  | Ast.DecrementVal (id, expr) -> Ctree.DecrementVal (id, convert_ast_expr_to_ctree_expr expr)
+
 
 let convert_ast_field_to_ctree field =
   match field with

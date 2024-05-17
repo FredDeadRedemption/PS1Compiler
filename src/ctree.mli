@@ -59,6 +59,13 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  | ContinueStmt
+  | Increment    of string
+  | Decrement    of string
+  | IncrementPre of string
+  | DecrementPre of string
+  | IncrementVal of string * expr
+  | DecrementVal of string * expr
 and block = stmt list
 
 type ptype = 

@@ -100,9 +100,24 @@ let rec generate_stmt stmt =
     ";\n" 
   | BreakStmt ->
     "break;\n"
+  | ContinueStmt ->
+    "continue;\n"
   | AssignToStruct (id, stmt) ->
     id ^ "." ^ generate_stmt stmt
-      
+  | Increment id -> 
+    id ^ "++;\n"
+  | Decrement id -> 
+    id ^ "--;\n"
+  | IncrementPre id -> 
+    "++" ^ id ^ ";\n"
+  | DecrementPre id -> 
+    "--" ^ id ^ ";\n"
+  | IncrementVal (id, expr) ->
+    id ^ "+=" ^ generate_expr expr ^ ";\n"
+  | DecrementVal (id, expr) ->
+    id ^ "-=" ^ generate_expr expr ^ ";\n"
+
+
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
   
