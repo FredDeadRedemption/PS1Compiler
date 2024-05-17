@@ -53,7 +53,7 @@ let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
 let convert_ast_typespec_to_ctree_typespec (ts : Ast.typespec) : Ctree.typespec =
   match ts with
   | Ast.Int -> Ctree.Int
-  | Ast.Float -> Ctree.Float
+  | Ast.Float -> Ctree.Int
   | Ast.Bool -> Ctree.Bool
   | Ast.Void -> Ctree.Void
   | Ast.Generic s -> Ctree.Generic s
