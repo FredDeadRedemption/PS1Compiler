@@ -1,11 +1,32 @@
 class Game {
-    int x;
-    int b = 20;
-    float g = 20.0;
-    
-    Difar difar = 20;
+    Car car1 = new Car();
+    Car car2 = new Car();
+
 
     start() {
+
+    }
+
+    update() {
+        
+    }
+
+    void move() {
+        x = x + 1;
+    }
+}
+
+
+class Car {
+
+    int speed = 10;
+    int acc;
+    Engine engine = new Engine();
+    Engine engine2 = new Engine();
+
+
+    start() {
+        acc = 100;
         
     }
 
@@ -13,47 +34,42 @@ class Game {
         
     }
 
-    bool y(bool x) {
+    void move() {
+        x = x + 1;
+    }
 
-        return false;
-    } 
     
 }
 
+class Engine {
 
-class Difar : GameObject {
-    
+    int rpm;
+    Cyl cyl = new Cyl();
 
-    int x = 2; 
 
     start() {
-        if(2==2) {
-            x = 2;
-        } else if (2 == 2) {
-
-        } else {
-            return x;
-        }
+        rpm = 10;
     }
 
     update() {
-        if(2==2) {
-            x = 2;
-        } else if (2 == 2) {
-
-        } else {
-            return x;
-        }
+    
     }
 
-    float y(float x) {
-         
-    } 
-
-    float y (int x) {
-
-    }
     
 }
 
+class Cyl {
+
+    int number;
+
+    start() {
+        number = 1;
+    }
+
+    update() {
+    
+    }
+
+    
+}
 

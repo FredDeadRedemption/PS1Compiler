@@ -64,8 +64,14 @@ let rec generate_expr expr =
 
 let rec generate_stmt stmt =
   match stmt with
-  | VarDef (ts, id, expr) ->
-    (string_of_typespec ts) ^ " " ^ id ^ " " ^ generate_expr expr ^ ";\n"
+  | VarDefI (ts, id, expr) ->
+    (string_of_typespec ts) ^ " " ^ id ^ " = " ^ generate_expr expr ^ ";\n"
+  | VarDefU (ts, id) ->
+    (string_of_typespec ts) ^ " " ^ id ^ ";\n"
+  | StructInit (ts, id) ->
+    (string_of_typespec ts) ^ " " ^ id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
+  | AssignStructInit (ts, id) ->
+    id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
   | ArrayDef (ts, id, size) ->
     (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
@@ -94,7 +100,9 @@ let rec generate_stmt stmt =
     ";\n" 
   | BreakStmt ->
     "break;\n"
-  
+  | AssignToStruct (id, stmt) ->
+    id ^ "." ^ generate_stmt stmt
+      
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
   
@@ -113,13 +121,20 @@ let generate_ptypes ptypes =
 let generate_structs = function
   | StructDef (name, fields) ->
     let field_str = String.concat "\n" (List.map generate_stmt fields) in 
-    "struct " ^ name ^  "{" ^
+    "typedef struct " ^ name ^  "{\n" ^
     field_str ^
+    "}" ^ name ^ ";\n"
+
+  let generate_constructs = function
+  | Constructor (ts, id, stmts, return_stmt) ->
+    let ts_str = string_of_typespec ts in 
+    let stmt_str = String.concat ("\nvar" ^ ts_str ^ ".")  (List.map generate_stmt stmts) in 
+    ts_str ^ " " ^ id ^  "() {\n" ^
+    stmt_str ^
+    generate_stmt return_stmt ^
     "}\n"
 
-
 let generate_funcs = function
-  
   | FuncDef (ts, name, formals, body) ->
     let args_str = String.concat ", " (List.map generate_arg formals) in
     let body_stmts_str = List.map generate_stmt body in
@@ -132,11 +147,11 @@ let generate_funcs = function
 
 let generate_main (start, update) =
   match start with
-      | Start start_block ->
-        let start_code = String.concat "\n" (List.map generate_stmt start_block) in
+    | Start start_block ->
+      let start_code = String.concat "\n" (List.map generate_stmt start_block) in
   match update with
-  | Update update_block ->
-      let update_code = String.concat "\n" (List.map generate_stmt update_block) in
+    | Update update_block ->
+        let update_code = String.concat "\n" (List.map generate_stmt update_block) in
   
   (* Return string*)
   "int main(void) {\n" ^
@@ -148,13 +163,15 @@ let generate_main (start, update) =
  
 
 let generate_program program =
-  let (ptypes, structs, funcs, main) = program in
+  let (ptypes, structs, constructors, funcs, main) = program in
+  let psx_code = Psx_imports.generate_psx_code in
   let ptypes_code = generate_ptypes ptypes in
   let structs_code = String.concat "\n\n" (List.map generate_structs structs) in
+  let constructs_code = String.concat "\n\n" (List.map generate_constructs constructors) in
   let funcs_code = String.concat "\n\n" (List.map generate_funcs funcs) in
   let main_code = generate_main main in
 
-  String.concat "\n\n" [ptypes_code; structs_code; funcs_code; main_code]
+  String.concat "\n\n" [psx_code; ptypes_code; structs_code; constructs_code; funcs_code; main_code]
 
 
 

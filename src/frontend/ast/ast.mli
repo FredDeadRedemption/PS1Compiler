@@ -45,7 +45,8 @@ type formals = formal list
 
 (* statement *)
 type stmt =
-  | VarDef      of typespec * string * expr 
+  | VarDefI     of typespec * string * expr
+  | VarDefU     of typespec * string 
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 
@@ -54,10 +55,15 @@ type stmt =
   | ElseStmt    of block
   | ReturnStmt  of expr
   | BreakStmt
+  | ClassInit   of typespec * string
 and block = stmt list
 
 (* class fields*)
-type field = FieldDef of typespec * string * expr option
+type field = 
+  | FieldDefI    of typespec * string * expr 
+  | FieldDefU    of typespec * string
+  | FieldClsInit of typespec * string
+  
 
 (* class start *)
 type start = StartDef of block

@@ -222,9 +222,12 @@ let rec print_expr expr =
 (* Statement Printing *)
 let rec print_stmt stmt =
   match stmt with
-  | VarDef (ts, name, expr) ->
+  | VarDefI (ts, name, expr) ->
     printf "\nVarDef{type: %s, name: %s, value: " (string_of_typespec ts) name;
     print_expr expr;
+    printf "}"
+  | VarDefU (ts, name) ->
+    printf "\nVarDef{type: %s, name: %s" (string_of_typespec ts) name;
     printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
@@ -258,16 +261,21 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+  | ClassInit (typespec, id) ->
+    printf "\nClassInit{ts: %s, id: %s}" (string_of_typespec typespec) id
 
 (* Field Printing *)
-let print_field (FieldDef (ts, name, expr_opt)) =
-  match expr_opt with
-  | Some expr ->
+let print_field field =
+  match field with
+  | FieldDefI (ts, name, e) ->
     printf "(type: %s, name: %s, default: " (string_of_typespec ts) name;
-    print_expr expr;
+    print_expr e;
     printf ")"
-  | None ->
+  | FieldDefU (ts, name) ->
     printf "(type: %s, name: %s) " (string_of_typespec ts) name
+  | FieldClsInit (typespec, id) ->
+    printf "\nClassInit{ts: %s, id: %s}" (string_of_typespec typespec) id
+
 
 
 
@@ -291,13 +299,13 @@ let print_method (MethodDef (ts, name, formals, block)) =
 
 (* Class Block Printing *)
 let print_classblock (fields, start, update, methods) =
-  printf "Fields: [";
+  printf " Fields: [";
   List.iter print_field fields;
-  printf "] Start: ";
+  printf "]\n Start: [";
   print_start start;
-  printf " Update: ";
+  printf "]\n Update: [";
   print_update update;
-  printf " Methods: [";
+  printf "]\n Methods: [";
   List.iter print_method methods;
   printf "]"
 
@@ -305,14 +313,14 @@ let print_classblock (fields, start, update, methods) =
 let print_class cls index =
   match cls with
   | ClassStmt (name, classblock) -> 
-    printf "Class%d: %s {" index name;
+    printf "Class%d: %s {\n" index name;
     print_classblock classblock;
-    printf "}"
+    printf "}\n"
   | ClassInherStmt (name, inher, classblock) -> 
     printf "Class%d: %s" index name;
-    printf ", extends %s {" inher;
+    printf ", extends %s {\n" inher;
     print_classblock classblock;
-    printf "}"
+    printf "}\n"
 
 (* Program Printing *)
 let print_program (gcls, clss) =

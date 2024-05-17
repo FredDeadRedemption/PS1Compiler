@@ -45,7 +45,12 @@ type formals = formal list
 
 (* statement *)
 type stmt =
-  | VarDef      of typespec * string * expr 
+  | VarDefI     of typespec * string * expr 
+  | VarDefU     of typespec * string
+  (*| StructDecl  of typespec * string*)
+  | StructInit  of typespec * string
+  | AssignStructInit  of typespec * string
+  | AssignToStruct of string * stmt
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 
@@ -72,6 +77,10 @@ type _struct = StructDef of string * stmt list
 type structs =
   _struct list
 
+type constructor = Constructor of typespec * string * stmt list * stmt
+type constructors =
+  constructor list
+
 type start = Start of block
   
 type update = Update of block 
@@ -80,4 +89,4 @@ type main =
  start * update 
 
 type program = 
-  ptypes * structs * funcs * main
+  ptypes * structs * constructors * funcs * main

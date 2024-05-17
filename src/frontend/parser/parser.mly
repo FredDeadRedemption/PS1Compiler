@@ -4,6 +4,9 @@
 
 %token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token CLASS
+%token NEW
+%token THIS
+%token SUPER
 %token <string> GAMEOBJECT
 %token <int> INT
 %token <string> ID
@@ -62,11 +65,9 @@ fields:
 ;
 
 field:
-| typespec ID initialize? SEMICOLON { FieldDef($1, $2, $3) }
-;
-
-initialize:
-| EQ expr { $2 }
+| typespec ID EQ expr SEMICOLON { FieldDefI($1, $2, $4) }
+| typespec ID SEMICOLON         { FieldDefU($1, $2) }
+| typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { FieldClsInit($1, $2) }
 ;
 
 start:
@@ -101,7 +102,8 @@ expr:
 
 // Statements
 stmt:
-| typespec ID EQ expr SEMICOLON                        { VarDef($1, $2, $4) }
+| typespec ID EQ expr SEMICOLON                        { VarDefI($1, $2, $4) }
+| typespec ID SEMICOLON                                { VarDefU($1, $2) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 (*| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }*)
@@ -111,7 +113,7 @@ stmt:
 | ELSE block                                           { ElseStmt($2) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
-//| TYPE_CLASS ID COLON ID block                    { ClassInherStmt($2, $4) }
+| typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
 ;
 
 // Reusables
@@ -150,61 +152,3 @@ block:
 | EQ EQ     { BinopEq }
 | EXCL EQ   { BinopNotEq }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-(*
-%token LPAREN 
-%token RPAREN  
-%token LBRACE 
-%token RBRACE 
-%token LBRACK 
-%token RBRACK 
-%token DOT 
-%token COMMA
-%token COLON 
-%token SEMICOLON 
-%token EQ 
-%token ADD 
-%token SUB 
-%token MUL  
-%token DIV 
-%token MOD 
-%token LANGLE 
-%token RANGLE 
-%token AND 
-%token OR 
-%token NOT 
-%token LET 
-%token CONST 
-%token FUN 
-%token TYPE_INT 
-%token TYPE_FLOAT 
-%token TYPE_BOOL  
-%token TYPE_VOID 
-%token TYPE_NULL 
-%token TRUE 
-%token FALSE 
-%token WHILE 
-%token IF 
-%token ELSE 
-%token FOR 
-%token MAIN 
-%token PRINT
-%token RETURN
-%token <int> INT
-%token <float> FLOAT
-%token <string> STRING
-%token <string> ID
-
-*)
