@@ -46,6 +46,10 @@ let check_method_int stmts =
     | ReturnStmt expr ->
       (match expr with 
       | ConstInt _ -> Printf.printf "Method int return\n"
+      | Var str -> 
+        (match str with
+          | _ -> Printf.printf "%s\n" str
+         )
       | _ -> failwith "Return type doesn't match method typespec\n")
     | _ -> ()
   ) stmts
@@ -56,6 +60,10 @@ let check_method_float stmts =
     | ReturnStmt expr ->
       (match expr with 
       | ConstFloat _ -> Printf.printf "Method float return\n"
+      | Var str -> 
+        (match str with
+          | _ -> Printf.printf "%s\n" str
+         )
       | _ -> failwith "Return type doesn't match method typespec\n")
     | _ -> ()
   ) stmts
@@ -66,6 +74,10 @@ let check_method_bool stmts =
     | ReturnStmt expr ->
       (match expr with 
       | Bool _ -> Printf.printf "Method bool return\n"
+      | Var str -> 
+        (match str with
+          | _ -> Printf.printf "%s\n" str
+         )
       | _ -> failwith "Return type doesn't match method typespec\n")
     | _ -> ()
   ) stmts
