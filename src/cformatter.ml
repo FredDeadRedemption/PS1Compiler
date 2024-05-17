@@ -58,7 +58,9 @@ and convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
   | Ast.FuncCall (name, params) -> Ctree.FuncCall (name, List.map convert_ast_expr_to_ctree_expr params)
   | Ast.ArrayAccess (name, index) -> Ctree.ArrayAccess (name, index)
   | Ast.ConstInt value -> Ctree.ConstInt value
-  | Ast.ConstFloat value -> Ctree.ConstFloat value
+  | Ast.ConstFloat value ->
+    let int_value = int_of_float (value *. 4096.0) in
+    Ctree.ConstInt int_value
   | Ast.Var name -> Ctree.Var name
   | Ast.Bool value -> Ctree.Bool value
   | Ast.UnaryOp (op, expr) ->
