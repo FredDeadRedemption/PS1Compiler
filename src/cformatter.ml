@@ -216,26 +216,27 @@ let rec convert_ctree_stmt_to_struct_assignment ids stmt =
   Ctree.AssignToStruct (id, convert_ctree_stmt_to_struct_assignment tl stmt)
   
   
-let collect_object_components parent_ids current_ts start_block update_block =
+let generate_object parent_ids current_ts start_block update_block =
   let struct_inits =
     (*print_endline (current_id);*)
     (convert_ctree_stmt_to_struct_assignment parent_ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
   in
   let converted_start = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
-  start_list :=  !start_list @ [struct_inits] @ converted_start;
+  let start_list = [struct_inits] @ converted_start in
   let converted_update = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
-  update_list := !update_list @ converted_update
+  let update_list = converted_update in
+  (current_ts, start_list, update_list)
 
 
+let string_of_typespec = function
+| Ast.Int -> "int"
+| Ast.Float -> "float"
+| Ast.Bool -> "int"
+| Ast.Void -> "void"
+| Ast.Generic g -> g
 
 let rec instantiate_class (ts, ids) classes =
-  let string_of_typespec = function
-    | Ast.Int -> "int"
-    | Ast.Float -> "float"
-    | Ast.Bool -> "int"
-    | Ast.Void -> "void"
-    | Ast.Generic g -> g
-  in
+  
 
   print_endline("instantiate_class called" ^ (List.hd(List.rev ids)));
   
@@ -253,40 +254,35 @@ let rec instantiate_class (ts, ids) classes =
   match find_class_by_name ts_str classes with
   | None -> failwith ("Class " ^ ts_str ^ " not found.")
   | Some class_def ->
-    begin
-      match class_def with
-      | Ast.ClassStmt ((*class_name*)_, (fields, StartDef start, UpdateDef update, _)) ->
-        List.iter (function
-          | Ast.FieldClsInit (ts, id) -> 
-            
-            
+    let fields, start, update = match class_def with
+      | Ast.ClassStmt (_, (fields, StartDef start, UpdateDef update, _))
+      | Ast.ClassInherStmt (_, _, (fields, StartDef start, UpdateDef update, _)) -> (fields, start, update)
+    in
 
-            print_endline("Field found: " ^ string_of_typespec ts ^ " " ^ id);
-            instantiate_class (ts, ids @ [id]) classes 
+    let child_objects = List.fold_right (fun field acc ->
+      match field with
+      | Ast.FieldClsInit (field_ts, id) ->
+        let child_result = instantiate_class (field_ts, ids @ [id]) classes in
+        child_result :: acc
+      | _ -> acc
+    ) fields [] in
 
-            
-          | _ -> print_endline("Field found: Not instantiation")
-        ) fields;
-        print_endline("This object will be instanciated: " ^ string_of_typespec ts ^ " " ^ (List.hd(List.rev ids)) ^ ", and has this tree: " ^ (String.concat "." ids));
-        
-        
-        collect_object_components ids (ts) start update;
+    let current_object = generate_object ids ts start update in
+    print_endline (List.hd (List.rev ids) ^ " has now been instantiated!");
+    current_object :: List.flatten child_objects
   
-        print_endline(List.hd(List.rev ids) ^ " has now been instatiated!")
-
-        (*print_endline ("Found class: " ^ class_name ^ " with id " ^ (String.concat "." ids))*)
-      | Ast.ClassInherStmt (class_name, inher, (_, StartDef _, UpdateDef _, _)) ->
-        let new_ids = ids in
-        (* collect_object_components new_ids start update; *)
-        print_endline ("Found inherited class: " ^ class_name ^ " inheriting from " ^ inher ^ " with id " ^ (List.hd new_ids))
-    end
-  
+let collect_object_components (ts, start, update) =
+  print_endline("Has this ts: " ^ string_of_typespec ts);
+  start_list := !start_list @ start;
+  update_list := !update_list @ update
 
 let rec instantiate_classes inst_classes_list classes =
   match inst_classes_list with
   | [] -> ()
   | (ts, id) :: tl ->
-    instantiate_class (ts, [id]) classes;
+    
+    let objects = instantiate_class (ts, [id]) classes in
+    List.iter collect_object_components objects;
     instantiate_classes tl classes
 
 let rec generate_func_pt method_list =
