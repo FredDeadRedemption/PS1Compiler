@@ -2,6 +2,8 @@ class Game {
     Car car1 = new Car();
     Car car2 = new Car();
 
+    float a = 12.3;
+
 
     start() {
 

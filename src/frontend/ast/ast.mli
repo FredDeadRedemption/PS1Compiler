@@ -44,17 +44,24 @@ type formals = formal list
 
 (* statement *)
 type stmt =
-  | VarDefI     of typespec * string * expr
-  | VarDefU     of typespec * string 
-  | ArrayDef    of typespec * string * int
-  | ArrayAssign of string * int * expr
-  | Assign      of string * expr 
-  | IfStmt      of expr * block
-  | ElseIfStmt  of expr * block
-  | ElseStmt    of block
-  | ReturnStmt  of expr
+  | VarDefI      of typespec * string * expr
+  | VarDefU      of typespec * string 
+  | ArrayDef     of typespec * string * int
+  | ArrayAssign  of string * int * expr
+  | Assign       of string * expr 
+  | IfStmt       of expr * block
+  | ElseIfStmt   of expr * block
+  | ElseStmt     of block
+  | ReturnStmt   of expr
   | BreakStmt
-  | ClassInit   of typespec * string
+  | ContinueStmt
+  | ClassInit    of typespec * string
+  | Increment    of string
+  | Decrement    of string
+  | IncrementPre of string
+  | DecrementPre of string
+  | IncrementVal of string * expr
+  | DecrementVal of string * expr
   | MethodCall  of string option * string * params
 and block = stmt list
 

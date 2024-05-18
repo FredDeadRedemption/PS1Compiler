@@ -97,6 +97,8 @@ let rec generate_stmt stmt =
     ";\n" 
   | BreakStmt ->
     "break;\n"
+  | ContinueStmt ->
+    "continue;\n"
   | AssignToStruct (id, stmt) ->
     let dot_opt = match stmt with
       | AssignStructInit _ -> "" (*We don't want a dot for this stmt*)
@@ -106,7 +108,20 @@ let rec generate_stmt stmt =
   | FuncCall (_, name, args) ->
     let args_str = String.concat ", " (List.map generate_expr args) in
     name ^ " (" ^ args_str ^ ")"
-      
+  | Increment id -> 
+    id ^ "++;\n"
+  | Decrement id -> 
+    id ^ "--;\n"
+  | IncrementPre id -> 
+    "++" ^ id ^ ";\n"
+  | DecrementPre id -> 
+    "--" ^ id ^ ";\n"
+  | IncrementVal (id, expr) ->
+    id ^ "+=" ^ generate_expr expr ^ ";\n"
+  | DecrementVal (id, expr) ->
+    id ^ "-=" ^ generate_expr expr ^ ";\n"
+
+
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 
   

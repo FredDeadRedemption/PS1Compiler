@@ -103,8 +103,24 @@ let rec print_stmt stmt =
     printf "}"
   | BreakStmt ->
     printf "\nBreakStmt"
+  | ContinueStmt ->
+    printf "\nContinueStmt"
   | ClassInit (typespec, id) ->
     printf "\nClassInit{ts: %s, id: %s}" (string_of_typespec typespec) id
+  | Increment (id) ->
+    printf "\nIncrementSuffix{id: %s}" id
+  | Decrement (id) ->
+    printf "\nDecrementSuffix{id: %s}" id
+  | IncrementPre (id) ->
+    printf "\nIncrementPrefix{id: %s}" id
+  | DecrementPre (id) ->
+    printf "\nDecrementPrefix{id: %s}" id
+  | IncrementVal (id, expr) ->
+    printf "\nIncrementVal{id: %s}" id;
+    print_expr expr
+  | DecrementVal (id, expr) ->
+    printf "\nDecrementVal{id: %s}" id;
+    print_expr expr
   | MethodCall (ref_opt, mthd, args) ->
     let current_ref = match ref_opt with 
       | Some "this" -> "this"

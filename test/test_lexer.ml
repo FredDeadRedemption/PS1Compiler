@@ -13,6 +13,19 @@ let lex_string str =
   helper []
 
 (*test cases for each token *)
+
+let test_lexer_decrement _ =
+  let input = "--" in
+  let expected = [DECR; EOF] in
+  let result = lex_string input in
+  assert_equal expected result
+
+let test_lexer_increment _ =
+  let input = "++" in
+  let expected = [INCR; EOF] in
+  let result = lex_string input in
+  assert_equal expected result
+  
 let test_lexer_add _ =
   let input = "+" in
   let expected = [ADD; EOF] in
@@ -157,12 +170,6 @@ let test_lexer_else _ =
   let result = lex_string input in
   assert_equal expected result
 
-let test_lexer_print _ =
-  let input = "print" in
-  let expected = [PRINT; EOF] in
-  let result = lex_string input in
-  assert_equal expected result
-
 let test_lexer_start _ =
   let input = "start" in
   let expected = [START; EOF] in
@@ -281,7 +288,6 @@ let suite =
     "test_lexer_break" >:: test_lexer_break;
     "test_lexer_if" >:: test_lexer_if;
     "test_lexer_else" >:: test_lexer_else;
-    "test_lexer_print" >:: test_lexer_print;
     "test_lexer_start" >:: test_lexer_start;
     "test_lexer_update" >:: test_lexer_update;
     "test_lexer_true" >:: test_lexer_true;
@@ -297,6 +303,8 @@ let suite =
     "test_lexer_float" >:: test_lexer_float;
     "test_lexer_identifier" >:: test_lexer_identifier;
     "test_lexer_generic" >:: test_lexer_generic;
+    "test_lexer_decrement" >:: test_lexer_decrement;
+    "test_lexer_increment" >:: test_lexer_increment;
   ]
 
 let () =
