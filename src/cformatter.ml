@@ -101,9 +101,13 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.IncrementVal (id, expr) -> Ctree.IncrementVal (id, convert_ast_expr_to_ctree_expr expr)
   | Ast.DecrementPre id -> Ctree.DecrementPre id
   | Ast.DecrementVal (id, expr) -> Ctree.DecrementVal (id, convert_ast_expr_to_ctree_expr expr)
-
-  | MethodCall (_, mthd_id, args) ->
-    Ctree.FuncCall (Ctree.Typed, mthd_id, List.map convert_ast_expr_to_ctree_expr args)
+  | MethodCall (ref_opt, mthd_id, args) ->
+    let type_of_call =
+      match ref_opt with
+      | None -> Ctree.Pointer
+      | _ -> Ctree.Pointer 
+    in
+    Ctree.FuncCall (type_of_call, mthd_id, List.map convert_ast_expr_to_ctree_expr args)
     
 
 let convert_ast_field_to_ctree field =
@@ -219,21 +223,48 @@ let collect_class_inher_components id inher (fields, methods) =
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
 
-let rec convert_ctree_stmt_to_struct_assignment ids stmt =
+let rec stmt_to_struct_assignment ids stmt =
   match ids with 
   | [] -> stmt
   | id :: tl ->  
-  Ctree.AssignToStruct (id, convert_ctree_stmt_to_struct_assignment tl stmt)
+  Ctree.AssignToStruct (id, stmt_to_struct_assignment tl stmt)
   
-  
-let generate_object parent_ids current_ts start_block update_block =
+let rec handle_object_stmt ids stmt =
+  match stmt with
+  (*These will be changed*)
+  | Ctree.Assign (id, e) -> stmt_to_struct_assignment ids (Ctree.Assign(id, e))
+  (* TODO: e skal også ændres, med noget lignende som "stmt_to_struct_assignment"*)
+  | IfStmt (e, blk) -> IfStmt (e, List.map (handle_object_stmt ids) blk)
+  | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
+  | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)
+  | FuncCall (type_func_call, id, params) -> FuncCall (type_func_call, id, params)
+  (*These are the same*)
+  | VarDefI (ts, id, e) -> VarDefI (ts, id, e)
+  | VarDefU (ts, id) -> VarDefU (ts, id)
+  | StructInit (ts, id) -> StructInit (ts, id)
+  | AssignStructInit ts -> AssignStructInit ts
+  | AssignToStruct (id, st) -> AssignToStruct (id, st)
+  | ArrayDef (ts, id, size) -> ArrayDef (ts, id, size)
+  | ArrayAssign (id, index, e) -> ArrayAssign (id, index, e)
+  | ReturnStmt e -> ReturnStmt e
+  | BreakStmt -> BreakStmt
+  | ContinueStmt -> ContinueStmt
+  | Increment id -> Increment id
+  | Decrement id -> Decrement id
+  | IncrementPre id -> IncrementPre id
+  | DecrementPre id -> DecrementPre id
+  | IncrementVal (id, e) -> IncrementVal (id, e)
+  | DecrementVal (id, e) -> DecrementVal (id, e)
+
+let generate_object ids current_ts start_block update_block =
   let struct_inits =
     (*print_endline (current_id);*)
-    (convert_ctree_stmt_to_struct_assignment parent_ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
+    (stmt_to_struct_assignment ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
   in
-  let converted_start = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
-  let start_list = [struct_inits] @ converted_start in
-  let converted_update = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
+
+  let handled_start = List.map (handle_object_stmt ids) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
+  let start_list = [struct_inits] @ handled_start in
+  let converted_update = List.map (stmt_to_struct_assignment ids) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
   let update_list = converted_update in
   (current_ts, start_list, update_list)
 

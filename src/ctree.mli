@@ -30,6 +30,7 @@ type expr =
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
   
+  
 and params = expr list
   
 type typespec = 
@@ -47,7 +48,6 @@ type formals = formal list
 type stmt =
   | VarDefI     of typespec * string * expr 
   | VarDefU     of typespec * string
-  (*| StructDecl  of typespec * string*)
   | StructInit  of typespec * string
   | AssignStructInit  of typespec
   | AssignToStruct of string * stmt

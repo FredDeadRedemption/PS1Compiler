@@ -30,7 +30,7 @@ class Car {
     start() {
         acc = 100;
         //move();
-        //acc = fly(10);
+        //acc = fly(10);  TODO: her er MethodCall brugt som expr
         
     }
 
@@ -56,7 +56,10 @@ class Engine {
 
     start() {
         rpm = 10;
-        //setRpm(100);
+        //setRpm(100);TODO: her er MethodCall brugt som stmt
+        if (rpm == 10) {
+            rpm = 20;
+        }
     }
 
     update() {
