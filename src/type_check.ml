@@ -91,7 +91,6 @@ let check_method_void block =
       | ConstFloat _ -> failwith "Expected no return value for void method, but got float\n"
       | Bool _ -> failwith "Expected no return value for void method, but got bool\n"
       | Var _ -> failwith "Expected no return value for void method, but got variable\n"
-      | FuncCall _ -> failwith "Expected no return value for void method, but got function call\n"
       | _ -> Printf.printf "Expected no return value\n")
     | _ -> ()
   ) block
