@@ -32,7 +32,6 @@ let convert_ast_unop_to_ctree_unop (op : Ast.unop) : Ctree.unop =
 let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
   match expr with
   | Ast.ParenExpr inner -> Ctree.ParenExpr (convert_ast_expr_to_ctree_expr inner)
-  | Ast.FuncCall (name, params) -> Ctree.FuncCall (name, List.map convert_ast_expr_to_ctree_expr params)
   | Ast.ArrayAccess (name, index) -> Ctree.ArrayAccess (name, index)
   | Ast.ConstInt value -> Ctree.ConstInt value
   | Ast.ConstFloat value -> Ctree.ConstFloat value
@@ -93,6 +92,9 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
     inst_classes_list := (ts, name) :: !inst_classes_list;
     let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
     Ctree.StructInit (converted_ts, name)
+  | MethodCall (_, mthd_id, args) ->
+    Ctree.FuncCall (Ctree.Typed, mthd_id, List.map convert_ast_expr_to_ctree_expr args)
+    
 
 let convert_ast_field_to_ctree field =
   match field with
@@ -212,27 +214,31 @@ let rec convert_ctree_stmt_to_struct_assignment ids stmt =
   | [] -> stmt
   | id :: tl ->  
   Ctree.AssignToStruct (id, convert_ctree_stmt_to_struct_assignment tl stmt)
-
-
-let collect_object_components parent_ids (current_ts, current_id) start_block update_block =
+  
+  
+let collect_object_components parent_ids current_ts start_block update_block =
   let struct_inits =
-    
-    let lowest_child_class = Ctree.AssignStructInit ((convert_ast_typespec_to_ctree_typespec current_ts), current_id) in
-    List.map (convert_ctree_stmt_to_struct_assignment parent_ids) [lowest_child_class]
+    (*print_endline (current_id);*)
+    (convert_ctree_stmt_to_struct_assignment parent_ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
   in
   let converted_start = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
-  start_list := !start_list @ struct_inits @ converted_start;
+  start_list :=  !start_list @ [struct_inits] @ converted_start;
   let converted_update = List.map (convert_ctree_stmt_to_struct_assignment parent_ids) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
   update_list := !update_list @ converted_update
 
+
+
 let rec instantiate_class (ts, ids) classes =
   let string_of_typespec = function
-  | Ast.Int -> "int"
-  | Ast.Float -> "float"
-  | Ast.Bool -> "int"
-  | Ast.Void -> "void"
-  | Ast.Generic g -> g
+    | Ast.Int -> "int"
+    | Ast.Float -> "float"
+    | Ast.Bool -> "int"
+    | Ast.Void -> "void"
+    | Ast.Generic g -> g
   in
+
+  print_endline("instantiate_class called" ^ (List.hd(List.rev ids)));
+  
   let ts_str = string_of_typespec ts in
   let rec find_class_by_name name classes =
     match classes with
@@ -249,24 +255,32 @@ let rec instantiate_class (ts, ids) classes =
   | Some class_def ->
     begin
       match class_def with
-      | Ast.ClassStmt (class_name, (fields, StartDef start, UpdateDef update, _)) ->
-        let new_ids = ids in
-        let class_info_ref = ref None in 
+      | Ast.ClassStmt ((*class_name*)_, (fields, StartDef start, UpdateDef update, _)) ->
         List.iter (function
           | Ast.FieldClsInit (ts, id) -> 
-            instantiate_class (ts, new_ids @ [id]) classes;
-            class_info_ref := Some (ts, id)
-          | _ -> ()
+            
+            
+
+            print_endline("Field found: " ^ string_of_typespec ts ^ " " ^ id);
+            instantiate_class (ts, ids @ [id]) classes 
+
+            
+          | _ -> print_endline("Field found: Not instantiation")
         ) fields;
-        (match !class_info_ref with
-        | Some class_info -> collect_object_components new_ids class_info start update
-        | None -> ());
-        print_endline ("Found class: " ^ class_name ^ " with id " ^ (String.concat "." new_ids))
+        print_endline("This object will be instanciated: " ^ string_of_typespec ts ^ " " ^ (List.hd(List.rev ids)) ^ ", and has this tree: " ^ (String.concat "." ids));
+        
+        
+        collect_object_components ids (ts) start update;
+  
+        print_endline(List.hd(List.rev ids) ^ " has now been instatiated!")
+
+        (*print_endline ("Found class: " ^ class_name ^ " with id " ^ (String.concat "." ids))*)
       | Ast.ClassInherStmt (class_name, inher, (_, StartDef _, UpdateDef _, _)) ->
         let new_ids = ids in
-        (*collect_object_components new_ids start update;*)
+        (* collect_object_components new_ids start update; *)
         print_endline ("Found inherited class: " ^ class_name ^ " inheriting from " ^ inher ^ " with id " ^ (List.hd new_ids))
     end
+  
 
 let rec instantiate_classes inst_classes_list classes =
   match inst_classes_list with

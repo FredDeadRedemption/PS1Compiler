@@ -40,9 +40,6 @@ let rec generate_expr expr =
   match expr with
   | ParenExpr ex ->
     "(" ^ (generate_expr ex) ^ ")"
-  | FuncCall (name, args) ->
-    let args_str = String.concat ", " (List.map generate_expr args) in
-    name ^ " (" ^ args_str ^ ")"
   | ArrayAccess (name, index) ->
     "ArrayAccess(name: "^ name ^" index:"^ string_of_int index ^")"  
   | ConstInt i ->
@@ -69,9 +66,9 @@ let rec generate_stmt stmt =
   | VarDefU (ts, id) ->
     (string_of_typespec ts) ^ " " ^ id ^ ";\n"
   | StructInit (ts, id) ->
-    (string_of_typespec ts) ^ " " ^ id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
-  | AssignStructInit (ts, id) ->
-    id ^ " = initialize" ^ (string_of_typespec ts) ^ "();\n"
+    (string_of_typespec ts) ^ " " ^ id ^ ";\n"
+  | AssignStructInit (ts) ->
+    " = initialize" ^ (string_of_typespec ts) ^ "();\n"
   | ArrayDef (ts, id, size) ->
     (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
@@ -101,7 +98,14 @@ let rec generate_stmt stmt =
   | BreakStmt ->
     "break;\n"
   | AssignToStruct (id, stmt) ->
-    id ^ "." ^ generate_stmt stmt
+    let dot_opt = match stmt with
+      | AssignStructInit _ -> "" (*We don't want a dot for this stmt*)
+      | _ -> "."
+    in
+    id ^ dot_opt ^ generate_stmt stmt
+  | FuncCall (_, name, args) ->
+    let args_str = String.concat ", " (List.map generate_expr args) in
+    name ^ " (" ^ args_str ^ ")"
       
 let generate_arg (ts, id) =
   (string_of_typespec ts) ^" "^ id 

@@ -47,6 +47,7 @@ rule tokenize = parse
   | ','        { COMMA }
   | ';'        { SEMICOLON }
   | ':'        { COLON }
+  | '.'        { DOT }
   | "return"   { RETURN }
   | "break"    { BREAK }
   | "if"       { IF }
@@ -60,10 +61,10 @@ rule tokenize = parse
   | "float"    { TYPE_FLOAT }
   | "bool"     { TYPE_BOOL }
   | "void"     { TYPE_VOID }
-  | "class"    { CLASS }
-  | "new"      { NEW }
-  | "this"     { THIS }
-  | "super"    { SUPER }
+  | "class"         { CLASS }
+  | "new"           { NEW }
+  | "this" as s     { THIS s }
+  | "super" as s    { SUPER s }
   | "GameObject" as s { GAMEOBJECT s }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 

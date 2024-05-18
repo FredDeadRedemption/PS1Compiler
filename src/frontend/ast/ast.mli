@@ -22,7 +22,6 @@ type unop =
 (* expression *)
 type expr = 
   | ParenExpr   of expr
-  | FuncCall    of string * params
   | ArrayAccess of string * int
   | ConstInt    of int
   | ConstFloat  of float
@@ -56,6 +55,7 @@ type stmt =
   | ReturnStmt  of expr
   | BreakStmt
   | ClassInit   of typespec * string
+  | MethodCall  of string option * string * params
 and block = stmt list
 
 (* class fields*)

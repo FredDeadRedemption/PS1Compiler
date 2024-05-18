@@ -5,8 +5,8 @@
 %token TYPE_INT TYPE_FLOAT TYPE_BOOL TYPE_VOID
 %token CLASS
 %token NEW
-%token THIS
-%token SUPER
+%token <string> THIS
+%token <string> SUPER
 %token <string> GAMEOBJECT
 %token <int> INT
 %token <string> ID
@@ -22,6 +22,7 @@
 %token LCURBRACK RCURBRACK
 %token COMMA SEMICOLON
 %token COLON
+%token DOT
 %token IF ELSE 
 %token PRINT 
 %token START UPDATE
@@ -89,7 +90,6 @@ _method:
 // Expressions
 expr:
 | LPAREN expr RPAREN                                   { ParenExpr($2) }
-| ID LPAREN separated_list(COMMA, expr) RPAREN         { FuncCall($1, $3) }
 | ID LSQBRACK INT RSQBRACK                             { ArrayAccess($1, $3) }
 | INT                                                  { ConstInt($1) }
 | FLOAT                                                { ConstFloat($1) }
@@ -99,6 +99,8 @@ expr:
 | unop expr                                            { UnaryOp($1, $2) }
 | expr binop expr                                      { BinaryOp($2, $1, $3) }
 ;
+
+
 
 // Statements
 stmt:
@@ -114,6 +116,14 @@ stmt:
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
 | typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
+| ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCall(None, $1, $3) }
+| ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCall(Some($1), $3, $5) }
+;
+
+ref: 
+| ID { $1 }
+| THIS     { $1 }
+| SUPER    { $1 }
 ;
 
 // Reusables

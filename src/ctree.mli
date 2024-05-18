@@ -22,7 +22,6 @@ type unop =
 (* expression *)
 type expr = 
   | ParenExpr   of expr
-  | FuncCall    of string * params
   | ArrayAccess of string * int
   | ConstInt    of int
   | ConstFloat  of float
@@ -30,6 +29,7 @@ type expr =
   | Bool        of bool
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
+  
 and params = expr list
   
 type typespec = 
@@ -49,7 +49,7 @@ type stmt =
   | VarDefU     of typespec * string
   (*| StructDecl  of typespec * string*)
   | StructInit  of typespec * string
-  | AssignStructInit  of typespec * string
+  | AssignStructInit  of typespec
   | AssignToStruct of string * stmt
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
@@ -58,8 +58,12 @@ type stmt =
   | ElseIfStmt  of expr * block
   | ElseStmt    of block
   | ReturnStmt  of expr
-  | BreakStmt
+  | BreakStmt 
+  | FuncCall    of typ_func_call * string * params
 and block = stmt list
+and typ_func_call =
+  | Typed 
+  | Pointer
 
 type ptype = 
   | StructProto of string 

@@ -8,12 +8,11 @@ class Game {
     }
 
     update() {
+        //car1.move();
         
     }
 
-    void move() {
-        x = x + 1;
-    }
+
 }
 
 
@@ -21,21 +20,27 @@ class Car {
 
     int speed = 10;
     int acc;
-    Engine engine = new Engine();
+    Engine engine1 = new Engine();
     Engine engine2 = new Engine();
+    //Engine engine3 = new Engine();
 
 
     start() {
         acc = 100;
+        //move();
+        //acc = fly(10);
         
     }
 
     update() {
-        
     }
 
     void move() {
-        x = x + 1;
+        speed = 1;
+    }
+    int fly(int x) {
+        x = x * 2;
+        return x;
     }
 
     
@@ -49,10 +54,15 @@ class Engine {
 
     start() {
         rpm = 10;
+        //setRpm(100);
     }
 
     update() {
-    
+
+    }
+
+    void setRpm(int amount) {
+        rpm = amount; 
     }
 
     
@@ -60,7 +70,7 @@ class Engine {
 
 class Cyl {
 
-    int number;
+    int number = 10;
 
     start() {
         number = 1;

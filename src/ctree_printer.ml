@@ -35,13 +35,6 @@ let rec print_expr expr =
     printf "ParenExpr("; 
     print_expr ex; 
     printf ")"
-  | FuncCall (name, args) ->
-    printf "FuncCall(name: %s" name;
-    List.iter (fun arg -> 
-      printf " arg: "; 
-      print_expr arg
-    ) args;
-    printf ")"
   | ArrayAccess (name, index) ->
     printf "ArrayAccess(name: %s index: %d)" name index
   | ConstInt i ->
@@ -77,8 +70,8 @@ let rec print_stmt stmt =
   | StructInit (ts, id) ->
     printf "\nStructInit{type: %s, name: %s" (string_of_typespec ts) id;
     printf "}"
-  | AssignStructInit (ts, id) ->
-    printf "\nAssignStructInit{type: %s, name: %s" (string_of_typespec ts) id;
+  | AssignStructInit (ts) ->
+    printf "\nAssignStructInit{type: %s" (string_of_typespec ts);
     printf "}"
   | ArrayDef (ts, name, size) ->
     printf "\nArrayDef{type: %s, name: %s, size: %d}" (string_of_typespec ts) name size
@@ -117,6 +110,13 @@ let rec print_stmt stmt =
     print_stmt stmt;
     printf "}, to obj: %s" id;
     printf "}"
+  | FuncCall (_, name, args) ->
+    printf "FuncCall(name: %s" name;
+    List.iter (fun arg -> 
+      printf " arg: "; 
+      print_expr arg
+    ) args;
+    printf ")"
  
 
 
