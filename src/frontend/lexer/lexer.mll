@@ -51,6 +51,7 @@ rule tokenize = parse
   | "return"   { RETURN }
   | "break"    { BREAK }
   | "continue" { CONTINUE }
+  | "for"      { FOR }
   | "if"       { IF }
   | "else"     { ELSE }
   | "while"    { WHILE }

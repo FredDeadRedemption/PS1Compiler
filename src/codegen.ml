@@ -75,6 +75,16 @@ let rec generate_stmt stmt =
     id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";\n"
   | Assign (name, expr) ->
     name ^ " = " ^ generate_expr expr ^ ";\n"
+  | ForStmt (expr, cond, incr, block) ->
+    "for (" ^
+    generate_expr expr ^
+    "; " ^ 
+    generate_expr cond ^ 
+    "; " ^
+    generate_expr incr ^
+    ") { \n" ^ 
+    String.concat "\n" (List.map generate_stmt block) ^ 
+    "}\n"
   | IfStmt (cond, block) ->
     "if (" ^
     generate_expr cond ^

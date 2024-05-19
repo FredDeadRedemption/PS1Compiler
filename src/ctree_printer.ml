@@ -83,6 +83,15 @@ let rec print_stmt stmt =
     printf "\nAssign{name: %s, value: " name;
     print_expr expr;
     printf "}"
+  | ForStmt (expr, cond, incr, block) ->
+    printf "\nForStmt{expr: }";
+    print_expr expr;
+    printf ", condition: ";
+    print_expr cond;
+    printf ", increment: ";
+    print_expr incr;
+    printf ", then: ";
+    List.iter print_stmt block;
   | IfStmt (cond, block) ->
     printf "\nIfStmt{condition: "; 
     print_expr cond;

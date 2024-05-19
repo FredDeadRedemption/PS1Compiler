@@ -75,6 +75,12 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.Assign (name, expr) ->
     let converted_expr = convert_ast_expr_to_ctree_expr expr in
     Ctree.Assign (name, converted_expr)
+  | Ast.ForStmt (expr, cond, incr, block) ->
+    let converted_expr = convert_ast_expr_to_ctree_expr expr in 
+    let converted_cond = convert_ast_expr_to_ctree_expr cond in 
+    let converted_incr = convert_ast_expr_to_ctree_expr incr in 
+    let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in 
+    Ctree.ForStmt (converted_expr, converted_cond, converted_incr, converted_block)
   | Ast.IfStmt (cond, block) ->
     let converted_cond = convert_ast_expr_to_ctree_expr cond in
     let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in
@@ -238,6 +244,7 @@ let rec handle_object_stmt ids stmt =
   (*These will be changed*)
   | Ctree.Assign (id, e) -> stmt_to_struct_assignment ids (Ctree.Assign(id, e))
   (* TODO: e skal også ændres, med noget lignende som "stmt_to_struct_assignment"*)
+  | ForStmt (s, c, i, blk) -> ForStmt (s,c,i, List.map (handle_object_stmt ids) blk)
   | IfStmt (e, blk) -> IfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)

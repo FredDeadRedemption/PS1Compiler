@@ -62,6 +62,10 @@ class Engine {
         while (true) {
             int x = 10;
             x = x + 1;
+        }   
+        //TODO: der kan ikke stå int i = 0; hvor der står true
+        for (true; i < 10; true) {
+            return 1;
         }
     }
 
