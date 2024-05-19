@@ -63,8 +63,8 @@ class Engine {
             int x = 10;
             x = x + 1;
         }   
-        //TODO: der kan ikke stå int i = 0; hvor der står true
-        for (true; i < 10; true) {
+        //TODO: check parser expr 
+        for (5 + 10; i < 10; 2 +2) {
             return 1;
         }
     }

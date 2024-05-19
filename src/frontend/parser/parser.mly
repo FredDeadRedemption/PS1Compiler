@@ -101,6 +101,7 @@ expr:
 | FALSE                                                { Bool(false) }
 | unop expr                                            { UnaryOp($1, $2) }
 | expr binop expr                                      { BinaryOp($2, $1, $3) }
+// TODO: der mangler, så man kan have variable i epxr
 ;
 
 
