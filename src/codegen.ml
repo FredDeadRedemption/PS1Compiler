@@ -91,6 +91,12 @@ let rec generate_stmt stmt =
     "else {\n" ^
     String.concat "\n" (List.map generate_stmt block) ^
     "}\n"
+  | WhileStmt (cond, block) ->
+    "while (" ^
+    generate_expr cond ^
+    ") {\n" ^
+    String.concat "\n" (List.map generate_stmt block) ^
+    "} \n"
   | ReturnStmt expr ->
     "return " ^
     generate_expr expr ^

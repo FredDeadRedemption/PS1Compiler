@@ -86,6 +86,10 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.ElseStmt block ->
     let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in
     Ctree.ElseStmt converted_block
+  | Ast.WhileStmt (cond, block) ->
+    let converted_cond = convert_ast_expr_to_ctree_expr cond in
+    let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in 
+    Ctree.WhileStmt (converted_cond, converted_block)
   | Ast.ReturnStmt expr ->
     let converted_expr = convert_ast_expr_to_ctree_expr expr in
     Ctree.ReturnStmt converted_expr
@@ -237,6 +241,7 @@ let rec handle_object_stmt ids stmt =
   | IfStmt (e, blk) -> IfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)
+  | WhileStmt (e, blk) -> WhileStmt (e, List.map (handle_object_stmt ids) blk)
   | FuncCall (type_func_call, id, params) -> FuncCall (type_func_call, id, params)
   (*These are the same*)
   | VarDefI (ts, id, e) -> VarDefI (ts, id, e)

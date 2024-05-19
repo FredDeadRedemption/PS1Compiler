@@ -52,6 +52,7 @@ type stmt =
   | IfStmt       of expr * block
   | ElseIfStmt   of expr * block
   | ElseStmt     of block
+  | WhileStmt    of expr * block
   | ReturnStmt   of expr
   | BreakStmt
   | ContinueStmt

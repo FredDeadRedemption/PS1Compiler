@@ -24,6 +24,7 @@
 %token COLON
 %token DOT
 %token IF ELSE 
+%token WHILE
 %token PRINT 
 %token START UPDATE
 %token RETURN BREAK CONTINUE
@@ -114,6 +115,7 @@ stmt:
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
 | ELSE block                                           { ElseStmt($2) }
+| WHILE LPAREN expr RPAREN block                       { WhileStmt($3, $5) }
 | RETURN expr SEMICOLON                                { ReturnStmt($2) }
 | BREAK SEMICOLON                                      { BreakStmt }
 | CONTINUE SEMICOLON                                   { ContinueStmt }

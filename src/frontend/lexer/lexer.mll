@@ -53,6 +53,7 @@ rule tokenize = parse
   | "continue" { CONTINUE }
   | "if"       { IF }
   | "else"     { ELSE }
+  | "while"    { WHILE }
   | "start"    { START }
   | "update"   { UPDATE }
   | "true"     { TRUE }

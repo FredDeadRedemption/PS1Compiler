@@ -97,6 +97,12 @@ let rec print_stmt stmt =
     printf "\nElseStmt{then: ";
     List.iter print_stmt block;
     printf "}"
+  | WhileStmt (cond, block) ->
+    printf "\n WhileStmt {condition: ";
+    print_expr cond;
+    printf ", then: ";
+    List.iter print_stmt block;
+    printf "}"
   | ReturnStmt expr ->
     printf "\nReturnStmt{";
     print_expr expr;
