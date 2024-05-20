@@ -48,6 +48,11 @@ let rec generate_expr expr =
     string_of_float f
   | Var id ->
     id
+  | VarChain props ->
+    let propstring = String.concat "." props in 
+    propstring
+  | VarAddress id ->
+    "&"^id
   | Bool b ->
     int_of_bool b
   | UnaryOp (op, ex) ->
@@ -56,6 +61,8 @@ let rec generate_expr expr =
   | BinaryOp (op, ex1, ex2) ->
     let opStr = string_of_binop op in
     generate_expr ex1 ^ opStr ^ generate_expr ex2
+  | AssignToStructExpr(id, expr) ->
+    id ^ "." ^ generate_expr expr
 
 
 
@@ -75,6 +82,8 @@ let rec generate_stmt stmt =
     id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";\n"
   | Assign (name, expr) ->
     name ^ " = " ^ generate_expr expr ^ ";\n"
+  | ObjectPropAssign (name, props, expr) ->
+    name ^ "." ^ String.concat "." props ^ " = " ^ generate_expr expr ^ ";"
   | IfStmt (cond, block) ->
     "if (" ^
     generate_expr cond ^
@@ -99,7 +108,7 @@ let rec generate_stmt stmt =
     "break;\n"
   | ContinueStmt ->
     "continue;\n"
-  | AssignToStruct (id, stmt) ->
+  | AssignToStructStmt (id, stmt) ->
     let dot_opt = match stmt with
       | AssignStructInit _ -> "" (*We don't want a dot for this stmt*)
       | _ -> "."
@@ -107,7 +116,7 @@ let rec generate_stmt stmt =
     id ^ dot_opt ^ generate_stmt stmt
   | FuncCall (_, name, args) ->
     let args_str = String.concat ", " (List.map generate_expr args) in
-    name ^ " (" ^ args_str ^ ")"
+    name ^ " (" ^ args_str ^ ");"
   | Increment id -> 
     id ^ "++;\n"
   | Decrement id -> 

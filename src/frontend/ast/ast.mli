@@ -26,9 +26,11 @@ type expr =
   | ConstInt    of int
   | ConstFloat  of float
   | Var         of string
+  | VarChain    of string * string list
   | Bool        of bool
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
+  (*| MethodCallExpr  of string option * string * params*)
 and params = expr list
   
 type typespec = 
@@ -49,6 +51,7 @@ type stmt =
   | ArrayDef     of typespec * string * int
   | ArrayAssign  of string * int * expr
   | Assign       of string * expr 
+  | ObjectPropAssign of string * string list * expr
   | IfStmt       of expr * block
   | ElseIfStmt   of expr * block
   | ElseStmt     of block
@@ -62,7 +65,7 @@ type stmt =
   | DecrementPre of string
   | IncrementVal of string * expr
   | DecrementVal of string * expr
-  | MethodCall  of string option * string * params
+  | MethodCallStmt  of string option * string * params
 and block = stmt list
 
 (* class fields*)
