@@ -59,12 +59,12 @@ class Engine {
         if (rpm == 10) {
             rpm = 20;
         }
-        while (true) {
+        while (i<10) {
             int x = 10;
             x = x + 1;
         }   
         //TODO: check parser expr 
-        for (5 + 10; i < 10; 2 +2) {
+        for (i = 0; i < 10; i = i + 1;) {
             return 1;
         }
     }

@@ -114,7 +114,7 @@ stmt:
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
 (*| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }*)
 | ID EQ expr SEMICOLON                                 { Assign($1, $3) }
-| FOR LPAREN expr SEMICOLON expr SEMICOLON expr RPAREN block { ForStmt($3, $5, $7, $9) }
+| FOR LPAREN stmt expr SEMICOLON stmt RPAREN block     { ForStmt($3, $4, $6, $8) }
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
 | ELSE block                                           { ElseStmt($2) }

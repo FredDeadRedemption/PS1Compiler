@@ -54,7 +54,7 @@ type stmt =
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 
-  | ForStmt     of expr * expr * expr * block
+  | ForStmt     of stmt * expr * stmt * block
   | IfStmt      of expr * block
   | ElseIfStmt  of expr * block
   | ElseStmt    of block
