@@ -90,6 +90,10 @@ _method:
 | typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { MethodDef($1, $2, $4, $6) }
 ;
 
+prop:
+| DOT ID { ($2) }
+;
+
 // Expressions
 expr:
 | LPAREN expr RPAREN                                   { ParenExpr($2) }
@@ -97,6 +101,7 @@ expr:
 | INT                                                  { ConstInt($1) }
 | FLOAT                                                { ConstFloat($1) }
 | ID                                                   { Var($1) }
+| ref prop+                                             { VarChain($1, $2) }
 | TRUE                                                 { Bool(true) }
 | FALSE                                                { Bool(false) }
 | unop expr                                            { UnaryOp($1, $2) }
@@ -104,16 +109,14 @@ expr:
 // TODO: der mangler, så man kan have variable i epxr
 ;
 
-
-
 // Statements
 stmt:
 | typespec ID EQ expr SEMICOLON                        { VarDefI($1, $2, $4) }
 | typespec ID SEMICOLON                                { VarDefU($1, $2) }
 | typespec ID LSQBRACK INT RSQBRACK SEMICOLON          { ArrayDef($1, $2, $4) }
 | ID LSQBRACK INT RSQBRACK EQ expr SEMICOLON           { ArrayAssign($1, $3, $6) }
-(*| typespec ID LPAREN separated_list(COMMA, formal) RPAREN block { FuncDef($1, $2, $4, $6) }*)
 | ID EQ expr SEMICOLON                                 { Assign($1, $3) }
+| ref prop+ EQ expr SEMICOLON                           { ObjectPropAssign($1, $2, $4) }
 | FOR LPAREN stmt expr SEMICOLON stmt RPAREN block     { ForStmt($3, $4, $6, $8) }
 | IF LPAREN expr RPAREN block                          { IfStmt($3, $5) }
 | ELSE IF LPAREN expr RPAREN block                     { ElseIfStmt($4, $6) }
@@ -124,18 +127,18 @@ stmt:
 | CONTINUE SEMICOLON                                   { ContinueStmt }
 | typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
 | ID DECR SEMICOLON                                    { Decrement($1) }
-| ID INCR SEMICOLON                                    { Increment($1) }
+| expr INCR SEMICOLON                                    { Increment($1) }
 | DECR ID SEMICOLON                                    { DecrementPre($2) }
 | INCR ID SEMICOLON                                    { IncrementPre($2) }
 | ID INCRBYVAL expr SEMICOLON                          { IncrementVal($1, $3) }
 | ID DECRBYVAL expr SEMICOLON                          { DecrementVal($1, $3) }
 
-| ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCall(None, $1, $3) }
-| ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCall(Some($1), $3, $5) }
+| ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCallStmt(None, $1, $3) }
+| ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCallStmt(Some($1), $3, $5) }
 ;
 
 ref: 
-| ID { $1 }
+| ID       { $1 }
 | THIS     { $1 }
 | SUPER    { $1 }
 ;

@@ -38,6 +38,7 @@ let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
     let int_value = int_of_float (value *. 4096.0) in
     Ctree.ConstInt int_value
   | Ast.Var name -> Ctree.Var name
+  | Ast.VarChain (var, props) -> Ctree.VarChain(var :: props)
   | Ast.Bool value -> Ctree.Bool value
   | Ast.UnaryOp (op, expr) ->
     let converted_expr = convert_ast_expr_to_ctree_expr expr in
@@ -81,6 +82,9 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
     let converted_incr = convert_ast_stmt_to_ctree_stmt incr in 
     let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in 
     Ctree.ForStmt (converted_stmt, converted_cond, converted_incr, converted_block)
+  | Ast.ObjectPropAssign (name, props, expr) -> 
+    let converted_expr = convert_ast_expr_to_ctree_expr expr in 
+    Ctree.ObjectPropAssign(name, props, converted_expr)
   | Ast.IfStmt (cond, block) ->
     let converted_cond = convert_ast_expr_to_ctree_expr cond in
     let converted_block = List.map convert_ast_stmt_to_ctree_stmt block in
@@ -111,7 +115,7 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.IncrementVal (id, expr) -> Ctree.IncrementVal (id, convert_ast_expr_to_ctree_expr expr)
   | Ast.DecrementPre id -> Ctree.DecrementPre id
   | Ast.DecrementVal (id, expr) -> Ctree.DecrementVal (id, convert_ast_expr_to_ctree_expr expr)
-  | MethodCall (ref_opt, mthd_id, args) ->
+  | Ast.MethodCallStmt (ref_opt, mthd_id, args) ->
     let type_of_call =
       match ref_opt with
       | None -> Ctree.Pointer
@@ -221,7 +225,7 @@ let collect_class_components id (fields, methods) =
   construct_list := assemble_constructer id fields :: !construct_list;
   let methods = List.map convert_ast_method_to_ctree methods in
   let methods_with_class = List.map (fun (ts, name, formals, body) ->
-    let updated_formals = (Ctree.Generic id, "var" ^ id) :: formals in
+    let updated_formals = (Ctree.Generic id, "*var" ^ id) :: formals in
     (ts, name, updated_formals, body)
   ) methods in
   method_list := List.rev_append methods_with_class !method_list
@@ -233,40 +237,73 @@ let collect_class_inher_components id inher (fields, methods) =
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
 
+
+let rec expr_to_struct_assignment ids expr =
+  match ids with 
+  | [] -> expr
+  | id :: tl ->  
+  Ctree.AssignToStructExpr (id, expr_to_struct_assignment tl expr)
+
+let rec handle_object_expr ids expr = 
+  match expr with
+  (*These will be changed*)
+  | Ctree.Var name -> expr_to_struct_assignment ids (Ctree.Var (name))
+  | Ctree.UnaryOp (op, expr) -> Ctree.UnaryOp (op, handle_object_expr ids expr) 
+  | Ctree.BinaryOp (op, lhs, rhs) -> Ctree.BinaryOp (op, handle_object_expr ids lhs, handle_object_expr ids rhs)
+  (*These are the same*)
+  | Ctree.VarChain props -> expr_to_struct_assignment ids (Ctree.Var(String.concat "." props)) (* HVIS DER SKER EN ERROR SÅ ER DET HER*)
+  | Ctree.ParenExpr inner -> Ctree.ParenExpr inner
+  | Ctree.ArrayAccess (name, index) -> Ctree.ArrayAccess (name, index)
+  | Ctree.ConstInt value -> Ctree.ConstInt value
+  | Ctree.ConstFloat value -> Ctree.ConstFloat value
+  | Ctree.Bool value -> Ctree.Bool value
+  | AssignToStructExpr (id, expr) -> AssignToStructExpr (id, expr)
+  | Ctree.VarAddress name -> Ctree.VarAddress (name)
+  
+  
+
 let rec stmt_to_struct_assignment ids stmt =
   match ids with 
   | [] -> stmt
   | id :: tl ->  
-  Ctree.AssignToStruct (id, stmt_to_struct_assignment tl stmt)
-  
+  Ctree.AssignToStructStmt (id, stmt_to_struct_assignment tl stmt)
+
+let handle_params ids params =
+  let id = Ctree.VarAddress(String.concat "." ids) in
+  let handled_params = List.map (fun p -> handle_object_expr ids p) params in
+  id :: handled_params
+
+
 let rec handle_object_stmt ids stmt =
   match stmt with
   (*These will be changed*)
-  | Ctree.Assign (id, e) -> stmt_to_struct_assignment ids (Ctree.Assign(id, e))
+  | Ctree.Assign (id, e) ->  stmt_to_struct_assignment ids (Ctree.Assign(id, e))
   (* TODO: e skal også ændres, med noget lignende som "stmt_to_struct_assignment"*)
   | ForStmt (s, c, i, blk) -> ForStmt (s,c,i, List.map (handle_object_stmt ids) blk)
-  | IfStmt (e, blk) -> IfStmt (e, List.map (handle_object_stmt ids) blk)
+  | IfStmt (e, blk) -> IfStmt (handle_object_expr ids e, List.map (handle_object_stmt ids) blk)
   | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)
   | WhileStmt (e, blk) -> WhileStmt (e, List.map (handle_object_stmt ids) blk)
-  | FuncCall (type_func_call, id, params) -> FuncCall (type_func_call, id, params)
+  | FuncCall (type_func_call, id, params) -> FuncCall (type_func_call, id, (handle_params ids params))
+  | Increment id -> stmt_to_struct_assignment ids (Increment id)
+  | Decrement id -> stmt_to_struct_assignment ids (Decrement id)
+  | IncrementPre id -> stmt_to_struct_assignment ids (IncrementPre id)
+  | DecrementPre id -> stmt_to_struct_assignment ids (DecrementPre id)
+  | IncrementVal (id, e) -> stmt_to_struct_assignment ids (IncrementVal (id, e))
+  | DecrementVal (id, e) -> stmt_to_struct_assignment ids (DecrementVal (id, e))
+  | ReturnStmt e -> stmt_to_struct_assignment ids (ReturnStmt e)
   (*These are the same*)
   | VarDefI (ts, id, e) -> VarDefI (ts, id, e)
   | VarDefU (ts, id) -> VarDefU (ts, id)
   | StructInit (ts, id) -> StructInit (ts, id)
   | AssignStructInit ts -> AssignStructInit ts
-  | AssignToStruct (id, st) -> AssignToStruct (id, st)
+  | AssignToStructStmt (id, st) -> AssignToStructStmt (id, st)
   | ArrayDef (ts, id, size) -> ArrayDef (ts, id, size)
   | ArrayAssign (id, index, e) -> ArrayAssign (id, index, e)
-  | ReturnStmt e -> ReturnStmt e
+  | ObjectPropAssign(name, props, expr) -> ObjectPropAssign(name, props, expr)
   | BreakStmt -> BreakStmt
   | ContinueStmt -> ContinueStmt
-  | Increment id -> Increment id
-  | Decrement id -> Decrement id
-  | IncrementPre id -> IncrementPre id
-  | DecrementPre id -> DecrementPre id
-  | IncrementVal (id, e) -> IncrementVal (id, e)
-  | DecrementVal (id, e) -> DecrementVal (id, e)
+  
 
 let generate_object ids current_ts start_block update_block =
   let struct_inits =

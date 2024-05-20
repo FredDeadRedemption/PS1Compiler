@@ -46,6 +46,10 @@ let rec print_expr expr =
     printf "ConstFloat(%f)" f
   | Var v ->
     printf "Var(%s)" v
+  | VarChain (var, props) ->
+    printf "VarChain(var: %s, props:" var; 
+    List.iter (fun prop -> printf " %s" prop) props; 
+    printf ")"
   | Bool b ->
     printf "Bool(%b)" b
   | UnaryOp (op, ex) ->
@@ -90,6 +94,12 @@ let rec print_stmt stmt =
     print_stmt incr;
     printf ", then: ";
     List.iter print_stmt block;
+  | ObjectPropAssign (name, props, expr) ->
+    printf "\nObjectPropAssign{name: %s, props:" name;
+    List.iter (fun prop -> printf " %s" prop) props; 
+    printf " value: ";
+    print_expr expr;
+    printf "}"
   | IfStmt (cond, block) ->
     printf "\nIfStmt{condition: "; 
     print_expr cond;
@@ -136,14 +146,14 @@ let rec print_stmt stmt =
   | DecrementVal (id, expr) ->
     printf "\nDecrementVal{id: %s}" id;
     print_expr expr
-  | MethodCall (ref_opt, mthd, args) ->
+  | MethodCallStmt (ref_opt, mthd, args) ->
     let current_ref = match ref_opt with 
       | Some "this" -> "this"
       | Some "super" -> "super"   
       | Some id -> id
       | None -> "None"
     in
-    printf "MethodCall(ref: %s, method: %s" current_ref mthd;
+    printf "MethodCallStmt(ref: %s, method: %s" current_ref mthd;
     List.iter (fun arg -> 
       printf ", arg: "; 
       print_expr arg

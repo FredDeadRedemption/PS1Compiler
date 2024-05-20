@@ -26,9 +26,13 @@ type expr =
   | ConstInt    of int
   | ConstFloat  of float
   | Var         of string
+  | VarChain    of string list
+  | VarAddress  of string
   | Bool        of bool
+  (*| Obj of string * expr list*)
   | UnaryOp     of unop * expr
-  | BinaryOp    of binop * expr * expr
+  | BinaryOp    of binop * expr * expr  
+  | AssignToStructExpr of string * expr
   
   
 and params = expr list
@@ -48,13 +52,15 @@ type formals = formal list
 type stmt =
   | VarDefI     of typespec * string * expr 
   | VarDefU     of typespec * string
+  (*| VarDefPoiner of typespec * string*)
   | StructInit  of typespec * string
   | AssignStructInit  of typespec
-  | AssignToStruct of string * stmt
+  | AssignToStructStmt of string * stmt
   | ArrayDef    of typespec * string * int
   | ArrayAssign of string * int * expr
   | Assign      of string * expr 
   | ForStmt     of stmt * expr * stmt * block
+  | ObjectPropAssign of string * string list * expr
   | IfStmt      of expr * block
   | ElseIfStmt  of expr * block
   | ElseStmt    of block

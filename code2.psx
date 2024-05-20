@@ -13,6 +13,9 @@ class Game {
         
     }
 
+    void hallo() {
+        return true;
+    }
 
 }
 
@@ -55,9 +58,10 @@ class Engine {
 
     start() {
         rpm = 10;
-        //setRpm(100);TODO: her er MethodCall brugt som stmt
+        setRpm(10, cyl.number); //TODO: fix i fromat codegen?!
+        setRpm(rpm, cyl);//TODO: her er MethodCall brugt som stmt
         if (rpm == 10) {
-            rpm = 20;
+           
         }
         while (i<10) {
             int x = 10;
@@ -73,8 +77,10 @@ class Engine {
 
     }
 
-    void setRpm(int amount) {
-        rpm = amount; 
+    void setRpm(int amount, Cyl cyl1) {
+        rpm = amount;
+        cyl1.number = 10;
+        cyl = cyl1;
     }
 
     
@@ -86,10 +92,21 @@ class Cyl {
 
     start() {
         number = 1;
+        hallo(number);
     }
 
     update() {
     
+    
+    }
+
+
+    void hallo(int bla) {
+
+    }
+
+    void decrementNumber(int number) {
+        number--;
     }
 
     

@@ -43,6 +43,12 @@ let rec print_expr expr =
     printf "ConstFloat(%f)" f
   | Var v ->
     printf "Var(%s)" v
+  | VarChain vars ->
+    printf "Vars("; 
+    List.iter (fun var -> printf " %s" var) vars; 
+    printf ")"
+  | VarAddress id ->
+    printf "Var(& + %s)" id
   | Bool b ->
     printf "Bool(%b)" b
   | UnaryOp (op, ex) ->
@@ -57,6 +63,11 @@ let rec print_expr expr =
     printf ", "; 
     print_expr ex2; 
     printf ")"
+  | AssignToStructExpr (id, expr) ->
+    printf "AssignToStructExpr{Expr to assign: {";
+    print_expr expr;
+    printf "}, to obj: %s" id;
+    printf "}"
 
 let rec print_stmt stmt =
   match stmt with
@@ -92,6 +103,13 @@ let rec print_stmt stmt =
     print_stmt incr;
     printf ", then: ";
     List.iter print_stmt block;
+  | ObjectPropAssign (name, props, expr) ->
+    printf "ObjectPropAssign{name: %s " name;
+    printf "props:"; 
+    List.iter (fun p -> printf " %s" p) props; 
+    printf " value: ";
+    print_expr expr;
+    printf "}"
   | IfStmt (cond, block) ->
     printf "\nIfStmt{condition: "; 
     print_expr cond;
@@ -121,7 +139,7 @@ let rec print_stmt stmt =
     printf "\nBreakStmt"
   | ContinueStmt ->
     printf "\nContinueStmt"
-  | AssignToStruct (id, stmt) ->
+  | AssignToStructStmt (id, stmt) ->
     printf "\nAssignToStruct{ Stmt to assign: {";
     print_stmt stmt;
     printf "}, to obj: %s" id;
