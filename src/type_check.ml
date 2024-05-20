@@ -9,9 +9,10 @@ let check_float x =
   match x with
   | ConstFloat _ -> Printf.printf "This is a float\n"
   | _ -> failwith "Expected float in expression\n"
+
 (*let check_bool x =
-  match x with
-    | Bool -> Printf.printf "This is a bool\n"
+    match x with
+    | Bool _ -> Printf.printf "This is a bool\n"
     | _ -> failwith "Expected bool in expression\n"*)
 
 
@@ -112,7 +113,7 @@ let check_methods methods =
         | Float -> Printf.printf "float\n"
         | Bool -> Printf.printf "Bool\n"
         | Void -> Printf.printf "Void\n"
-        | _ -> failwith "Method formal typespec error\n"
+        | Generic _ -> Printf.printf "Generic String \n"
       ) formals
   ) methods
 

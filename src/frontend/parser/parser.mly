@@ -127,7 +127,7 @@ stmt:
 | CONTINUE SEMICOLON                                   { ContinueStmt }
 | typespec ID EQ NEW typespec LPAREN RPAREN SEMICOLON  { ClassInit($1, $2) }
 | ID DECR SEMICOLON                                    { Decrement($1) }
-| expr INCR SEMICOLON                                    { Increment($1) }
+(*| expr INCR SEMICOLON                                  { Increment($1) }*)
 | DECR ID SEMICOLON                                    { DecrementPre($2) }
 | INCR ID SEMICOLON                                    { IncrementPre($2) }
 | ID INCRBYVAL expr SEMICOLON                          { IncrementVal($1, $3) }

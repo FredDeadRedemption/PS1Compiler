@@ -14,7 +14,7 @@ class Game {
     }
 
     void hallo() {
-        return true;
+        
     }
 
 }
@@ -67,7 +67,6 @@ class Engine {
             int x = 10;
             x = x + 1;
         }   
-        //TODO: check parser expr 
         for (i = 0; i < 10; i = i + 1;) {
             return 1;
         }
