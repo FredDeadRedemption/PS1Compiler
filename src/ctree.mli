@@ -29,10 +29,11 @@ type expr =
   | VarChain    of string list
   | VarAddress  of string
   | Bool        of bool
-  (*| Obj of string * expr list*)
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr  
   | AssignToStructExpr of string * expr
+  | FuncCallExpr    of  string * params
+
   
   
 and params = expr list
@@ -74,14 +75,11 @@ type stmt =
   | DecrementPre of string
   | IncrementVal of string * expr
   | DecrementVal of string * expr
-  | FuncCall    of typ_func_call * string * params
+  | FuncCallStmt    of  string * params
 and block = stmt list
-and typ_func_call =
-  | Typed 
-  | Pointer
+
 
 type ptype = 
-  | StructProto of string 
   | FuncProto   of typespec * string * formals
 
 type ptypes =
@@ -108,4 +106,4 @@ type main =
  start * update 
 
 type program = 
-  ptypes * structs * constructors * funcs * main
+  structs * ptypes * constructors * funcs * main

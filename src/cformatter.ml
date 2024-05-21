@@ -49,6 +49,18 @@ let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
     let converted_rhs = convert_ast_expr_to_ctree_expr rhs in
     let converted_op = convert_ast_binop_to_ctree_binop op in
     Ctree.BinaryOp (converted_op, converted_lhs, converted_rhs)
+  | Ast.MethodCallExpr (ref_opt, mthd_id, args) ->
+    let object_id =
+      match ref_opt with
+      | None -> ""
+      | Some(id) -> 
+        match id with
+        | "this" -> ""
+        | "super" -> ""
+        | id -> id 
+    in
+    let converted_args = List.map convert_ast_expr_to_ctree_expr args in
+    Ctree.FuncCallExpr (mthd_id, Ctree.Var(object_id) :: converted_args)
 
 let convert_ast_typespec_to_ctree_typespec (ts : Ast.typespec) : Ctree.typespec =
   match ts with
@@ -116,12 +128,17 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.DecrementPre id -> Ctree.DecrementPre id
   | Ast.DecrementVal (id, expr) -> Ctree.DecrementVal (id, convert_ast_expr_to_ctree_expr expr)
   | Ast.MethodCallStmt (ref_opt, mthd_id, args) ->
-    let type_of_call =
+    let object_id =
       match ref_opt with
-      | None -> Ctree.Pointer
-      | _ -> Ctree.Pointer 
+      | None -> ""
+      | Some(id) -> 
+        match id with
+        | "this" -> ""
+        | "super" -> ""
+        | id -> id 
     in
-    Ctree.FuncCall (type_of_call, mthd_id, List.map convert_ast_expr_to_ctree_expr args)
+    let converted_args = List.map convert_ast_expr_to_ctree_expr args in
+    Ctree.FuncCallStmt (mthd_id, Ctree.Var(object_id) :: converted_args)
     
 
 let convert_ast_field_to_ctree field =
@@ -144,17 +161,19 @@ let convert_ast_field_init_to_uinit field =
   | Ast.FieldDefU (ts, name) -> Ast.FieldDefU (ts, name)
   | Ast.FieldClsInit (ts, name) -> Ast.FieldDefU(ts, name)
 
-let assemble_struct id fields =
-  let converted_fields = List.map convert_ast_field_to_ctree (List.map convert_ast_field_init_to_uinit fields) in
+
+let assemble_struct id inher_opt fields =
+  let updated_fields = match inher_opt with
+    | Some inher -> 
+      let inher_field = Ast.FieldDefU (Ast.Generic inher, "gameobject") in
+      inher_field :: fields
+    | None -> fields
+  in
+  let converted_fields = List.map convert_ast_field_to_ctree (List.map convert_ast_field_init_to_uinit updated_fields) in
   Ctree.StructDef (id, converted_fields)
 
-let assemble_inher_struct id inher fields =
-  let inher_field = Ast.FieldDefU (Ast.Generic inher, "gameobject") in
-  let fields_with_inher = inher_field :: fields in
-  let converted_fields = List.map convert_ast_field_to_ctree (List.map convert_ast_field_init_to_uinit fields_with_inher) in
-  Ctree.StructDef (id, converted_fields)
 
-let assemble_constructer id fields =
+let assemble_constructor id fields =
   let ts = Ctree.Generic id in
   let func_id = "initialize" ^ id in
   let initialized_fields = List.fold_right (fun field acc ->
@@ -197,45 +216,47 @@ let collect_main_components (fields, start_block, update_block, methods) =
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
 
-let collect_components id (fields, start_block, update_block, methods) =
-  id_list := id :: !id_list;
-  struct_list := assemble_struct id fields :: !struct_list;
-  construct_list := assemble_constructer id fields :: !construct_list;
-  let converted_start = List.map convert_ast_stmt_to_ctree_stmt start_block in
-  start_list := !start_list @ converted_start;
-  let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
-  update_list := !update_list @ converted_update;
-  let converted_methods = List.map convert_ast_method_to_ctree methods in
-  method_list := List.rev_append converted_methods !method_list
 
-let collect_components_inher id inher (fields, start_block, update_block, methods) =
-  id_list := id :: !id_list;
-  struct_list := assemble_inher_struct id inher fields :: !struct_list;
-  construct_list := assemble_constructer id fields :: !construct_list;
-  let converted_start = List.map convert_ast_stmt_to_ctree_stmt start_block in
-  start_list := !start_list @ converted_start;
-  let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
-  update_list := !update_list @ converted_update;
-  let converted_methods = List.map convert_ast_method_to_ctree methods in
-  method_list := List.rev_append converted_methods !method_list
+let is_field fields id =
+  List.exists (fun field -> 
+    match field with
+    | Ast.FieldDefI (_, field_name, _)
+    | Ast.FieldDefU (_, field_name)
+    | Ast.FieldClsInit (_,  field_name) -> field_name = id
 
-let collect_class_components id (fields, methods) =
+    ) fields
+
+let handle_method_stmt obj fields stmt =
+  let id_of_obj obj = 
+    match obj with
+    | (_, id) -> id
+    in
+  match stmt with
+  | Ctree.Assign (id, expr) when is_field fields id ->
+    Ctree.Assign ((id_of_obj obj) ^ "->" ^ id, expr)
+  | Ctree.ObjectPropAssign (id, props, expr) when is_field fields id ->
+    Ctree.ObjectPropAssign ((id_of_obj obj) ^ "->" ^ id, props, expr)
+  | _ -> stmt
+  
+
+let handle_method_body obj fields stmts =
+  List.map (fun stmt -> handle_method_stmt obj fields stmt) stmts
+
+let collect_class_components id inher_opt (fields, methods) =
   id_list := id :: !id_list;
-  struct_list := assemble_struct id fields :: !struct_list;
-  construct_list := assemble_constructer id fields :: !construct_list;
-  let methods = List.map convert_ast_method_to_ctree methods in
+  struct_list := assemble_struct id inher_opt fields :: !struct_list;
+  construct_list := assemble_constructor id fields :: !construct_list;
+  
+  let converted_methods = List.map convert_ast_method_to_ctree methods in
   let methods_with_class = List.map (fun (ts, name, formals, body) ->
-    let updated_formals = (Ctree.Generic id, "*var" ^ id) :: formals in
-    (ts, name, updated_formals, body)
-  ) methods in
+    let object_param = (Ctree.Generic (id ^ "*"), "var" ^ id) in
+    let updated_formals = object_param :: formals in
+    let handled_body = handle_method_body object_param fields body in
+    (ts, name, updated_formals, handled_body)
+  ) converted_methods in
   method_list := List.rev_append methods_with_class !method_list
 
-let collect_class_inher_components id inher (fields, methods) =
-  id_list := id :: !id_list;
-  struct_list := assemble_inher_struct id inher fields :: !struct_list;
-  construct_list := assemble_constructer id fields :: !construct_list;
-  let converted_methods = List.map convert_ast_method_to_ctree methods in
-  method_list := List.rev_append converted_methods !method_list
+
 
 
 let rec expr_to_struct_assignment ids expr =
@@ -250,6 +271,8 @@ let rec handle_object_expr ids expr =
   | Ctree.Var name -> expr_to_struct_assignment ids (Ctree.Var (name))
   | Ctree.UnaryOp (op, expr) -> Ctree.UnaryOp (op, handle_object_expr ids expr) 
   | Ctree.BinaryOp (op, lhs, rhs) -> Ctree.BinaryOp (op, handle_object_expr ids lhs, handle_object_expr ids rhs)
+  | FuncCallExpr (id, params) -> print_endline id; FuncCallExpr (id, (handle_params ids params))
+  
   (*These are the same*)
   | Ctree.VarChain props -> expr_to_struct_assignment ids (Ctree.Var(String.concat "." props)) (* HVIS DER SKER EN ERROR SÅ ER DET HER*)
   | Ctree.ParenExpr inner -> Ctree.ParenExpr inner
@@ -260,7 +283,19 @@ let rec handle_object_expr ids expr =
   | AssignToStructExpr (id, expr) -> AssignToStructExpr (id, expr)
   | Ctree.VarAddress name -> Ctree.VarAddress (name)
   
-  
+
+and handle_params ids params =
+  let opt_id = List.hd params in
+  let opt_id_str = match opt_id with
+  | Ctree.Var "" -> ""
+  | Ctree.Var x -> "." ^ x
+   | _ -> ""
+  in
+  let rest_params = List.tl params in
+  print_endline ("handle params:" ^ (String.concat "." ids));
+  let id = Ctree.VarAddress((String.concat "." ids)  ^ opt_id_str) in
+  let handled_params = List.map (fun p -> handle_object_expr ids p) rest_params in
+  id :: handled_params
 
 let rec stmt_to_struct_assignment ids stmt =
   match ids with 
@@ -268,23 +303,17 @@ let rec stmt_to_struct_assignment ids stmt =
   | id :: tl ->  
   Ctree.AssignToStructStmt (id, stmt_to_struct_assignment tl stmt)
 
-let handle_params ids params =
-  let id = Ctree.VarAddress(String.concat "." ids) in
-  let handled_params = List.map (fun p -> handle_object_expr ids p) params in
-  id :: handled_params
-
 
 let rec handle_object_stmt ids stmt =
   match stmt with
   (*These will be changed*)
-  | Ctree.Assign (id, e) ->  stmt_to_struct_assignment ids (Ctree.Assign(id, e))
-  (* TODO: e skal også ændres, med noget lignende som "stmt_to_struct_assignment"*)
+  | Ctree.Assign (id, e) ->  stmt_to_struct_assignment ids (Ctree.Assign(id, handle_object_expr ids e))
   | ForStmt (s, c, i, blk) -> ForStmt (s,c,i, List.map (handle_object_stmt ids) blk)
   | IfStmt (e, blk) -> IfStmt (handle_object_expr ids e, List.map (handle_object_stmt ids) blk)
   | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
   | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)
   | WhileStmt (e, blk) -> WhileStmt (e, List.map (handle_object_stmt ids) blk)
-  | FuncCall (type_func_call, id, params) -> FuncCall (type_func_call, id, (handle_params ids params))
+  | FuncCallStmt (id, params) -> FuncCallStmt (id, (handle_params ids params))
   | Increment id -> stmt_to_struct_assignment ids (Increment id)
   | Decrement id -> stmt_to_struct_assignment ids (Decrement id)
   | IncrementPre id -> stmt_to_struct_assignment ids (IncrementPre id)
@@ -382,17 +411,9 @@ let rec generate_func_pt method_list =
     let current_func_proto = Ctree.FuncProto (ts, id, formals) in
     current_func_proto :: generate_func_pt tl
 
-let rec generate_struct_pt id_list =
-  match id_list with
-  | [] -> []
-  | id :: tl ->
-    let current_struct = Ctree.StructProto (id) in
-    current_struct :: generate_struct_pt tl
-
-let construct_ptypes id_list method_list =
-  let struct_pt = generate_struct_pt id_list in
+let construct_ptypes method_list =
   let func_pt = generate_func_pt method_list in
-  (struct_pt @ func_pt)
+  (func_pt)
 
 let rec construct_funcs method_list =
   match method_list with
@@ -406,32 +427,33 @@ let construct_main start_list update_list =
   let update = Ctree.Update (update_list) in
   (start, update)
 
-let construct_program id_list struct_list construct_list start_list update_list method_list =
-  let ptypes = construct_ptypes id_list method_list in
+let construct_program struct_list construct_list start_list update_list method_list =
   let structs = struct_list in
+  let ptypes = construct_ptypes method_list in
   let constructors = construct_list in
   let funcs = construct_funcs method_list in
   let main = construct_main start_list update_list in
-  (ptypes, structs, constructors, funcs, main)
+  (structs, ptypes, constructors, funcs, main)
 
 let create_tree (gameClass, classes) : Ctree.program =
   class_list := classes;
   begin
     match gameClass with
-    | Ast.ClassStmt (_, (fl, StartDef sb, UpdateDef ub, ml)) ->
+    | Ast.ClassStmt (_, (fl, StartDef sb, UpdateDef ub, ml))
+    | Ast.ClassInherStmt (_, _, (fl, StartDef sb, UpdateDef ub, ml)) ->
       collect_main_components (fl, sb, ub, ml)
-    | Ast.ClassInherStmt (id, inher, (fl, StartDef sb, UpdateDef ub, ml)) ->
-      collect_components_inher id inher (fl, sb, ub, ml)
+
   end;
   List.iter (fun clas ->
-    match clas with
-    | Ast.ClassStmt (id, (fl,_, _, ml)) ->
-      collect_class_components id (fl , ml)
-    | Ast.ClassInherStmt (id, inher, (fl, _, _, ml)) ->
-      collect_class_inher_components id inher (fl, ml)
+    let (id, fields, methods, inher) =
+      match clas with
+      | Ast.ClassStmt (id, (fl, _, _, ml)) -> (id, fl, ml, None)
+      | Ast.ClassInherStmt (id, inher, (fl, _, _, ml)) -> (id, fl, ml, Some inher)
+    in
+    collect_class_components id inher (fields, methods)
   ) classes;
   instantiate_classes !inst_classes_list classes;
-  construct_program !id_list !struct_list !construct_list !start_list !update_list !method_list
+  construct_program !struct_list !construct_list !start_list !update_list !method_list
 
 let format_to_c ast =
   let formatted_tree = create_tree ast in

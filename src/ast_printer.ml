@@ -64,6 +64,19 @@ let rec print_expr expr =
     printf ", "; 
     print_expr ex2; 
     printf ")"
+  | MethodCallExpr (ref_opt, mthd, args) ->
+    let current_ref = match ref_opt with 
+      | Some "this" -> "this"
+      | Some "super" -> "super"   
+      | Some id -> id
+      | None -> "None"
+    in
+    printf "MethodCallExpr(ref: %s, method: %s" current_ref mthd;
+    List.iter (fun arg -> 
+      printf ", arg: "; 
+      print_expr arg
+    ) args;
+    printf ")"
 
 (* Statement Printing *)
 let rec print_stmt stmt =
@@ -153,7 +166,7 @@ let rec print_stmt stmt =
       | Some id -> id
       | None -> "None"
     in
-    printf "MethodCallStmt(ref: %s, method: %s" current_ref mthd;
+    printf "\nMethodCallStmt(ref: %s, method: %s" current_ref mthd;
     List.iter (fun arg -> 
       printf ", arg: "; 
       print_expr arg

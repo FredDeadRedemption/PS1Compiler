@@ -30,7 +30,7 @@ type expr =
   | Bool        of bool
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
-  (*| MethodCallExpr  of string option * string * params*)
+  | MethodCallExpr of string option * string * params
 and params = expr list
   
 type typespec = 

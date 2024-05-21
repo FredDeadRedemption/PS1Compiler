@@ -68,6 +68,13 @@ let rec print_expr expr =
     print_expr expr;
     printf "}, to obj: %s" id;
     printf "}"
+  | FuncCallExpr (name, args) ->
+    printf " FuncCallExpr(name: %s" name;
+    List.iter (fun arg -> 
+      printf " arg: "; 
+      print_expr arg
+    ) args;
+    printf ")"
 
 let rec print_stmt stmt =
   match stmt with
@@ -104,7 +111,7 @@ let rec print_stmt stmt =
     printf ", then: ";
     List.iter print_stmt block;
   | ObjectPropAssign (name, props, expr) ->
-    printf "ObjectPropAssign{name: %s " name;
+    printf "\nObjectPropAssign{name: %s " name;
     printf "props:"; 
     List.iter (fun p -> printf " %s" p) props; 
     printf " value: ";
@@ -158,8 +165,8 @@ let rec print_stmt stmt =
   | DecrementVal (id, expr) ->
     printf "\nDecrementVal{id: %s}" id;
     print_expr expr
-  | FuncCall (_, name, args) ->
-    printf "FuncCall(name: %s" name;
+  | FuncCallStmt (name, args) ->
+    printf "\nFuncCallStmt(name: %s" name;
     List.iter (fun arg -> 
       printf " arg: "; 
       print_expr arg
@@ -169,8 +176,6 @@ let rec print_stmt stmt =
 
 
 let print_ptype = function
-  | StructProto name ->
-    printf "StructProto(%s)" name
   | FuncProto (ts, name, formals) ->
     printf "FuncProto(type: %s, name: %s, formals: [" (string_of_typespec ts) name;
     List.iter (fun (t, s) -> printf "(%s, %s), " (string_of_typespec t) s) formals;
@@ -223,12 +228,12 @@ let print_ptype = function
         Printf.printf "])"
    
   
-  let print_program (ptypes, structs, constructors, funcs, main) =
+  let print_program (structs, ptypes, constructors, funcs, main) =
     printf "Ctree Program:";
-    printf "PTypes: [";
-    print_ptypes ptypes;
     printf "]\nStructs: [";
     print_structs structs;
+    printf "PTypes: [";
+    print_ptypes ptypes;
     printf "]\nConstructers: [";
     print_constructors constructors;
     printf "]\nFuncs: [";

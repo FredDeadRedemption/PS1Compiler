@@ -63,7 +63,9 @@ let rec generate_expr expr =
     generate_expr ex1 ^ opStr ^ generate_expr ex2
   | AssignToStructExpr(id, expr) ->
     id ^ "." ^ generate_expr expr
-
+  | FuncCallExpr (name, args) ->
+    let args_str = String.concat ", " (List.map generate_expr args) in
+    name ^ "(" ^ args_str ^ ")"
 
 
 let rec generate_stmt stmt =
@@ -129,9 +131,9 @@ let rec generate_stmt stmt =
       | _ -> "."
     in
     id ^ dot_opt ^ generate_stmt stmt
-  | FuncCall (_, name, args) ->
+  | FuncCallStmt (name, args) ->
     let args_str = String.concat ", " (List.map generate_expr args) in
-    name ^ " (" ^ args_str ^ ");"
+    name ^ "(" ^ args_str ^ ");"
   | Increment id -> 
     id ^ "++;\n"
   | Decrement id -> 
@@ -151,7 +153,6 @@ let generate_arg (ts, id) =
   
 
 let generate_ptype = function
-  | StructProto name -> "struct " ^ name ^ ";"
   | FuncProto (ts, name, formals) -> 
     let formals_code = String.concat ", " (List.map generate_arg formals) in
     (string_of_typespec ts) ^ " " ^ name ^ "(" ^ formals_code ^ ")" ^ ";"
@@ -206,15 +207,15 @@ let generate_main (start, update) =
  
 
 let generate_program program =
-  let (ptypes, structs, constructors, funcs, main) = program in
+  let (structs, ptypes, constructors, funcs, main) = program in
   let psx_code = Psx_imports.generate_psx_code in
-  let ptypes_code = generate_ptypes ptypes in
   let structs_code = String.concat "\n\n" (List.map generate_structs structs) in
+  let ptypes_code = generate_ptypes ptypes in
   let constructs_code = String.concat "\n\n" (List.map generate_constructs constructors) in
   let funcs_code = String.concat "\n\n" (List.map generate_funcs funcs) in
   let main_code = generate_main main in
 
-  String.concat "\n\n" [psx_code; ptypes_code; structs_code; constructs_code; funcs_code; main_code]
+  String.concat "\n\n" [psx_code; structs_code; ptypes_code; constructs_code; funcs_code; main_code]
 
 
 

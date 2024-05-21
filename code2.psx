@@ -13,14 +13,11 @@ class Game {
         
     }
 
-    void hallo() {
-        
-    }
 
 }
 
 
-class Car {
+class Car : GameObject{
 
     int speed = 10;
     int acc;
@@ -32,20 +29,24 @@ class Car {
     start() {
         acc = 100;
         //move();
-        //acc = fly(10);  TODO: her er MethodCall brugt som expr
+        acc = engine1.fly(10);
+        engine1.setRpm(100);
         
     }
 
     update() {
     }
 
-    void move() {
-        speed = 1;
-    }
-    int fly(int x) {
+    /*int fly(int x) {
         x = x * 2;
         return x;
+    }*/
+
+    void move(int x) {
+        x = 1;
+        engine2.rpm = x + 1;
     }
+    
 
     
 }
@@ -57,29 +58,26 @@ class Engine {
 
 
     start() {
-        rpm = 10;
-        setRpm(10, cyl.number); //TODO: fix i fromat codegen?!
-        setRpm(rpm, cyl);//TODO: her er MethodCall brugt som stmt
+        //rpm = 10;
+        //setRpm(10, cyl.number); //TODO: fix i fromat codegen?!
+        //setRpm(rpm);//TODO: her er MethodCall brugt som stmt
         if (rpm == 10) {
            
         }
-        while (i<10) {
-            int x = 10;
-            x = x + 1;
-        }   
-        for (i = 0; i < 10; i = i + 1;) {
-            return 1;
-        }
+
     }
 
     update() {
 
     }
 
-    void setRpm(int amount, Cyl cyl1) {
+    int fly(int x) {
+        x = x * 2;
+        return x;
+    }
+
+    void setRpm(int amount) {
         rpm = amount;
-        cyl1.number = 10;
-        cyl = cyl1;
     }
 
     
