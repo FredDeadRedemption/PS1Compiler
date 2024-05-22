@@ -1,18 +1,71 @@
 class Game {
-    float x = 10.0;
+    Car car1 = new Car();
+
     start() {
-        ++x;
-        x++;
-        x+=5;
-        x-=5;
-        x--;
-        --x;
-        
-        break;
-        continue;
+        //car1.super.y = 100; TODO: Skal fikses
     }
 
     update() {
         
     }
+
+
 }
+
+
+class Car : GameObject{
+    bool does_incr = true;
+    int speed = 10;
+    int increment = 1;
+    int acc;
+    Engine engine1 = new Engine();
+
+
+    
+    start() {
+
+        super.x = 100;
+        super.y = 100;
+        super.width = 100;
+        super.height = 10;
+    }
+
+    update() {
+        if (does_incr) {
+            if(increment < 200) {
+                increment++;
+            } else {
+                does_incr = false;
+            }
+        } else {
+            if(increment > 0) {
+                increment--;
+            } else {
+                does_incr = true;
+            }
+        }
+        
+        super.x = increment; //TODO: super.x++;
+    }
+
+    
+    
+
+    
+}
+
+class Engine {
+
+
+
+    start() {
+    
+    }
+
+    update() {
+
+    }
+    
+}
+
+

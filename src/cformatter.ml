@@ -62,6 +62,7 @@ let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
     let converted_args = List.map convert_ast_expr_to_ctree_expr args in
     Ctree.FuncCallExpr (mthd_id, Ctree.Var(object_id) :: converted_args)
 
+    
 let convert_ast_typespec_to_ctree_typespec (ts : Ast.typespec) : Ctree.typespec =
   match ts with
   | Ast.Int -> Ctree.Int
@@ -161,11 +162,19 @@ let convert_ast_field_init_to_uinit field =
   | Ast.FieldDefU (ts, name) -> Ast.FieldDefU (ts, name)
   | Ast.FieldClsInit (ts, name) -> Ast.FieldDefU(ts, name)
 
+let decapitalize str =
+  if str = "" then
+    ""
+  else
+    let first_char = String.get str 0 in
+    let rest_str = String.sub str 1 (String.length str - 1) in
+    let decapitalized_first_char = Char.lowercase_ascii first_char in
+    String.make 1 decapitalized_first_char ^ rest_str
 
 let assemble_struct id inher_opt fields =
   let updated_fields = match inher_opt with
     | Some inher -> 
-      let inher_field = Ast.FieldDefU (Ast.Generic inher, "gameobject") in
+      let inher_field = Ast.FieldDefU (Ast.Generic inher, decapitalize inher) in
       inher_field :: fields
     | None -> fields
   in
@@ -173,7 +182,19 @@ let assemble_struct id inher_opt fields =
   Ctree.StructDef (id, converted_fields)
 
 
-let assemble_constructor id fields =
+
+let generate_empty_game_object inher =
+  let gameObject = decapitalize inher in
+  [
+    Ctree.Assign (gameObject ^ ".x", ConstInt(0));
+    Ctree.Assign (gameObject ^ ".y", ConstInt(0));
+    Ctree.Assign (gameObject ^ ".width", ConstInt(0));
+    Ctree.Assign (gameObject ^ ".height", ConstInt(0));
+    Ctree.Assign (gameObject ^ ".color", Var("WHITE"))
+  ]
+
+
+let assemble_constructor id inher_opt fields =
   let ts = Ctree.Generic id in
   let func_id = "initialize" ^ id in
   let initialized_fields = List.fold_right (fun field acc ->
@@ -185,8 +206,12 @@ let assemble_constructor id fields =
   let struct_field = Ast.VarDefU (Ast.Generic id, "var" ^ id) in
   let fields_with_struct = struct_field :: initialized_fields in
   let converted_constructor = List.map convert_ast_stmt_to_ctree_stmt fields_with_struct in
+  let handle_inher = match inher_opt with
+  | None -> converted_constructor
+  | Some(inher) -> converted_constructor @ (generate_empty_game_object inher)
+  in
   let return_stmt = Ctree.ReturnStmt (Ctree.Var ("var" ^ id)) in
-  Ctree.Constructor (ts, func_id, converted_constructor, return_stmt)
+  Ctree.Constructor (ts, func_id, handle_inher, return_stmt)
 
 let convert_ast_method_to_ctree (Ast.MethodDef (ts, name, formals, body)) : (Ctree.typespec * string * Ctree.formals * Ctree.block) =
   let converted_ts = convert_ast_typespec_to_ctree_typespec ts in
@@ -217,6 +242,7 @@ let collect_main_components (fields, start_block, update_block, methods) =
   method_list := List.rev_append converted_methods !method_list
 
 
+
 let is_field fields id =
   List.exists (fun field -> 
     match field with
@@ -245,7 +271,9 @@ let handle_method_body obj fields stmts =
 let collect_class_components id inher_opt (fields, methods) =
   id_list := id :: !id_list;
   struct_list := assemble_struct id inher_opt fields :: !struct_list;
-  construct_list := assemble_constructor id fields :: !construct_list;
+  let class_constructor = assemble_constructor id inher_opt fields in (*TODO: Her skal gameObject init i*)
+
+  construct_list := class_constructor :: !construct_list;
   
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   let methods_with_class = List.map (fun (ts, name, formals, body) ->
@@ -304,15 +332,15 @@ let rec stmt_to_struct_assignment ids stmt =
   Ctree.AssignToStructStmt (id, stmt_to_struct_assignment tl stmt)
 
 
-let rec handle_object_stmt ids stmt =
+let rec handle_object_stmt ids inher_opt stmt =
   match stmt with
   (*These will be changed*)
   | Ctree.Assign (id, e) ->  stmt_to_struct_assignment ids (Ctree.Assign(id, handle_object_expr ids e))
-  | ForStmt (s, c, i, blk) -> ForStmt (s,c,i, List.map (handle_object_stmt ids) blk)
-  | IfStmt (e, blk) -> IfStmt (handle_object_expr ids e, List.map (handle_object_stmt ids) blk)
-  | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids) blk)
-  | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids) blk)
-  | WhileStmt (e, blk) -> WhileStmt (e, List.map (handle_object_stmt ids) blk)
+  | ForStmt (s, c, i, blk) -> ForStmt (s,c,i, List.map (handle_object_stmt ids inher_opt) blk)
+  | IfStmt (e, blk) -> IfStmt (handle_object_expr ids e, List.map (handle_object_stmt ids inher_opt) blk)
+  | ElseIfStmt (e, blk) -> ElseIfStmt (e, List.map (handle_object_stmt ids inher_opt) blk)
+  | ElseStmt blk -> ElseStmt (List.map (handle_object_stmt ids inher_opt) blk)
+  | WhileStmt (e, blk) -> WhileStmt (e, List.map (handle_object_stmt ids inher_opt) blk)
   | FuncCallStmt (id, params) -> FuncCallStmt (id, (handle_params ids params))
   | Increment id -> stmt_to_struct_assignment ids (Increment id)
   | Decrement id -> stmt_to_struct_assignment ids (Decrement id)
@@ -321,6 +349,12 @@ let rec handle_object_stmt ids stmt =
   | IncrementVal (id, e) -> stmt_to_struct_assignment ids (IncrementVal (id, e))
   | DecrementVal (id, e) -> stmt_to_struct_assignment ids (DecrementVal (id, e))
   | ReturnStmt e -> stmt_to_struct_assignment ids (ReturnStmt e)
+  | ObjectPropAssign(name, props, expr) ->
+    begin
+      match (name, inher_opt) with
+      | ("super", Some inher) -> stmt_to_struct_assignment ids (ObjectPropAssign(decapitalize inher, props, handle_object_expr ids expr))
+      | _ -> ObjectPropAssign(name, props, expr)
+    end
   (*These are the same*)
   | VarDefI (ts, id, e) -> VarDefI (ts, id, e)
   | VarDefU (ts, id) -> VarDefU (ts, id)
@@ -329,30 +363,41 @@ let rec handle_object_stmt ids stmt =
   | AssignToStructStmt (id, st) -> AssignToStructStmt (id, st)
   | ArrayDef (ts, id, size) -> ArrayDef (ts, id, size)
   | ArrayAssign (id, index, e) -> ArrayAssign (id, index, e)
-  | ObjectPropAssign(name, props, expr) -> ObjectPropAssign(name, props, expr)
   | BreakStmt -> BreakStmt
   | ContinueStmt -> ContinueStmt
+  | Render id -> Render id
   
+let string_of_typespec = function
+  | Ast.Int -> "int"
+  | Ast.Float -> "float"
+  | Ast.Bool -> "int"
+  | Ast.Void -> "void"
+  | Ast.Generic g -> g
 
-let generate_object ids current_ts start_block update_block =
+let generate_object ids current_ts inher_opt start_block update_block =
   let struct_inits =
-    (*print_endline (current_id);*)
     (stmt_to_struct_assignment ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
   in
-
-  let handled_start = List.map (handle_object_stmt ids) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
+  
+  let inher_render = 
+    match inher_opt with
+    | None -> None
+    | Some inher -> 
+        let render_stmt = Ctree.Render (String.concat "." ids ^ "." ^ decapitalize inher) in
+        Some render_stmt
+  in
+  let handled_start = List.map (handle_object_stmt ids inher_opt) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
   let start_list = [struct_inits] @ handled_start in
-  let converted_update = List.map (stmt_to_struct_assignment ids) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
-  let update_list = converted_update in
+
+  let handled_update = List.map (handle_object_stmt ids inher_opt) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
+  let update_list = match inher_render with
+    | None -> handled_update
+    | Some render_stmt -> handled_update @ [render_stmt]
+  in
   (current_ts, start_list, update_list)
 
 
-let string_of_typespec = function
-| Ast.Int -> "int"
-| Ast.Float -> "float"
-| Ast.Bool -> "int"
-| Ast.Void -> "void"
-| Ast.Generic g -> g
+
 
 let rec instantiate_class (ts, ids) classes =
   
@@ -373,9 +418,9 @@ let rec instantiate_class (ts, ids) classes =
   match find_class_by_name ts_str classes with
   | None -> failwith ("Class " ^ ts_str ^ " not found.")
   | Some class_def ->
-    let fields, start, update = match class_def with
-      | Ast.ClassStmt (_, (fields, StartDef start, UpdateDef update, _))
-      | Ast.ClassInherStmt (_, _, (fields, StartDef start, UpdateDef update, _)) -> (fields, start, update)
+    let fields, inher_opt, start, update = match class_def with
+      | Ast.ClassStmt (_, (fields, StartDef start, UpdateDef update, _)) -> (fields, None, start, update)
+      | Ast.ClassInherStmt (_, inher, (fields, StartDef start, UpdateDef update, _)) -> (fields, Some(inher), start, update)
     in
 
     let child_objects = List.fold_right (fun field acc ->
@@ -386,7 +431,7 @@ let rec instantiate_class (ts, ids) classes =
       | _ -> acc
     ) fields [] in
 
-    let current_object = generate_object ids ts start update in
+    let current_object = generate_object ids ts inher_opt start update in
     print_endline (List.hd (List.rev ids) ^ " has now been instantiated!");
     current_object :: List.flatten child_objects
   

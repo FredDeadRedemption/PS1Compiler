@@ -172,6 +172,8 @@ let rec print_stmt stmt =
       print_expr arg
     ) args;
     printf ")"
+  | Render id ->
+    printf "\nRender(id: %s)" id
  
 
 
