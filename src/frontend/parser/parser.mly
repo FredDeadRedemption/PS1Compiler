@@ -23,10 +23,10 @@
 %token COMMA SEMICOLON
 %token COLON
 %token DOT
+%token CONTROLLER
 %token FOR
 %token IF ELSE 
 %token WHILE
-%token PRINT 
 %token START UPDATE
 %token RETURN BREAK CONTINUE
 %token INCR DECR INCRBYVAL DECRBYVAL
@@ -91,7 +91,13 @@ _method:
 ;
 
 prop:
-| DOT ID { ($2) }
+| DOT ref { $2 }
+;
+
+ref:
+| ID { $1 }
+| THIS { $1 }
+| SUPER { $1 }
 ;
 
 // Expressions
@@ -101,14 +107,13 @@ expr:
 | INT                                                  { ConstInt($1) }
 | FLOAT                                                { ConstFloat($1) }
 | ID                                                   { Var($1) }
-| ref prop+                                             { VarChain($1, $2) }
+| ref prop+                                            { VarChain($1, $2) }
 | TRUE                                                 { Bool(true) }
 | FALSE                                                { Bool(false) }
 | unop expr                                            { UnaryOp($1, $2) }
 | expr binop expr                                      { BinaryOp($2, $1, $3) }
-| ID LPAREN separated_list(COMMA, expr) RPAREN { MethodCallExpr(None, $1, $3) }
+| ID LPAREN separated_list(COMMA, expr) RPAREN         { MethodCallExpr(None, $1, $3) }
 | ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN { MethodCallExpr(Some($1), $3, $5) }
-// TODO: der mangler, så man kan have variable i epxr
 ;
 
 // Statements
@@ -136,12 +141,7 @@ stmt:
 | ID DECRBYVAL expr SEMICOLON                          { DecrementVal($1, $3) }
 | ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCallStmt(None, $1, $3) }
 | ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN SEMICOLON { MethodCallStmt(Some($1), $3, $5) }
-;
-
-ref: 
-| ID       { $1 }
-| THIS     { $1 }
-| SUPER    { $1 }
+(*| CONTROLLER ID EQ NEW CONTROLLER LPAREN RPAREN SEMICOLON { Controller($2) }*)
 ;
 
 // Reusables
@@ -178,4 +178,3 @@ block:
 | RANGLE EQ { BinopGreaterThanEq }
 | EQ EQ     { BinopEq }
 | EXCL EQ   { BinopNotEq }
-

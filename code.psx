@@ -1,8 +1,13 @@
 class Game {
     Car car1 = new Car();
+    Car car2 = new Car();
+
+    //Controller cont1 = new Controller();
 
     start() {
-        //car1.super.y = 100; TODO: Skal fikses
+        car1.super.y = 100;
+        car2.super.y = 200;
+
     }
 
     update() {
@@ -25,7 +30,7 @@ class Car : GameObject{
     start() {
 
         super.x = 100;
-        super.y = 100;
+        //super.y = 100;
         super.width = 100;
         super.height = 10;
     }

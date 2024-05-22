@@ -5,6 +5,8 @@ let id_list = ref []
 let struct_list = ref []
 let construct_list = ref []
 let start_list = ref []
+let struct_init_list = ref []
+let game_field_list = ref []
 let update_list = ref []
 let method_list = ref []
 
@@ -232,10 +234,23 @@ let convert_ast_field_to_stmt field =
   | Ast.FieldDefU (ts, id) -> Ast.VarDefU (ts, id)
   | Ast.FieldClsInit (ts, id) -> Ast.ClassInit (ts, id)
 
+let handle_main_stmt stmt =
+  match stmt with
+  | Ctree.ObjectPropAssign (id, props, e) -> 
+    let props_with_gameobject = List.map (fun prop -> 
+      match prop with 
+      | "super" -> "gameObject"
+      | other -> other
+    ) props in
+    Ctree.ObjectPropAssign (id, props_with_gameobject, e)
+  | _ -> stmt
+
 let collect_main_components (fields, start_block, update_block, methods) =
   let converted_fields = List.map convert_ast_stmt_to_ctree_stmt (List.map convert_ast_field_to_stmt fields) in
+  game_field_list := converted_fields @ !game_field_list;
   let converted_start = List.map convert_ast_stmt_to_ctree_stmt start_block in
-  start_list := !start_list @ converted_fields @ converted_start;
+  let handled_start = List.map handle_main_stmt converted_start in
+  start_list := !start_list @ handled_start;
   let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
   update_list := !update_list @ converted_update;
   let converted_methods = List.map convert_ast_method_to_ctree methods in
@@ -375,9 +390,10 @@ let string_of_typespec = function
   | Ast.Generic g -> g
 
 let generate_object ids current_ts inher_opt start_block update_block =
-  let struct_inits =
+  let struct_init =
     (stmt_to_struct_assignment ids (Ctree.AssignStructInit((convert_ast_typespec_to_ctree_typespec current_ts))))
   in
+  struct_init_list := struct_init :: !struct_init_list;
   
   let inher_render = 
     match inher_opt with
@@ -386,8 +402,9 @@ let generate_object ids current_ts inher_opt start_block update_block =
         let render_stmt = Ctree.Render (String.concat "." ids ^ "." ^ decapitalize inher) in
         Some render_stmt
   in
+  
   let handled_start = List.map (handle_object_stmt ids inher_opt) (List.map convert_ast_stmt_to_ctree_stmt start_block) in
-  let start_list = [struct_inits] @ handled_start in
+  let start_list = handled_start in
 
   let handled_update = List.map (handle_object_stmt ids inher_opt) (List.map convert_ast_stmt_to_ctree_stmt update_block) in
   let update_list = match inher_render with
@@ -440,14 +457,17 @@ let collect_object_components (ts, start, update) =
   start_list := !start_list @ start;
   update_list := !update_list @ update
 
-let rec instantiate_classes inst_classes_list classes =
+let rec generate_all_objects inst_classes_list classes =
   match inst_classes_list with
-  | [] -> ()
+  | [] -> []
   | (ts, id) :: tl ->
-    
     let objects = instantiate_class (ts, [id]) classes in
-    List.iter collect_object_components objects;
-    instantiate_classes tl classes
+    objects @ generate_all_objects tl classes
+  
+  let instantiate_classes inst_classes_list classes =
+    let all_objects = generate_all_objects inst_classes_list classes in
+    List.iter collect_object_components all_objects
+
 
 let rec generate_func_pt method_list =
   match method_list with
@@ -468,7 +488,7 @@ let rec construct_funcs method_list =
     current_func_def :: construct_funcs tl
 
 let construct_main start_list update_list =
-  let start = Ctree.Start (start_list) in
+  let start = Ctree.Start (!game_field_list @ !struct_init_list @ start_list) in
   let update = Ctree.Update (update_list) in
   (start, update)
 

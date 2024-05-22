@@ -67,6 +67,7 @@ rule tokenize = parse
   | "new"           { NEW }
   | "this" as s     { THIS s }
   | "super" as s    { SUPER s }
+  | "Controller" { CONTROLLER }
   | "++"       { INCR }
   | "--"       { DECR }
   | "+="       { INCRBYVAL}
