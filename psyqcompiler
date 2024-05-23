@@ -1,0 +1,18 @@
+#PSYQ STUFF
+TARGET = compile/output/$(basename $(filename))
+
+SRCS = compile/c_output/output_$(filename).c \
+
+include psyqsdk/common.mk 
+
+$(info DEBUG_VAR is $(filename))
+
+snake_demo:
+	$(MAKE) snake_demo -C
+
+clean:
+	@rm -f $(TARGET).o $(TARGET).elf $(TARGET).bin $(TARGET).map $(TARGET).dep
+	
+# declare phony rules
+.PHONY: snake_demo \
+		clean all
