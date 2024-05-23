@@ -1,5 +1,5 @@
 #PSYQ STUFF
-TARGET = compile/output/output_$(filename)
+TARGET = compile/output/$(basename $(filename))
 
 SRCS = compile/c_output/output_$(filename).c \
 

@@ -486,7 +486,7 @@ END GROUP
  *(.note.GNU-stack)
  *(.gnu_debuglink)
  *(.gnu.lto_*)
-OUTPUT(compile/output/output_code.psx.elf elf32-littlemips)
+OUTPUT(compile/output/code.elf elf32-littlemips)
 
 .reginfo        0x0000000000000000       0x18
  .reginfo       0x0000000000000000       0x18 compile/c_output/output_code.psx.o
