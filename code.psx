@@ -1,18 +1,23 @@
 class Game {
-    float x = 10.0;
+    int x = 10;
     start() {
-        ++x;
         x++;
-        x+=5;
-        x-=5;
-        x--;
-        --x;
-        
-        break;
-        continue;
     }
 
     update() {
         
+    }
+}
+
+class Fucker : GameObject {
+    start() {
+        super.x = 20;
+        super.y = 20;
+        super.width = 30;
+        super.height = 30;
+    }
+
+    update() {
+
     }
 }

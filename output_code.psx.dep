@@ -1,0 +1,16 @@
+output_code.psx.o: output_code.psx.c \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/sys/types.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/libgte.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/libetc.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/libgpu.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/libapi.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/kernel.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/r3000.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/asm.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/stdlib.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/stddef.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/abs.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/convert.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/malloc.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/qsort.h \
+ C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/include/rand.h

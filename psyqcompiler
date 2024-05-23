@@ -1,0 +1,16 @@
+#PSYQ STUFF
+TARGET = snake_demo
+
+SRCS = output_code.psx.c \
+
+include common.mk 
+
+snake_demo:
+	$(MAKE) snake_demo -C
+
+clean:
+	@rm -f $(TARGET).o $(TARGET).elf $(TARGET).bin $(TARGET).map $(TARGET).dep
+	
+# declare phony rules
+.PHONY: snake_demo \
+		clean all

@@ -219,22 +219,22 @@ let generate_program program =
 
 
 
+  let split_string str =
+    Str.split (Str.regexp "/") str
+  
+  
+  let get_output_filename input_filename =
+    let parts = split_string input_filename in
+    let filename = List.hd (List.rev parts) in
+    "../../../output_" ^ filename ^ ".c"
 
-let split_string str =
-  Str.split (Str.regexp "\\.") str
-
-let get_output_filename input_filename =
-  let parts = split_string input_filename in
-  match parts with
-  | first :: _ -> "output_" ^ first ^ ".c"
-  | _ -> failwith "File has no name."
-
-
-let print_to_file filename prog =
-  let prog_string = generate_program prog in
-  let output_filename = get_output_filename filename in
-  let out_channel = open_out output_filename in
-  output_string out_channel prog_string;
-  close_out out_channel;;
-
+  let print_to_file filename prog =
+    let prog_string = generate_program prog in
+    print_endline ("Input balls filename: " ^ filename); (* Print the output filename *)
+    let output_filename = get_output_filename filename in
+    print_endline ("Output mah balls filename: " ^ output_filename); (* Print the output filename *)
+    let out_channel = open_out output_filename in
+    output_string out_channel prog_string;
+    close_out out_channel;;
+  
 

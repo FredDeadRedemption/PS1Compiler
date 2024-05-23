@@ -1,0 +1,231 @@
+
+Discarded input sections
+
+ .text          0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+ .data          0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+ .bss           0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+ .text          0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .data          0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .bss           0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .reginfo       0x0000000000000000       0x18 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .MIPS.abiflags
+                0x0000000000000000       0x18 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .pdr           0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .ramtext       0x0000000000000000        0xc C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_line    0x0000000000000000       0x4b C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_line_str
+                0x0000000000000000       0xa4 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_info    0x0000000000000000       0x24 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_abbrev  0x0000000000000000       0x14 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_aranges
+                0x0000000000000000       0x20 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .debug_str     0x0000000000000000       0x47 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+ .gnu.attributes
+                0x0000000000000000       0x10 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+loader           0x000000008000f800 0x0000000000000800
+ram              0x0000000080010000 0x00000000001f0000 xrw
+dcache           0x000000001f800000 0x0000000000000400
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/syscalls/printf.o
+START GROUP
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libapi.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libc.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libc2.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libcard.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libcomb.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libds.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libetc.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libgpu.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libgs.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libgte.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libgun.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libhmd.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libmath.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libmcrd.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libmcx.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libpad.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libpress.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libsio.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libsnd.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libspu.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libtap.a
+LOAD C:/Users/Tue/Documents/GitHub/PS1Compiler/psyq/lib\libcd.a
+END GROUP
+                0x0000000080010800                __heap_base = __bss_end
+                0x0000000080010000                TLOAD_ADDR = DEFINED (TLOAD_ADDR)?TLOAD_ADDR:0x80010000
+                0x0000000080200000                __ram_top = (ORIGIN (ram) + LENGTH (ram))
+                0x00000000801fff00                __sp = (__ram_top - 0x100)
+                0x000000001f800000                __dcache = ORIGIN (dcache)
+                0x000000001f800400                __dcache_top = (ORIGIN (dcache) + LENGTH (dcache))
+                0x0000000000000000                __bss_len = (__bss_end - __bss_start)
+                0x0000000000000070                __ftext_len = (__ftext_end - __ftext_start)
+                0x0000000000000790                __fdata_len = (__fdata_end - __fdata_start)
+                0x0000000080200000                __stack_start = (ORIGIN (ram) + LENGTH (ram))
+
+.PSX_EXE_Header
+                0x000000008000f800      0x800
+                0x000000008000f800        0x1 BYTE 0x50
+                0x000000008000f801        0x1 BYTE 0x53
+                0x000000008000f802        0x1 BYTE 0x2d
+                0x000000008000f803        0x1 BYTE 0x58
+                0x000000008000f804        0x1 BYTE 0x20
+                0x000000008000f805        0x1 BYTE 0x45
+                0x000000008000f806        0x1 BYTE 0x58
+                0x000000008000f807        0x1 BYTE 0x45
+                0x000000008000f808        0x4 LONG 0x0
+                0x000000008000f80c        0x4 LONG 0x0
+                0x000000008000f810        0x4 LONG 0x80010000 ABSOLUTE (_start)
+                0x000000008000f814        0x4 LONG 0x0
+                0x000000008000f818        0x4 LONG 0x80010000 TLOAD_ADDR
+                0x000000008000f81c        0x4 LONG 0x800 (__ftext_len + __fdata_len)
+                0x000000008000f820        0x4 LONG 0x0
+                0x000000008000f824        0x4 LONG 0x0
+                0x000000008000f828        0x4 LONG 0x0
+                0x000000008000f82c        0x4 LONG 0x0
+                0x000000008000f830        0x4 LONG 0x801fff00 DEFINED (_sp)?ABSOLUTE (_sp):0x801fff00
+                0x000000008000f834        0x4 LONG 0x0
+                0x0000000080010000                . = (. + 0x7c8)
+ *fill*         0x000000008000f838      0x7c8 
+                0x0000000080010000                __ftext_start = ABSOLUTE (.)
+
+.text           0x0000000080010000       0x70
+ *(.start)
+ .start         0x0000000080010000       0x64 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+                0x0000000080010000                _start
+ *(.init)
+ *(SORT_NONE(.fini))
+ *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ *(.text.hot .text.hot.*)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+                0x0000000080010070                . = ALIGN (0x10)
+ *fill*         0x0000000080010064        0xc 
+ *(.init)
+                0x0000000080010070                . = ALIGN (0x10)
+ *(.fini)
+                0x0000000080010070                . = ALIGN (0x10)
+                0x0000000080010070                __text_end = .
+                0x0000000080010070                __ftext_end = ABSOLUTE (.)
+                0x0000000080010070                __fdata_start = ABSOLUTE (.)
+
+.rodata         0x0000000080010070       0x10
+ *(.rodata .rodata.* .rdata .rdata.* .gnu.linkonce.r.*)
+ .rodata        0x0000000080010070       0x10 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+                0x0000000080010080                . = ALIGN (0x10)
+                0x0000000080010080                __preinit_array_start = .
+ *(.preinit_array)
+                0x0000000080010080                __preinit_array_end = .
+                0x0000000080010080                . = ALIGN (0x10)
+                0x0000000080010080                __init_array_start = .
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array)
+                0x0000000080010080                . = ALIGN (0x10)
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *crtend.o(.ctors)
+                0x0000000080010080                __init_array_end = .
+                0x0000000080010080                . = ALIGN (0x10)
+                0x0000000080010080                __fini_array_start = .
+ *(.fini_array)
+ *(SORT_BY_NAME(.fini_array.*))
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *crtend.o(.dtors)
+                0x0000000080010080                __fini_array_end = .
+                0x0000000080010080                __build_id = .
+ *(.note.gnu.build-id)
+                0x0000000080010080                __build_id_end = .
+
+.rodata1
+ *(.rodata1)
+                0x0000000080010080                __data_start = .
+
+.data           0x0000000080010080      0x780
+ *(.a0table)
+ *(.data .data.* .gnu.linkonce.d.*)
+ *(.data1)
+ *(.sdata .sdata.* .gnu.linkonce.s.*)
+ *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+ *(.got.plt)
+ *(.got)
+                0x0000000080010800                . = ALIGN (0x800)
+ *fill*         0x0000000080010080      0x780 
+                0x0000000080010800                __data_end = .
+                0x0000000080010800                __fdata_end = .
+                0x0000000080010800                __bss_start = .
+
+.sbss
+ *(.dynsbss)
+ *(.sbss .sbss.* .gnu.linkonce.sb.*)
+ *(.scommon)
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ *(COMMON)
+                0x0000000080010800                . = ALIGN (0x4)
+                0x0000000080010800                __bss_end = .
+                0x0000000080010800                __heap_start = __heap_base
+                0x000000008000f800                . = (ADDR (.text) - 0x800)
+                0x000000008000f800                __end = .
+
+/DISCARD/
+ *(.MIPS.abiflags)
+
+/DISCARD/
+ *(.rel.iplt)
+ *(.rela.iplt)
+ *(.rel.plt)
+ *(.rela.plt)
+ *(.plt)
+ *(.iplt)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+OUTPUT(snake_demo.elf elf32-littlemips)
+
+.reginfo        0x0000000000000000       0x18
+ .reginfo       0x0000000000000000       0x18 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.pdr            0x0000000000000000        0x0
+ .pdr           0x0000000000000000        0x0 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.gnu.attributes
+                0x0000000000000000       0x10
+ .gnu.attributes
+                0x0000000000000000       0x10 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_line     0x0000000000000000       0x5b
+ .debug_line    0x0000000000000000       0x5b C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_line_str
+                0x0000000000000000       0x4c
+ .debug_line_str
+                0x0000000000000000       0x4c C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+                                         0x98 (size before relaxing)
+
+.debug_info     0x0000000000000000       0x24
+ .debug_info    0x0000000000000000       0x24 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_abbrev   0x0000000000000000       0x14
+ .debug_abbrev  0x0000000000000000       0x14 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_aranges  0x0000000000000000       0x20
+ .debug_aranges
+                0x0000000000000000       0x20 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_str      0x0000000000000000       0x45
+ .debug_str     0x0000000000000000       0x45 C:/Users/Tue/Documents/GitHub/PS1Compiler/thirdparty/nugget/common/crt0/crt0.o
