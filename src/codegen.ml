@@ -146,6 +146,8 @@ let rec generate_stmt stmt =
     id ^ "+=" ^ generate_expr expr ^ ";\n"
   | DecrementVal (id, expr) ->
     id ^ "-=" ^ generate_expr expr ^ ";\n"
+  | Render id ->
+    "renderGameObject(&" ^ id ^ ");\n" 
 
 
 let generate_arg (ts, id) =
@@ -199,10 +201,13 @@ let generate_main (start, update) =
   
   (* Return string*)
   "int main(void) {\n" ^
+  "init();\n" ^
   start_code ^
   "\n" ^
   "while(1) {\n" ^
+  "ClearOTagR(ot[db], OTLEN);  // Clear ordering table \n" ^
   update_code ^
+  "display();\n" ^
   "\n}\n}"
  
 

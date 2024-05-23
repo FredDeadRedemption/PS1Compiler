@@ -76,6 +76,7 @@ type stmt =
   | IncrementVal of string * expr
   | DecrementVal of string * expr
   | FuncCallStmt    of  string * params
+  | Render       of string
 and block = stmt list
 
 

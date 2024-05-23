@@ -28,7 +28,7 @@ let check_fields fields =
       (match typespec with
         | Int -> check_int expr
         | Float -> check_float expr 
-        (*| Bool -> check_bool expr*)
+        | Bool -> Printf.printf "Bool\n"
         | Generic _ -> Printf.printf "Generic\n"
         | _ -> failwith "Wrong field type\n")
     | FieldDefU (typ, _) -> 

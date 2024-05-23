@@ -69,34 +69,28 @@ let generate_psx_code =
   "   db = !db;\n" ^
   "   nextpri = pribuff[db];\n" ^
   "}\n" ^
-  "typedef struct Position {\n" ^
-  "   int x;\n" ^
-  "   int y;\n" ^
-  "} Position;\n" ^
-  "typedef struct TextureSize {\n" ^
-  "   int width;\n" ^
-  "   int height;\n" ^
-  "} TextureSize;\n" ^
   "typedef struct Color{\n" ^
   "   int r;\n" ^
   "   int g;\n" ^
   "   int b;\n" ^
   "} Color;\n" ^
   "typedef struct GameObject {\n" ^
-  "   Position position;\n" ^
-  "   TextureSize textureSize;\n" ^
+  "   int x;\n" ^
+  "   int y;\n" ^
+  "   int width;\n" ^
+  "   int height;\n" ^
   "   Color color;\n" ^
   "} GameObject;\n" ^
-  "color_t RED = {255, 0, 0};\n" ^
-  "color_t BLUE = {0, 0, 255};\n" ^
-  "color_t GREEN = {0, 255, 0};\n" ^
-  "color_t YELLOW = {255, 255, 0};\n" ^
-  "color_t WHITE = {255, 255, 255};\n" ^
-  "void renderGameObject(gameObject_t* object) {\n" ^
+  "Color RED = {255, 0, 0};\n" ^
+  "Color BLUE = {0, 0, 255};\n" ^
+  "Color GREEN = {0, 255, 0};\n" ^
+  "Color YELLOW = {255, 255, 0};\n" ^
+  "Color WHITE = {255, 255, 255};\n" ^
+  "void renderGameObject(GameObject* object) {\n" ^
   "  tile = (TILE*)nextpri;      // Cast next primitive\n" ^
   "  setTile(tile);              // Initialize the primitive (very important)\n" ^
-  "  setXY0(tile, object->position.x, object->position.y);       // Set primitive (x,y) position\n" ^
-  "  setWH(tile, object->textureSize.width, object->textureSize.height);        // Set primitive size\n" ^
+  "  setXY0(tile, object->x, object->y);       // Set primitive (x,y) position\n" ^
+  "  setWH(tile, object->width, object->height);        // Set primitive size\n" ^
   "  setRGB0(tile, object->color.r, object->color.g, object->color.b); // Set color yellow\n" ^
   "  addPrim(ot[db], tile);      // Add primitive to the ordering table\n" ^
   "  nextpri += sizeof(TILE);    // Advance the next primitive pointer\n" ^
