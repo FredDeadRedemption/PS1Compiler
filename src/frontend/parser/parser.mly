@@ -12,6 +12,7 @@
 %token <string> ID
 %token <string> TYPE_GENERIC
 %token <float> FLOAT
+%token <string> STRING_LITERAL
 %token ADD SUB MUL DIV 
 %token MOD EQ EXCL
 %token AND OR
@@ -114,6 +115,7 @@ expr:
 | expr binop expr                                      { BinaryOp($2, $1, $3) }
 | ID LPAREN separated_list(COMMA, expr) RPAREN         { MethodCallExpr(None, $1, $3) }
 | ref DOT ID LPAREN separated_list(COMMA, expr) RPAREN { MethodCallExpr(Some($1), $3, $5) }
+| STRING_LITERAL                                       { StringExpr( $1 ) }
 ;
 
 // Statements

@@ -52,17 +52,18 @@ let rec convert_ast_expr_to_ctree_expr (expr : Ast.expr) : Ctree.expr =
     let converted_op = convert_ast_binop_to_ctree_binop op in
     Ctree.BinaryOp (converted_op, converted_lhs, converted_rhs)
   | Ast.MethodCallExpr (ref_opt, mthd_id, args) ->
-    let object_id =
-      match ref_opt with
-      | None -> ""
-      | Some(id) -> 
-        match id with
-        | "this" -> ""
-        | "super" -> ""
-        | id -> id 
-    in
     let converted_args = List.map convert_ast_expr_to_ctree_expr args in
-    Ctree.FuncCallExpr (mthd_id, Ctree.Var(object_id) :: converted_args)
+    begin
+    match ref_opt with
+    | None -> Ctree.FuncCallExpr (mthd_id, converted_args)
+    | Some(id) -> 
+      match id with
+      | "this" -> Ctree.FuncCallExpr (mthd_id, converted_args)
+      | "super" -> Ctree.FuncCallExpr (mthd_id, converted_args)
+      | id -> Ctree.FuncCallExpr (mthd_id, Ctree.Var(id) :: converted_args)
+    end;
+  | Ast.StringExpr s -> Ctree.StringExpr s
+    
 
     
 let convert_ast_typespec_to_ctree_typespec (ts : Ast.typespec) : Ctree.typespec =
@@ -234,6 +235,24 @@ let convert_ast_field_to_stmt field =
   | Ast.FieldDefU (ts, id) -> Ast.VarDefU (ts, id)
   | Ast.FieldClsInit (ts, id) -> Ast.ClassInit (ts, id)
 
+
+let handle_main_expr expr = 
+  match expr with
+  | Ctree.FuncCallExpr (mthd_id, args) -> 
+    let args_with_gameobject = List.map (fun arg -> 
+      match arg with 
+      | Ctree.VarChain props -> 
+        let updated_props = List.map (fun prop -> 
+          match prop with
+          | "super" -> "gameObject"
+          | other -> other
+        ) props in
+        Ctree.VarChain updated_props
+      | _ -> arg
+    ) args in
+    Ctree.FuncCallExpr (mthd_id, args_with_gameobject)
+  | _ -> expr
+
 let handle_main_stmt stmt =
   match stmt with
   | Ctree.ObjectPropAssign (id, props, e) -> 
@@ -242,7 +261,7 @@ let handle_main_stmt stmt =
       | "super" -> "gameObject"
       | other -> other
     ) props in
-    Ctree.ObjectPropAssign (id, props_with_gameobject, e)
+    Ctree.ObjectPropAssign (id, props_with_gameobject, handle_main_expr e)
   | _ -> stmt
 
 let collect_main_components (fields, start_block, update_block, methods) =
@@ -252,7 +271,8 @@ let collect_main_components (fields, start_block, update_block, methods) =
   let handled_start = List.map handle_main_stmt converted_start in
   start_list := !start_list @ handled_start;
   let converted_update = List.map convert_ast_stmt_to_ctree_stmt update_block in
-  update_list := !update_list @ converted_update;
+  let handled_update = List.map handle_main_stmt converted_update in
+  update_list := !update_list @ handled_update;
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   method_list := List.rev_append converted_methods !method_list
 
@@ -317,7 +337,13 @@ let rec handle_object_expr ids expr =
   | FuncCallExpr (id, params) -> print_endline id; FuncCallExpr (id, (handle_params ids params))
   
   (*These are the same*)
-  | Ctree.VarChain props -> expr_to_struct_assignment ids (Ctree.Var(String.concat "." props)) (* HVIS DER SKER EN ERROR SÅ ER DET HER*)
+  | Ctree.VarChain props -> 
+    let props_with_game_object = List.map (fun prop -> 
+      match prop with
+      | "super" -> "gameObject"
+      | other -> other
+    ) props in
+    expr_to_struct_assignment ids (Ctree.Var(String.concat "." props_with_game_object)) (* HVIS DER SKER EN ERROR SÅ ER DET HER*)
   | Ctree.ParenExpr inner -> Ctree.ParenExpr inner
   | Ctree.ArrayAccess (name, index) -> Ctree.ArrayAccess (name, index)
   | Ctree.ConstInt value -> Ctree.ConstInt value
@@ -325,6 +351,7 @@ let rec handle_object_expr ids expr =
   | Ctree.Bool value -> Ctree.Bool value
   | AssignToStructExpr (id, expr) -> AssignToStructExpr (id, expr)
   | Ctree.VarAddress name -> Ctree.VarAddress (name)
+  | Ctree.StringExpr s -> Ctree.StringExpr s
   
 
 and handle_params ids params =

@@ -31,6 +31,7 @@ type expr =
   | UnaryOp     of unop * expr
   | BinaryOp    of binop * expr * expr
   | MethodCallExpr of string option * string * params
+  | StringExpr  of string
 and params = expr list
   
 type typespec = 

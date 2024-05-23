@@ -1,7 +1,72 @@
-start() {
-    if (true) {
-        print(5);
-    } else if (false) {
-        print(10);
+class Game {
+    Player player = new Player();
+    Platform platform = new Platform();
+
+    start() {
+        
+
+    }
+
+    update() {
+        player.falling = isColliding(player.super.x, player.super.y, player.super.width, player.super.height, platform.super.x, platform.super.y, platform.super.width, platform.super.height);
+        
+    }
+
+    bool isColliding(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2) {
+        int left1 = x1;
+        int right1 = x1 + width1;
+        int top1 = y1;
+        int bottom1 = y1 + height1;
+
+        int left2 = x2;
+        int right2 = x2 + width2;
+        int top2 = y2;
+        int bottom2 = y2 + height2;
+
+    // Check if there is no overlap
+    if (right1 <= left2 || left1 >= right2 || bottom1 <= top2 || top1 >= bottom2) {
+        return true;
+    }
+
+    // If none of the above, the rectangles are colliding
+    return false;
+    }
+
+
+}
+
+class Player : GameObject {
+    bool falling = true;
+    int playerY = 0;
+
+    start() {
+        super.x = 146;
+        super.y = 40;
+        super.width = 16;
+        super.height = 16;
+        playerY = super.y;
+        super.color = "RED";
+    }
+
+    update() {
+        if (falling) {
+            playerY++;
+            super.y = playerY;
+        } else {
+            super.y = playerY;
+        }
+    }
+}
+
+class Platform : GameObject {
+
+    start() {
+        super.x = 0;
+        super.y = 208;
+        super.width = 320;
+        super.height = 32;
+    }
+    update() {
+
     }
 }

@@ -33,6 +33,7 @@ type expr =
   | BinaryOp    of binop * expr * expr  
   | AssignToStructExpr of string * expr
   | FuncCallExpr    of  string * params
+  | StringExpr  of string
 
   
   

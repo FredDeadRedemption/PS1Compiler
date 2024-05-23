@@ -77,6 +77,8 @@ let rec print_expr expr =
       print_expr arg
     ) args;
     printf ")"
+  | StringExpr s ->
+    printf "StringExpr(%s)" s
 
 (* Statement Printing *)
 let rec print_stmt stmt =

@@ -66,6 +66,8 @@ let rec generate_expr expr =
   | FuncCallExpr (name, args) ->
     let args_str = String.concat ", " (List.map generate_expr args) in
     name ^ "(" ^ args_str ^ ")"
+  | StringExpr s ->
+    s
 
 
 let rec generate_stmt stmt =

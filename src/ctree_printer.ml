@@ -44,7 +44,7 @@ let rec print_expr expr =
   | Var v ->
     printf "Var(%s)" v
   | VarChain vars ->
-    printf "Vars("; 
+    printf "VarChain("; 
     List.iter (fun var -> printf " %s" var) vars; 
     printf ")"
   | VarAddress id ->
@@ -75,6 +75,8 @@ let rec print_expr expr =
       print_expr arg
     ) args;
     printf ")"
+    | StringExpr s ->
+      printf "StringExpr(%s)" s
 
 let rec print_stmt stmt =
   match stmt with

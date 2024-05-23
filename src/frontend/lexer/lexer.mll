@@ -73,6 +73,10 @@ rule tokenize = parse
   | "+="       { INCRBYVAL}
   | "-="       { DECRBYVAL}
   | "GameObject" as s { GAMEOBJECT s }
+  | '"'[^'"']*'"' as s { 
+      let str = String.sub s 1 (String.length s - 2) in
+      STRING_LITERAL str 
+    }
   | "//" { read_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | integer as i { INT (int_of_string i) }
