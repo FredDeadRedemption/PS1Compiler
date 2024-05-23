@@ -25,10 +25,7 @@ purge: #convert bash script notation from dos to unix
 .PHONY: default
 default: run_main
 
-# Define a rule for running main.exe with a given .psx file
-main: # run main.exe with a specified .psx file
-	cd _build/default/src && ./main.exe ../../../$(filename)
-	$(MAKE) snake_demo_output
+filename := some_value
 
 # Extract the second word from the make command line arguments
 second_word = $(word 2,$(MAKECMDGOALS))
@@ -40,11 +37,13 @@ ifeq ($(filter main,$(MAKECMDGOALS)),main)
 	endif
 endif
 
+# Define a rule for running main.exe with a given .psx file
+main: # run main.exe with a specified .psx file
+	cd _build/default/src && ./main.exe ../../../compile/input/$(filename)
+	$(MAKE) -f psyqcompiler filename=$(filename)
 
-# Run the second Makefile with the generated filename
-snake_demo_output:
-	$(MAKE) -f psyqcompiler
-	$(MAKE) -f psyqcompiler clean
+	
+# $(MAKE) -f psyqcompiler clean
 
 # Prevent make from interpreting "filename.psx" as a file target
 %:

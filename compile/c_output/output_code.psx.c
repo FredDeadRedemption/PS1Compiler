@@ -69,61 +69,123 @@ void display(void) {
    db = !db;
    nextpri = pribuff[db];
 }
-typedef struct Position {
-   int x;
-   int y;
-} Position;
-typedef struct TextureSize {
-   int width;
-   int height;
-} TextureSize;
 typedef struct Color{
    int r;
    int g;
    int b;
 } Color;
 typedef struct GameObject {
-   Position position;
-   TextureSize textureSize;
+   int x;
+   int y;
+   int width;
+   int height;
    Color color;
 } GameObject;
-color_t RED = {255, 0, 0};
-color_t BLUE = {0, 0, 255};
-color_t GREEN = {0, 255, 0};
-color_t YELLOW = {255, 255, 0};
-color_t WHITE = {255, 255, 255};
-void renderGameObject(gameObject_t* object) {
+Color RED = {255, 0, 0};
+Color BLUE = {0, 0, 255};
+Color GREEN = {0, 255, 0};
+Color YELLOW = {255, 255, 0};
+Color WHITE = {255, 255, 255};
+void renderGameObject(GameObject* object) {
   tile = (TILE*)nextpri;      // Cast next primitive
   setTile(tile);              // Initialize the primitive (very important)
-  setXY0(tile, object->position.x, object->position.y);       // Set primitive (x,y) position
-  setWH(tile, object->textureSize.width, object->textureSize.height);        // Set primitive size
+  setXY0(tile, object->x, object->y);       // Set primitive (x,y) position
+  setWH(tile, object->width, object->height);        // Set primitive size
   setRGB0(tile, object->color.r, object->color.g, object->color.b); // Set color yellow
   addPrim(ot[db], tile);      // Add primitive to the ordering table
   nextpri += sizeof(TILE);    // Advance the next primitive pointer
 }
 
 
-typedef struct Fucker{
-GameObject gameobject;
-}Fucker;
+typedef struct Engine{
+}Engine;
+
+
+typedef struct Car{
+GameObject gameObject;
+
+int does_incr;
+
+int speed;
+
+int increment;
+
+int acc;
+
+Engine engine1;
+}Car;
 
 
 
 
-Fucker initializeFucker() {
-Fucker varFucker;
-return varFucker;
+Engine initializeEngine() {
+Engine varEngine;
+return varEngine;
+}
+
+
+Car initializeCar() {
+Car varCar;
+
+varCar.does_incr = 1;
+
+varCar.speed = 10;
+
+varCar.increment = 1;
+
+varCar.gameObject.x = 0;
+
+varCar.gameObject.y = 0;
+
+varCar.gameObject.width = 0;
+
+varCar.gameObject.height = 0;
+
+varCar.gameObject.color = WHITE;
+return varCar;
 }
 
 
 
 
 int main(void) {
-int x = 10;
+init();
+Car car1;
 
-x++;
+car1 = initializeCar();
 
+car1.engine1 = initializeEngine();
+
+car1.gameObject.width = 10;
+car1.gameObject.y = 200;
+car1.gameObject.x = 100;
+car1.gameObject.width = 100;
+car1.gameObject.height = 10;
 while(1) {
+ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+if (car1.does_incr) {
+if (car1.increment<200) {
+car1.increment++;
+}
+
+else {
+car1.does_incr = 0;
+}
+}
+
+else {
+if (car1.increment>0) {
+car1.increment--;
+}
+
+else {
+car1.does_incr = 1;
+}
+}
+
+car1.gameObject.x = car1.increment;
+renderGameObject(&car1.gameObject);
+display();
 
 }
 }

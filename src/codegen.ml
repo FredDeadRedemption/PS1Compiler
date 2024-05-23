@@ -231,7 +231,7 @@ let generate_program program =
   let get_output_filename input_filename =
     let parts = split_string input_filename in
     let filename = List.hd (List.rev parts) in
-    "../../../output_" ^ filename ^ ".c"
+    "../../../compile/c_output/output_" ^ filename ^ ".c"
 
   let print_to_file filename prog =
     let prog_string = generate_program prog in

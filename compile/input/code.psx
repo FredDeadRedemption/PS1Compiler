@@ -1,17 +1,14 @@
 class Game {
     Car car1 = new Car();
-    Car car2 = new Car();
 
     //Controller cont1 = new Controller();
 
     start() {
-        car1.super.y = 100;
-        car2.super.y = 200;
-
+        car1.super.width = 10;
+        car1.super.y = 200;
     }
 
     update() {
-        
     }
 
 
