@@ -237,9 +237,9 @@ let generate_program program =
 
   let print_to_file filename prog =
     let prog_string = generate_program prog in
-    print_endline ("Input balls filename: " ^ filename); (* Print the output filename *)
+    print_endline ("Input filename: " ^ filename); (* Print the output filename *)
     let output_filename = get_output_filename filename in
-    print_endline ("Output mah balls filename: " ^ output_filename); (* Print the output filename *)
+    print_endline ("Output filename: " ^ output_filename); (* Print the output filename *)
     let out_channel = open_out output_filename in
     output_string out_channel prog_string;
     close_out out_channel;;
