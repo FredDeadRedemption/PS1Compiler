@@ -1,14 +1,22 @@
+
+
+
 (test
  (name test_lexer)
- (libraries ounit2 str lexer parser)
+ (libraries ounit2 str lexer parser ast)
  (modules test_lexer))
 
 (test
  (name test_main)
- (libraries ounit2 str lexer parser)
+ (libraries ounit2 str lexer parser ast)
  (modules test_main))
 
 (test
  (name test_parser)
- (libraries ounit2 str lexer parser)
+ (libraries ounit2 str lexer parser ast)
  (modules test_parser))
+
+(test
+ (name test_cformatter)
+ (libraries ounit2 str lexer parser ast ctree cformatter)
+ (modules test_cformatter))
