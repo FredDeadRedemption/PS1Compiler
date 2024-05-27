@@ -40,7 +40,7 @@ endif
 # Define a rule for running main.exe with a given .psx file
 main: # run main.exe with a specified .psx file
 	cd _build/default/src && ./main.exe ../../../compile/input/$(filename)
-	$(MAKE) -f psyqcompiler filename=$(filename)
+# $(MAKE) -f psyqcompiler filename=$(filename)
 
 	
 # $(MAKE) -f psyqcompiler clean

@@ -1,12 +1,39 @@
+(library
+ (name psx_imports)
+ (modules psx_imports)
+)
+
+(library
+ (name codegen)
+ (modules codegen)
+  (libraries ctree psx_imports)
+)
+
+(library
+ (name cformatter)
+ (modules cformatter)
+  (libraries ast ctree)
+)
+
+(library
+ (name type_check)
+ (modules type_check)
+ (libraries ast)
+)
+
+(library
+ (name ast_printer)
+ (modules ast_printer)
+ (libraries ast)
+)
+
+(library
+ (name ctree_printer)
+ (modules ctree_printer)
+ (libraries ctree)
+)
+
 (executable
  (name main)
- (libraries str lexer parser)
- (modules_without_implementation ctree)
- ) ; out name
- 
-;(rule
- ;(targets lexer.ml) ; out type
- ;(deps lexer.mll) ; in type
- ;(action (run ocamllex lexer.mll))) ; build step
-
-;;(ocamlc main) ;compile lexer using ocamllex
+ (libraries str lexer parser ctree cformatter type_check ast_printer ctree_printer codegen)
+ (modules main))
