@@ -1,0 +1,216 @@
+#include <sys/types.h>
+#include <libgte.h>
+#include <libetc.h>
+#include <libgpu.h>
+#include <libapi.h>
+#include <stdlib.h>
+
+#define OTLEN 8
+#define MAX_SNAKE_LENGTH 300
+DISPENV disp[2];
+DRAWENV draw[2];
+int db = 0;
+u_long ot[2][OTLEN];
+char pribuff[2][32768];
+char *nextpri;
+TILE *tile;
+#define PAD_SELECT      1
+#define PAD_L3          2
+#define PAD_R3          4
+#define PAD_START       8
+#define PAD_UP          16
+#define PAD_RIGHT       32
+#define PAD_DOWN        64
+#define PAD_LEFT        128
+#define PAD_L2          256
+#define PAD_R2          512
+#define PAD_L1          1024
+#define PAD_R1          2048
+#define PAD_TRIANGLE    4096
+#define PAD_CIRCLE      8192
+#define PAD_CROSS       16384
+#define PAD_SQUARE      32768
+typedef struct _PADTYPE
+{
+   unsigned char	stat;
+   unsigned char	len:4;
+   unsigned char	type:4;
+   unsigned short	btn;
+   unsigned char	rs_x,rs_y;
+   unsigned char	ls_x,ls_y;
+} PADTYPE;
+u_char padbuff[2][34];
+void init(void) {
+   ResetGraph(0);
+   SetDefDispEnv(&disp[0], 0, 0, 320, 240);
+   SetDefDispEnv(&disp[1], 0, 240, 320, 240);
+   SetDefDrawEnv(&draw[0], 0, 240, 320, 240);
+   SetDefDrawEnv(&draw[1], 0, 0, 320, 240);
+   setRGB0(&draw[0], 63, 0, 127);
+   setRGB0(&draw[1], 63, 0, 127);
+   draw[0].isbg = 1;
+   draw[1].isbg = 1;
+   PutDispEnv(&disp[0]);
+   PutDrawEnv(&draw[0]);
+   nextpri = pribuff[0];
+   InitPAD( padbuff[0], 34, padbuff[1], 34 );
+   StartPAD();
+   ChangeClearPAD( 1 );
+   FntLoad(960, 0);
+   FntOpen(0, 16, 320, 224, 0, 100);
+}
+void display(void) {
+   DrawSync(0);
+   VSync(0);
+   PutDispEnv(&disp[db]);
+   PutDrawEnv(&draw[db]);
+   SetDispMask(1);
+   DrawOTag(ot[db]+OTLEN-1);
+   db = !db;
+   nextpri = pribuff[db];
+}
+typedef struct Color{
+   int r;
+   int g;
+   int b;
+} Color;
+typedef struct GameObject {
+   int x;
+   int y;
+   int width;
+   int height;
+   Color color;
+} GameObject;
+Color RED = {255, 0, 0};
+Color BLUE = {0, 0, 255};
+Color GREEN = {0, 255, 0};
+Color YELLOW = {255, 255, 0};
+Color WHITE = {255, 255, 255};
+void renderGameObject(GameObject* object) {
+  tile = (TILE*)nextpri;      // Cast next primitive
+  setTile(tile);              // Initialize the primitive (very important)
+  setXY0(tile, object->x, object->y);       // Set primitive (x,y) position
+  setWH(tile, object->width, object->height);        // Set primitive size
+  setRGB0(tile, object->color.r, object->color.g, object->color.b); // Set color yellow
+  addPrim(ot[db], tile);      // Add primitive to the ordering table
+  nextpri += sizeof(TILE);    // Advance the next primitive pointer
+}
+
+
+typedef struct Platform{
+GameObject gameObject;
+}Platform;
+
+
+typedef struct Player{
+GameObject gameObject;
+
+int falling;
+
+int playerY;
+}Player;
+
+
+int isColliding(int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2);
+
+Platform initializePlatform() {
+Platform varPlatform;
+
+varPlatform.gameObject.x = 0;
+
+varPlatform.gameObject.y = 0;
+
+varPlatform.gameObject.width = 0;
+
+varPlatform.gameObject.height = 0;
+
+varPlatform.gameObject.color = WHITE;
+return varPlatform;
+}
+
+
+Player initializePlayer() {
+Player varPlayer;
+
+varPlayer.falling = 1;
+
+varPlayer.playerY = 0;
+
+varPlayer.gameObject.x = 0;
+
+varPlayer.gameObject.y = 0;
+
+varPlayer.gameObject.width = 0;
+
+varPlayer.gameObject.height = 0;
+
+varPlayer.gameObject.color = WHITE;
+return varPlayer;
+}
+
+
+int isColliding (int x1, int y1, int width1, int height1, int x2, int y2, int width2, int height2) {
+int left1 = x1;
+
+int right1 = x1+width1;
+
+int top1 = y1;
+
+int bottom1 = y1+height1;
+
+int left2 = x2;
+
+int right2 = x2+width2;
+
+int top2 = y2;
+
+int bottom2 = y2+height2;
+
+if (right1<=left2||left1>=right2||bottom1<=top2||top1>=bottom2) {
+return 1;
+}
+
+return 0;
+
+}
+
+
+int main(void) {
+init();
+Player player;
+
+Platform platform;
+
+player = initializePlayer();
+
+platform = initializePlatform();
+
+platform.gameObject.x = 0;
+platform.gameObject.y = 208;
+platform.gameObject.width = 320;
+platform.gameObject.height = 32;
+player.gameObject.x = 146;
+player.gameObject.y = 40;
+player.gameObject.width = 16;
+player.gameObject.height = 16;
+player.playerY = player.gameObject.y;
+
+player.gameObject.color = RED;
+while(1) {
+ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+player.falling = isColliding(player.gameObject.x, player.gameObject.y, player.gameObject.width, player.gameObject.height, platform.gameObject.x, platform.gameObject.y, platform.gameObject.width, platform.gameObject.height);
+renderGameObject(&platform.gameObject);
+
+if (player.falling) {
+player.playerY++;
+
+player.gameObject.y = player.playerY;}
+
+else {
+player.gameObject.y = player.playerY;}
+
+renderGameObject(&player.gameObject);
+display();
+
+}
+}
