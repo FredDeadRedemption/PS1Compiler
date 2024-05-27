@@ -348,7 +348,7 @@ let rec handle_object_expr ids expr =
   | Ctree.Var name -> expr_to_struct_assignment ids (Ctree.Var (name))
   | Ctree.UnaryOp (op, expr) -> Ctree.UnaryOp (op, handle_object_expr ids expr) 
   | Ctree.BinaryOp (op, lhs, rhs) -> Ctree.BinaryOp (op, handle_object_expr ids lhs, handle_object_expr ids rhs)
-  | FuncCallExpr (id, params) -> print_endline id; FuncCallExpr (id, (handle_params ids params))
+  | FuncCallExpr (id, params) -> FuncCallExpr (id, (handle_params ids params))
   
   (*These are the same*)
   | Ctree.VarChain props -> 
@@ -376,7 +376,6 @@ and handle_params ids params =
    | _ -> ""
   in
   let rest_params = List.tl params in
-  print_endline ("handle params:" ^ (String.concat "." ids));
   let id = Ctree.VarAddress((String.concat "." ids)  ^ opt_id_str) in
   let handled_params = List.map (fun p -> handle_object_expr ids p) rest_params in
   id :: handled_params
@@ -452,16 +451,13 @@ let generate_object ids current_ts inher_opt start_block update_block =
     | None -> handled_update
     | Some render_stmt -> handled_update @ [render_stmt]
   in
-  (current_ts, start_list, update_list)
+  (start_list, update_list)
 
 
 
 
 let rec instantiate_class (ts, ids) classes =
-  
-
-  print_endline("instantiate_class called" ^ (List.hd(List.rev ids)));
-  
+    
   let ts_str = string_of_typespec ts in
   let rec find_class_by_name name classes =
     match classes with
@@ -490,11 +486,9 @@ let rec instantiate_class (ts, ids) classes =
     ) fields [] in
 
     let current_object = generate_object ids ts inher_opt start update in
-    print_endline (List.hd (List.rev ids) ^ " has now been instantiated!");
     current_object :: List.flatten child_objects
   
-let collect_object_components (ts, start, update) =
-  print_endline("Has this ts: " ^ string_of_typespec ts);
+let collect_object_components (start, update) =
   start_list := !start_list @ start;
   update_list := !update_list @ update
 

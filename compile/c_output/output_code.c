@@ -141,7 +141,7 @@ difar = initializeDifar();
 
 sum(&difar, 1, 2);
 while(1) {
-ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+ClearOTagR(ot[db], OTLEN); 
 renderGameObject(&difar.gameObject);
 display();
 
