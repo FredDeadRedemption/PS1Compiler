@@ -37,9 +37,21 @@ ifeq ($(filter main,$(MAKECMDGOALS)),main)
 	endif
 endif
 
+# Check if the second word exists and set the filename
+ifeq ($(filter int_test,$(MAKECMDGOALS)),int_test)
+	ifneq ($(second_word),)
+		filename := $(second_word)
+	endif
+endif
+
+
 # Define a rule for running main.exe with a given .psx file
 main: # run main.exe with a specified .psx file
 	cd _build/default/src && ./main.exe ../../../compile/input/$(filename)
+
+
+int_test: # run main.exe with a specified .psx file
+	cd _build/default/src && ./main.exe ../../../test/integration_test/psx_files/$(filename)
 # $(MAKE) -f psyqcompiler filename=$(filename)
 
 	

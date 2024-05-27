@@ -97,25 +97,168 @@ void renderGameObject(GameObject* object) {
 }
 
 
+typedef struct Cyl{
+int number;
+}Cyl;
 
 
-int sum(int num1, int num2);
+typedef struct Engine{
+int rpm;
+
+Cyl cyl;
+}Engine;
 
 
+typedef struct Car{
+GameObject gameObject;
 
-int sum (int num1, int num2) {
-int result = num1+num2;
+int speed;
 
-return result;
+int acc;
 
+Engine engine1;
+
+Engine engine2;
+}Car;
+
+
+void decrementNumber(Cyl* varCyl, int number);
+void hallo(Cyl* varCyl, int bla);
+void setRpm(Engine* varEngine, int amount);
+int fly(Engine* varEngine, int x);
+void move(Car* varCar, int x);
+
+Cyl initializeCyl() {
+Cyl varCyl;
+
+varCyl.number = 10;
+return varCyl;
+}
+
+
+Engine initializeEngine() {
+Engine varEngine;
+return varEngine;
+}
+
+
+Car initializeCar() {
+Car varCar;
+
+varCar.speed = 10;
+
+varCar.gameObject.x = 0;
+
+varCar.gameObject.y = 0;
+
+varCar.gameObject.width = 0;
+
+varCar.gameObject.height = 0;
+
+varCar.gameObject.color = WHITE;
+return varCar;
+}
+
+
+void decrementNumber (Cyl* varCyl, int number) {
+number--;
+
+}
+
+
+void hallo (Cyl* varCyl, int bla) {
+
+}
+
+
+void setRpm (Engine* varEngine, int amount) {
+varEngine->rpm = amount;
+
+}
+
+
+int fly (Engine* varEngine, int x) {
+x = x*2;
+
+return x;
+
+}
+
+
+void move (Car* varCar, int x) {
+x = 1;
+
+varCar->engine2.rpm = x+1;
 }
 
 
 int main(void) {
 init();
-sum(, 1, 2);
+Car car1;
+
+Car car2;
+
+int a = 50380;
+
+car1 = initializeCar();
+
+car1.engine1 = initializeEngine();
+
+car1.engine1.cyl = initializeCyl();
+
+car1.engine2 = initializeEngine();
+
+car1.engine2.cyl = initializeCyl();
+
+car2 = initializeCar();
+
+car2.engine1 = initializeEngine();
+
+car2.engine1.cyl = initializeCyl();
+
+car2.engine2 = initializeEngine();
+
+car2.engine2.cyl = initializeCyl();
+
+car2.acc = 100;
+
+car2.acc = fly(&car2.engine1, 10);
+
+setRpm(&car2.engine1, 100);
+if (car2.engine1.rpm==10) {
+}
+
+car2.engine1.cyl.number = 1;
+
+hallo(&car2.engine1.cyl, car2.engine1.cyl.number);
+if (car2.engine2.rpm==10) {
+}
+
+car2.engine2.cyl.number = 1;
+
+hallo(&car2.engine2.cyl, car2.engine2.cyl.number);
+car1.acc = 100;
+
+car1.acc = fly(&car1.engine1, 10);
+
+setRpm(&car1.engine1, 100);
+if (car1.engine1.rpm==10) {
+}
+
+car1.engine1.cyl.number = 1;
+
+hallo(&car1.engine1.cyl, car1.engine1.cyl.number);
+if (car1.engine2.rpm==10) {
+}
+
+car1.engine2.cyl.number = 1;
+
+hallo(&car1.engine2.cyl, car1.engine2.cyl.number);
 while(1) {
 ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+renderGameObject(&car2.gameObject);
+
+renderGameObject(&car1.gameObject);
 display();
 
 }

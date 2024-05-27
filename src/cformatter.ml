@@ -132,17 +132,18 @@ let rec convert_ast_stmt_to_ctree_stmt (stmt : Ast.stmt) : Ctree.stmt =
   | Ast.DecrementPre id -> Ctree.DecrementPre id
   | Ast.DecrementVal (id, expr) -> Ctree.DecrementVal (id, convert_ast_expr_to_ctree_expr expr)
   | Ast.MethodCallStmt (ref_opt, mthd_id, args) ->
-    let object_id =
-      match ref_opt with
-      | None -> ""
-      | Some(id) -> 
-        match id with
-        | "this" -> ""
-        | "super" -> ""
-        | id -> id 
-    in
     let converted_args = List.map convert_ast_expr_to_ctree_expr args in
-    Ctree.FuncCallStmt (mthd_id, Ctree.Var(object_id) :: converted_args)
+    
+    match ref_opt with
+    | None -> Ctree.FuncCallStmt (mthd_id, converted_args)
+    | Some(id) -> 
+      match id with
+      | "this"
+      | "super" -> Ctree.FuncCallStmt (mthd_id, converted_args)
+      | id -> Ctree.FuncCallStmt (mthd_id, Ctree.Var("&" ^ id) :: converted_args)
+    
+    
+    
     
 
 let convert_ast_field_to_ctree field =
@@ -284,7 +285,6 @@ let is_field fields id =
     | Ast.FieldDefI (_, field_name, _)
     | Ast.FieldDefU (_, field_name)
     | Ast.FieldClsInit (_,  field_name) -> field_name = id
-
     ) fields
 
 let handle_method_stmt obj fields stmt =
@@ -296,7 +296,21 @@ let handle_method_stmt obj fields stmt =
   | Ctree.Assign (id, expr) when is_field fields id ->
     Ctree.Assign ((id_of_obj obj) ^ "->" ^ id, expr)
   | Ctree.ObjectPropAssign (id, props, expr) when is_field fields id ->
+    
     Ctree.ObjectPropAssign ((id_of_obj obj) ^ "->" ^ id, props, expr)
+  | Ctree.ObjectPropAssign (id, props, expr) ->
+    let id_with_game_object = 
+      match id with
+      |"super" -> "gameObject"
+      | other -> other
+    in
+    let props_with_game_object = List.map (fun prop -> 
+      match prop with
+      | "super" -> "gameObject"
+      | other -> other
+    ) props in
+    
+    Ctree.ObjectPropAssign ((id_of_obj obj) ^ "->" ^ id_with_game_object, props_with_game_object, expr)
   | _ -> stmt
   
 

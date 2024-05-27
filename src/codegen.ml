@@ -207,7 +207,7 @@ let generate_main (start, update) =
   start_code ^
   "\n" ^
   "while(1) {\n" ^
-  "ClearOTagR(ot[db], OTLEN);  // Clear ordering table \n" ^
+  "ClearOTagR(ot[db], OTLEN); \n" ^
   update_code ^
   "display();\n" ^
   "\n}\n}"
@@ -227,12 +227,17 @@ let generate_program program =
 
 
   let split_string str =
-    Str.split (Str.regexp "/") str
-  
+    let file_with_ext = List.hd (List.rev (Str.split (Str.regexp "/") str)) in
+    print_endline file_with_ext;
+    let filename_part = Str.split (Str.regexp_string ".") file_with_ext in
+    match filename_part with 
+    | filename :: _ -> filename
+    | _ -> "unknown"
+    
   
   let get_output_filename input_filename =
-    let parts = split_string input_filename in
-    let filename = List.hd (List.rev parts) in
+    let file_with_ext = split_string input_filename in
+    let filename = file_with_ext in
     "../../../compile/c_output/output_" ^ filename ^ ".c"
 
   let print_to_file filename prog =

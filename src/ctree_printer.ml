@@ -234,7 +234,7 @@ let print_ptype = function
   
   let print_program (structs, ptypes, constructors, funcs, main) =
     printf "Ctree Program:";
-    printf "]\nStructs: [";
+    printf "\nStructs: [";
     print_structs structs;
     printf "PTypes: [";
     print_ptypes ptypes;

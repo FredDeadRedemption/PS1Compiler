@@ -1,18 +1,31 @@
 class Game {
+    Difar difar = new Difar();
 
     start() {
-        sum(1, 2);
+        difar.sum(1, 2);
     }
 
     update() {
     }
 
-    int sum(int num1, int num2) {
-        int result = num1 + num2;
-        return result;
-    }
+    
 
 
 }
 
+class Difar : GameObject {
+    int id;
+    start() {
+        
+    }
+
+    update() {
+    }
+    int sum(int num1, int num2) {
+        id = 10;
+        super.x = 10;
+        int result = num1 + num2;
+        return result;
+    }
+}
 
