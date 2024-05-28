@@ -1,0 +1,130 @@
+class Game {
+    
+    Ball ball = new Ball();
+    Wall wall_left = new Wall();
+    Wall wall_right = new Wall();
+
+    int tick = 0;
+
+    int top = 0;
+    int bottom = 240;
+
+    start() {
+      ball.super.x = 144;
+      ball.super.y = 104;
+      wall_left.super.x = 0;
+      wall_right.super.x = 312;
+
+    }
+
+    update() {
+      wall_right.is_submissive = ball.rightSub;
+      wall_left.is_submissive = ball.leftSub;
+      if(wall_right.is_submissive == false) {
+        if (wall_right.super.y >= ball.super.y - 24) {
+          wall_right.super.y = wall_right.super.y - 2;
+        } else {
+          wall_right.super.y = wall_right.super.y + 2;
+        }
+          
+      }
+      if(wall_left.is_submissive == false) {
+          if (wall_left.super.y >= ball.super.y - 24) {
+            wall_left.super.y = wall_left.super.y - 2;
+        } else {
+            wall_left.super.y = wall_left.super.y + 2;
+        }
+      }
+
+
+      tick++;
+
+      if(tick >= 60){
+        tick = 0;
+      }
+
+      if(tick < 20){
+        ball.newYLevel = 2;
+      } 
+      if(tick < 40 && tick > 20){
+        ball.newYLevel = 0;
+      }
+      if(tick > 40){
+        ball.newYLevel = 1;
+      }
+    }
+}
+
+class Ball : GameObject {
+
+  bool goingRight = true;
+
+  bool goingUp = false;
+  bool rightSub = false;
+  bool leftSub = false;
+
+  int yLevel = 1;
+  int newYLevel = 1;
+
+  start(){
+    super.color = "YELLOW";
+    super.width = 16;
+    super.height = 16;
+  }
+
+  update(){
+
+    if(super.x > 296){
+      yLevel = newYLevel;
+      goingRight = false;
+    }
+
+    if(super.x < 8){
+      yLevel = newYLevel;
+      goingRight = true;
+    }
+
+    if(super.y > 224){
+      yLevel = newYLevel;
+      goingUp = true;
+    }
+
+    if(super.y < 0){
+      yLevel = newYLevel;
+      goingUp = false;
+    }
+
+    if(goingRight){
+      super.x = super.x + 2;
+      leftSub = true;
+      rightSub = false;
+    } else {
+      super.x = super.x - 2;
+      leftSub = false;
+      rightSub = true;
+    } 
+
+    if(goingUp){
+      super.y = super.y - yLevel;
+    } else {
+      super.y = super.y + yLevel;
+    }
+  }
+}
+
+class Wall : GameObject {
+
+  int type;
+  bool is_submissive;
+
+  start(){
+    super.color = "GREEN";
+    super.width = 8;
+    super.height = 64;
+    
+  }
+
+  update(){
+    
+  }
+}
