@@ -224,38 +224,38 @@ car2.acc = 100;
 
 car2.acc = fly(&car2.engine1, 10);
 
-setRpm(&car2.engine1, 100);
+setRpm(&car2.&engine1, 100);
 if (car2.engine1.rpm==10) {
 }
 
 car2.engine1.cyl.number = 1;
 
-hallo(&car2.engine1.cyl, car2.engine1.cyl.number);
+hallo(&car2.engine1.cyl.number);
 if (car2.engine2.rpm==10) {
 }
 
 car2.engine2.cyl.number = 1;
 
-hallo(&car2.engine2.cyl, car2.engine2.cyl.number);
+hallo(&car2.engine2.cyl.number);
 car1.acc = 100;
 
 car1.acc = fly(&car1.engine1, 10);
 
-setRpm(&car1.engine1, 100);
+setRpm(&car1.&engine1, 100);
 if (car1.engine1.rpm==10) {
 }
 
 car1.engine1.cyl.number = 1;
 
-hallo(&car1.engine1.cyl, car1.engine1.cyl.number);
+hallo(&car1.engine1.cyl.number);
 if (car1.engine2.rpm==10) {
 }
 
 car1.engine2.cyl.number = 1;
 
-hallo(&car1.engine2.cyl, car1.engine2.cyl.number);
+hallo(&car1.engine2.cyl.number);
 while(1) {
-ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+ClearOTagR(ot[db], OTLEN); 
 renderGameObject(&car2.gameObject);
 
 renderGameObject(&car1.gameObject);

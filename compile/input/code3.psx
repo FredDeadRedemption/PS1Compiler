@@ -65,6 +65,7 @@ class Platform : GameObject {
         super.y = 208;
         super.width = 320;
         super.height = 32;
+        super.color = "YELLOW";
     }
     update() {
 

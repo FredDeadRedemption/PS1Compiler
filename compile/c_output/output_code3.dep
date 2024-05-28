@@ -1,0 +1,16 @@
+compile/c_output/output_code3.o: compile/c_output/output_code3.c \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/sys/types.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/libgte.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/libetc.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/libgpu.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/libapi.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/kernel.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/r3000.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/asm.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/stdlib.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/stddef.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/abs.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/convert.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/malloc.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/qsort.h \
+ C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/include/rand.h

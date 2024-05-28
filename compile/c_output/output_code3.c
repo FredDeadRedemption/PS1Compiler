@@ -189,6 +189,7 @@ platform.gameObject.x = 0;
 platform.gameObject.y = 208;
 platform.gameObject.width = 320;
 platform.gameObject.height = 32;
+platform.gameObject.color = YELLOW;
 player.gameObject.x = 146;
 player.gameObject.y = 40;
 player.gameObject.width = 16;
@@ -197,7 +198,7 @@ player.playerY = player.gameObject.y;
 
 player.gameObject.color = RED;
 while(1) {
-ClearOTagR(ot[db], OTLEN);  // Clear ordering table 
+ClearOTagR(ot[db], OTLEN); 
 player.falling = isColliding(player.gameObject.x, player.gameObject.y, player.gameObject.width, player.gameObject.height, platform.gameObject.x, platform.gameObject.y, platform.gameObject.width, platform.gameObject.height);
 renderGameObject(&platform.gameObject);
 
