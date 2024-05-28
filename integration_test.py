@@ -28,7 +28,7 @@ def run_test(file_name):
 
     # Execute the the test
     stdout, stderr, status = run_command("make int_test " + psx_file_name)
-    print(stdout)
+    # print(stdout)
     if stderr:
         print("Error while executing make command:", stderr)
 
@@ -62,6 +62,7 @@ def main():
         print("Error while executing make command:", stderr)
 
     run_test("test_sum")
+    run_test("test_class")
     #run_test("")
     
     
