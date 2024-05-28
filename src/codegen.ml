@@ -81,7 +81,7 @@ let rec generate_stmt stmt =
   | AssignStructInit (ts) ->
     " = initialize" ^ (string_of_typespec ts) ^ "();\n"
   | ArrayDef (ts, id, size) ->
-    (string_of_typespec ts) ^ id ^ "[" ^ string_of_int size ^ "];\n"
+    (string_of_typespec ts) ^ " " ^ id ^ "[" ^ string_of_int size ^ "];\n"
   | ArrayAssign (id, index, expr) ->
     id ^ "[" ^ string_of_int index ^"] = " ^ generate_expr expr ^ ";\n"
   | Assign (name, expr) ->

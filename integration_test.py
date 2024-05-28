@@ -24,11 +24,11 @@ def read_file(file_path):
 def run_test(file_name):
     psx_file_name = file_name+".psx"
     expected_path = "./test/integration_test/expected_files/"+file_name+".c"
-    actual_path ="./compile/c_output/output_"+file_name+".c"
+    actual_path ="./test/integration_test/actual_files/output_"+file_name+".c"
 
     # Execute the the test
     stdout, stderr, status = run_command("make int_test " + psx_file_name)
-    print(stdout)
+    # print(stdout)
     if stderr:
         print("Error while executing make command:", stderr)
 
@@ -62,6 +62,8 @@ def main():
         print("Error while executing make command:", stderr)
 
     run_test("test_sum")
+    run_test("test_class")
+    run_test("test_arrays")
     #run_test("")
     
     

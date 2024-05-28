@@ -1,0 +1,17 @@
+class Game {
+
+    start() {
+
+     int _evenUneven [ 4 ] ;
+      
+     // _evenUneven[0] = 1;
+     // _evenUneven[1] = 2;
+     // _evenUneven[2] = 3;
+     // _evenUneven[3] = 2 + 2;
+      
+    //int x = _evenUneven[1];
+    }
+
+    update() {
+    }
+}

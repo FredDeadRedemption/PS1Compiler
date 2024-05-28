@@ -1,0 +1,26 @@
+class Game {
+
+    Tetrahedron theBestShape = new Tetrahedron();
+
+    start() {
+      theBestShape.spin(1);
+
+      int initialspeed = theBestShape.rotation;
+    }
+
+    update() {}
+}
+
+class Tetrahedron : GameObject {
+  int edges = 6;
+  int faces = 4;
+  int rotation;
+
+  start(){}
+
+  update(){}
+
+  void spin(int speed){
+    rotation = speed;
+  }
+}
