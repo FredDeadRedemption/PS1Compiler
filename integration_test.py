@@ -63,6 +63,7 @@ def main():
 
     run_test("test_sum")
     run_test("test_class")
+    run_test("test_arrays")
     #run_test("")
     
     
