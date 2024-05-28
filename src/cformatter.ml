@@ -262,6 +262,7 @@ let rec handle_main_stmt stmt =
     ) props in
     Ctree.ObjectPropAssign (id, props_with_gameobject, handle_main_expr e)
   | Ctree.IfStmt (e, blk) ->  Ctree.IfStmt (handle_main_expr e, List.map handle_main_stmt blk)
+  | Ctree.ForStmt (stmt, e, incr, blk) -> Ctree.ForStmt (handle_main_stmt stmt, handle_main_expr e, handle_main_stmt incr, List.map handle_main_stmt blk)
   | _ -> stmt
 
 let collect_main_components (fields, start_block, update_block, methods) =
