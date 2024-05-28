@@ -21,24 +21,17 @@ def read_file(file_path):
     except Exception as e:
         return None, str(e)
 
-def main():
-    test_path = "./test/integration_test/"
-    output_path ="./compile/c_output/output_"
-    psx_file_name = "test_sum.psx"
-    psx_path = test_path + "psx_files/" + "test_sum.psx"
-    expected_path = test_path + "expected_files/" + "test_sum.c"
-    actual_path = output_path + "test_sum.c"
-    
-    # Make main
-    stdout, stderr, status = run_command("make all")
-    print(stdout)
+def run_test(file_name):
+    psx_file_name = file_name+".psx"
+    expected_path = "./test/integration_test/expected_files/"+file_name+".c"
+    actual_path ="./compile/c_output/output_"+file_name+".c"
+
     # Execute the the test
     stdout, stderr, status = run_command("make int_test " + psx_file_name)
     print(stdout)
-    
     if stderr:
         print("Error while executing make command:", stderr)
-    
+
     # Read the file
     actual_content, actual_error = read_file(actual_path)
     expected_content, expected_error = read_file(expected_path)
@@ -57,6 +50,20 @@ def main():
             print("Specific output block not found in file content.")
     
     print("Exit status:", status)
+    
+
+def main():
+    
+    # Make main
+    stdout, stderr, status = run_command("make all")
+    print(stdout)
+    
+    if stderr:
+        print("Error while executing make command:", stderr)
+
+    run_test("test_sum")
+    
+    
 
 if __name__ == "__main__":
     main()
