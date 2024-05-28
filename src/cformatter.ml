@@ -237,24 +237,22 @@ let convert_ast_field_to_stmt field =
   | Ast.FieldClsInit (ts, id) -> Ast.ClassInit (ts, id)
 
 
-let handle_main_expr expr = 
+let rec handle_main_expr expr = 
   match expr with
+  | Ctree.VarChain props -> 
+    let updated_props = List.map (fun prop -> 
+      match prop with
+      | "super" -> "gameObject"
+      | other -> other
+    ) props in
+    Ctree.VarChain updated_props
   | Ctree.FuncCallExpr (mthd_id, args) -> 
-    let args_with_gameobject = List.map (fun arg -> 
-      match arg with 
-      | Ctree.VarChain props -> 
-        let updated_props = List.map (fun prop -> 
-          match prop with
-          | "super" -> "gameObject"
-          | other -> other
-        ) props in
-        Ctree.VarChain updated_props
-      | _ -> arg
-    ) args in
-    Ctree.FuncCallExpr (mthd_id, args_with_gameobject)
+    let handled_args = List.map handle_main_expr args in
+    Ctree.FuncCallExpr (mthd_id, handled_args)
+  | Ctree.BinaryOp (binop, e1, e2) -> Ctree.BinaryOp (binop, handle_main_expr e1, handle_main_expr e2)
   | _ -> expr
 
-let handle_main_stmt stmt =
+let rec handle_main_stmt stmt =
   match stmt with
   | Ctree.ObjectPropAssign (id, props, e) -> 
     let props_with_gameobject = List.map (fun prop -> 
@@ -263,6 +261,7 @@ let handle_main_stmt stmt =
       | other -> other
     ) props in
     Ctree.ObjectPropAssign (id, props_with_gameobject, handle_main_expr e)
+  | Ctree.IfStmt (e, blk) ->  Ctree.IfStmt (handle_main_expr e, List.map handle_main_stmt blk)
   | _ -> stmt
 
 let collect_main_components (fields, start_block, update_block, methods) =

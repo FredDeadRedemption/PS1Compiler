@@ -97,52 +97,96 @@ void renderGameObject(GameObject* object) {
 }
 
 
-typedef struct Difar{
+typedef struct Platform{
+GameObject gameObject;
+}Platform;
+
+
+typedef struct Player{
 GameObject gameObject;
 
-int id;
-}Difar;
+int playerY;
+}Player;
 
 
-int sum(Difar* varDifar, int num1, int num2);
 
-Difar initializeDifar() {
-Difar varDifar;
 
-varDifar.gameObject.x = 0;
+Platform initializePlatform() {
+Platform varPlatform;
 
-varDifar.gameObject.y = 0;
+varPlatform.gameObject.x = 0;
 
-varDifar.gameObject.width = 0;
+varPlatform.gameObject.y = 0;
 
-varDifar.gameObject.height = 0;
+varPlatform.gameObject.width = 0;
 
-varDifar.gameObject.color = WHITE;
-return varDifar;
+varPlatform.gameObject.height = 0;
+
+varPlatform.gameObject.color = WHITE;
+return varPlatform;
 }
 
 
-int sum (Difar* varDifar, int num1, int num2) {
-varDifar->id = 10;
+Player initializePlayer() {
+Player varPlayer;
 
-varDifar->gameObject.x = 10;
-int result = num1+num2;
+varPlayer.playerY = 0;
 
-return result;
+varPlayer.gameObject.x = 0;
 
+varPlayer.gameObject.y = 0;
+
+varPlayer.gameObject.width = 0;
+
+varPlayer.gameObject.height = 0;
+
+varPlayer.gameObject.color = WHITE;
+return varPlayer;
 }
+
+
 
 
 int main(void) {
 init();
-Difar difar;
+Player player;
 
-difar = initializeDifar();
+Platform platform;
 
-sum(&difar, 1, 2);
+player = initializePlayer();
+
+platform = initializePlatform();
+
+platform.gameObject.x = 0;
+platform.gameObject.y = 208;
+platform.gameObject.width = 16;
+platform.gameObject.height = 16;
+player.gameObject.x = 146;
+player.gameObject.y = 40;
+player.gameObject.width = 16;
+player.gameObject.height = 16;
+player.gameObject.color = RED;
 while(1) {
 ClearOTagR(ot[db], OTLEN); 
-renderGameObject(&difar.gameObject);
+if (player.gameObject.x==platform.gameObject.x) {
+platform.gameObject.x = 50;
+platform.gameObject.y = 100;}
+
+if (player.gameObject.x<platform.gameObject.x) {
+player.gameObject.x = player.gameObject.x+1;}
+
+if (player.gameObject.x>platform.gameObject.x) {
+player.gameObject.x = player.gameObject.x-1;}
+
+if (player.gameObject.y<platform.gameObject.y) {
+player.gameObject.y = player.gameObject.y+1;}
+
+if (player.gameObject.y>platform.gameObject.y) {
+player.gameObject.y = player.gameObject.y-1;}
+
+renderGameObject(&platform.gameObject);
+
+renderGameObject(&player.gameObject);
 display();
 
 }
