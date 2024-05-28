@@ -47,11 +47,11 @@ endif
 
 # Define a rule for running main.exe with a given .psx file
 main: # run main.exe with a specified .psx file
-	cd _build/default/src && ./main.exe ../../../compile/input/$(filename)
+	cd _build/default/src && ./main.exe ../../../compile/input/$(filename) ../../../compile/c_output/
 
 
 int_test: # run main.exe with a specified .psx file
-	cd _build/default/src && ./main.exe ../../../test/integration_test/psx_files/$(filename)
+	cd _build/default/src && ./main.exe ../../../test/integration_test/psx_files/$(filename) ../../../test/integration_test/actual_files/
 # $(MAKE) -f psyqcompiler filename=$(filename)
 
 	

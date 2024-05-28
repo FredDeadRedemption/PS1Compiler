@@ -62,6 +62,7 @@ def main():
         print("Error while executing make command:", stderr)
 
     run_test("test_sum")
+    #run_test("")
     
     
 

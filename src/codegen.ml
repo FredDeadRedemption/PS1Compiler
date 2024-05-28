@@ -238,14 +238,15 @@ let generate_program program =
   let get_output_filename input_filename =
     let file_with_ext = split_string input_filename in
     let filename = file_with_ext in
-    "../../../compile/c_output/output_" ^ filename ^ ".c"
+    "output_" ^ filename ^ ".c"
 
-  let print_to_file filename prog =
+  let print_to_file filename output_path prog =
     let prog_string = generate_program prog in
     print_endline ("Input filename: " ^ filename); (* Print the output filename *)
     let output_filename = get_output_filename filename in
-    print_endline ("Output filename: " ^ output_filename); (* Print the output filename *)
-    let out_channel = open_out output_filename in
+    let output = output_path ^ output_filename in
+    print_endline ("Output filename: " ^ output); (* Print the output filename *)
+    let out_channel = open_out output in
     output_string out_channel prog_string;
     close_out out_channel;;
   
