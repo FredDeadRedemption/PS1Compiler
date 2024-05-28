@@ -262,6 +262,8 @@ let rec handle_main_stmt stmt =
     ) props in
     Ctree.ObjectPropAssign (id, props_with_gameobject, handle_main_expr e)
   | Ctree.IfStmt (e, blk) ->  Ctree.IfStmt (handle_main_expr e, List.map handle_main_stmt blk)
+  | Ctree.ElseIfStmt (e, blk) ->  Ctree.ElseIfStmt (handle_main_expr e, List.map handle_main_stmt blk)
+  | Ctree.ElseStmt (blk) ->  Ctree.ElseStmt (List.map handle_main_stmt blk)
   | Ctree.ForStmt (stmt, e, incr, blk) -> Ctree.ForStmt (handle_main_stmt stmt, handle_main_expr e, handle_main_stmt incr, List.map handle_main_stmt blk)
   | _ -> stmt
 
@@ -320,7 +322,7 @@ let handle_method_body obj fields stmts =
 let collect_class_components id inher_opt (fields, methods) =
   id_list := id :: !id_list;
   struct_list := assemble_struct id inher_opt fields :: !struct_list;
-  let class_constructor = assemble_constructor id inher_opt fields in (*TODO: Her skal gameObject init i*)
+  let class_constructor = assemble_constructor id inher_opt fields in
 
   construct_list := class_constructor :: !construct_list;
   

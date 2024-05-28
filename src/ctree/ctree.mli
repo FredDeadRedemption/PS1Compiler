@@ -54,7 +54,6 @@ type formals = formal list
 type stmt =
   | VarDefI     of typespec * string * expr 
   | VarDefU     of typespec * string
-  (*| VarDefPoiner of typespec * string*)
   | StructInit  of typespec * string
   | AssignStructInit  of typespec
   | AssignToStructStmt of string * stmt

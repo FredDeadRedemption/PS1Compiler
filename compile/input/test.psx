@@ -9,27 +9,26 @@ class Game {
 
     update() {
         
-        for (int i = 0; i < 1; i = i + 1;){
-            if (player.super.x == platform.super.x){
-                    if(player.super.y == platform.super.y){
-                        platform.super.y = platform.super.y + 25;
+        
+        if (player.super.x == platform.super.x){
+                if(player.super.y == platform.super.y){
+                    platform.super.y = platform.super.y + 25;
 
-                }
-                platform.super.x = platform.super.x + 25;
-                }
-         
-            if (player.super.x < platform.super.x){
-            player.super.x = player.super.x + 1;
             }
-            if (player.super.x > platform.super.x){
-                player.super.x = player.super.x - 1;
+            platform.super.x = platform.super.x + 25;
             }
-            if (player.super.y < platform.super.y) {
-                player.super.y = player.super.y + 1;
-            }
-            if (player.super.y > platform.super.y){
-                player.super.y = player.super.y - 1;
-            }
+        
+        if (player.super.x < platform.super.x){
+        player.super.x = player.super.x + 1;
+        }
+        if (player.super.x > platform.super.x){
+            player.super.x = player.super.x - 1;
+        }
+        if (player.super.y < platform.super.y) {
+            player.super.y = player.super.y + 1;
+        }
+        if (player.super.y > platform.super.y){
+            player.super.y = player.super.y - 1;
         }
     }
 }

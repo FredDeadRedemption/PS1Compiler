@@ -1,0 +1,596 @@
+Archive member included to satisfy reference by file (symbol)
+
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a91.o)
+                              compile/c_output/output_test.o (ChangeClearPAD)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o)
+                              compile/c_output/output_test.o (InitPAD)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(patch.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (_patch_pad)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a18.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (InitPAD2)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a19.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (StartPAD2)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a21.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (PAD_init2)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a36.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (EnterCriticalSection)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a37.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (ExitCriticalSection)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c68.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(patch.o) (FlushCache)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(chclrpad.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (_remove_ChgclrPAD)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l02.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (SysEnqIntRP)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l03.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o) (SysDeqIntRP)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o)
+                              compile/c_output/output_test.o (VSync)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_vb.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o) (Vcount)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_vb.o) (InterruptCallback)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_dma.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (startIntrDMA)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e03.o)
+                              compile/c_output/output_test.o (SetDefDrawEnv)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e04.o)
+                              compile/c_output/output_test.o (SetDefDispEnv)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+                              compile/c_output/output_test.o (FntOpen)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p06.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (AddPrim)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p09.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (TermPrim)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p10.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (SetSemiTrans)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p20.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (SetSprt8)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p26.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (SetTile)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p41.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (SetDrawMode)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+                              compile/c_output/output_test.o (ResetGraph)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e00.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (LoadTPage)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e02.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (LoadClut2)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p00.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e00.o) (GetTPage)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p01.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e02.o) (GetClut)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a23.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (ReturnFromException)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a24.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (ResetEntryInt)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a25.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (HookEntryInt)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c114.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (_96_remove)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c73.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o) (GPU_cw)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l10.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o) (ChangeClearRCnt)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(a63.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o) (puts)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c19.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (setjmp)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c27.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (strlen)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c42.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o) (memcpy)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c43.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o) (memset)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c63.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o) (printf)
+C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vmode.o)
+                              C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e03.o) (GetVideoMode)
+
+Discarded input sections
+
+ .text          0x00000000        0x0 compile/c_output/output_test.o
+ .MIPS.abiflags
+                0x00000000       0x18 compile/c_output/output_test.o
+ .pdr           0x00000000       0xc0 compile/c_output/output_test.o
+ .text          0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .data          0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .bss           0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .reginfo       0x00000000       0x18 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .MIPS.abiflags
+                0x00000000       0x18 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .text          0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .data          0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .bss           0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .reginfo       0x00000000       0x18 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .MIPS.abiflags
+                0x00000000       0x18 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .pdr           0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .ramtext       0x00000000        0xc C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_line    0x00000000       0x4b C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_line_str
+                0x00000000       0x91 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_info    0x00000000       0x24 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_abbrev  0x00000000       0x14 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_aranges
+                0x00000000       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .debug_str     0x00000000       0x9d C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+ .gnu.attributes
+                0x00000000       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+loader           0x8000f800         0x00000800
+ram              0x80010000         0x001f0000         xrw
+dcache           0x1f800000         0x00000400
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD compile/c_output/output_test.o
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/syscalls/printf.o
+START GROUP
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc2.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libcard.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libcomb.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libds.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgs.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgte.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgun.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libhmd.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libmath.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libmcrd.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libmcx.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libpad.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libpress.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libsio.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libsnd.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libspu.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libtap.a
+LOAD C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libcd.a
+END GROUP
+                0x8002d600                        __heap_base = __bss_end
+                0x80010000                        TLOAD_ADDR = DEFINED (TLOAD_ADDR)?TLOAD_ADDR:0x80010000
+                0x80200000                        __ram_top = (ORIGIN (ram) + LENGTH (ram))
+                0x801fff00                        __sp = (__ram_top - 0x100)
+                0x1f800000                        __dcache = ORIGIN (dcache)
+                0x1f800400                        __dcache_top = (ORIGIN (dcache) + LENGTH (dcache))
+                0x00015e00                        __bss_len = (__bss_end - __bss_start)
+                0x00005460                        __ftext_len = (__ftext_end - __ftext_start)
+                0x000023a0                        __fdata_len = (__fdata_end - __fdata_start)
+                0x80200000                        __stack_start = (ORIGIN (ram) + LENGTH (ram))
+
+.PSX_EXE_Header
+                0x8000f800      0x800
+                0x8000f800        0x1 BYTE 0x50
+                0x8000f801        0x1 BYTE 0x53
+                0x8000f802        0x1 BYTE 0x2d
+                0x8000f803        0x1 BYTE 0x58
+                0x8000f804        0x1 BYTE 0x20
+                0x8000f805        0x1 BYTE 0x45
+                0x8000f806        0x1 BYTE 0x58
+                0x8000f807        0x1 BYTE 0x45
+                0x8000f808        0x4 LONG 0x0
+                0x8000f80c        0x4 LONG 0x0
+                0x8000f810        0x4 LONG 0x80010000 ABSOLUTE (_start)
+                0x8000f814        0x4 LONG 0x0
+                0x8000f818        0x4 LONG 0x80010000 TLOAD_ADDR
+                0x8000f81c        0x4 LONG 0x7800 (__ftext_len + __fdata_len)
+                0x8000f820        0x4 LONG 0x0
+                0x8000f824        0x4 LONG 0x0
+                0x8000f828        0x4 LONG 0x0
+                0x8000f82c        0x4 LONG 0x0
+                0x8000f830        0x4 LONG 0x801fff00 DEFINED (_sp)?ABSOLUTE (_sp):0x801fff00
+                0x8000f834        0x4 LONG 0x0
+                0x80010000                        . = (. + 0x7c8)
+ *fill*         0x8000f838      0x7c8 
+                0x80010000                        __ftext_start = ABSOLUTE (.)
+
+.text           0x80010000     0x5460
+ *(.start)
+ .start         0x80010000       0x64 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+                0x80010000                _start
+ *(.init)
+ *(SORT_NONE(.fini))
+ *(.text.unlikely .text.*_unlikely .text.unlikely.*)
+ *(.text.exit .text.exit.*)
+ *(.text.startup .text.startup.*)
+ .text.startup.main
+                0x80010064      0x140 compile/c_output/output_test.o
+                0x80010064                main
+ *(.text.hot .text.hot.*)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text.init     0x800101a4      0x134 compile/c_output/output_test.o
+                0x800101a4                init
+ .text.display  0x800102d8       0xb8 compile/c_output/output_test.o
+                0x800102d8                display
+ .text.renderGameObject
+                0x80010390       0xd8 compile/c_output/output_test.o
+                0x80010390                renderGameObject
+ .text.initializePlatform
+                0x80010468       0x38 compile/c_output/output_test.o
+                0x80010468                initializePlatform
+ .text.initializePlayer
+                0x800104a0       0x3c compile/c_output/output_test.o
+                0x800104a0                initializePlayer
+ *fill*         0x800104dc        0x4 
+ .text          0x800104e0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a91.o)
+                0x800104e0                ChangeClearPAD
+ .text          0x800104f0      0x290 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o)
+                0x800104f0                SetInitPadFlag
+                0x800104fc                ReadInitPadFlag
+                0x8001050c                PAD_init
+                0x8001059c                InitPAD
+                0x8001062c                StartPAD
+ .text          0x80010780       0xa0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(patch.o)
+                0x80010780                EnablePAD
+                0x80010794                DisablePAD
+                0x800107a8                _patch_pad
+ .text          0x80010820       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a18.o)
+                0x80010820                InitPAD2
+ .text          0x80010830       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a19.o)
+                0x80010830                StartPAD2
+ .text          0x80010840       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a21.o)
+                0x80010840                PAD_init2
+ .text          0x80010850       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a36.o)
+                0x80010850                EnterCriticalSection
+ .text          0x80010860       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a37.o)
+                0x80010860                ExitCriticalSection
+ .text          0x80010870       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c68.o)
+                0x80010870                FlushCache
+ .text          0x80010880       0x70 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(chclrpad.o)
+                0x80010880                _remove_ChgclrPAD
+ .text          0x800108f0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l02.o)
+                0x800108f0                SysEnqIntRP
+ .text          0x80010900       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l03.o)
+                0x80010900                SysDeqIntRP
+ .text          0x80010910      0x210 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o)
+                0x80010910                VSync
+ .text          0x80010b20      0x120 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_vb.o)
+                0x80010b20                startIntrVSync
+ .text          0x80010c40      0x6c0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o)
+                0x80010c40                ResetCallback
+                0x80010c70                InterruptCallback
+                0x80010ca0                DMACallback
+                0x80010cd0                VSyncCallback
+                0x80010d04                VSyncCallbacks
+                0x80010d34                StopCallback
+                0x80010d64                RestartCallback
+                0x80010d94                CheckCallback
+                0x80010da4                GetIntrMask
+                0x80010dbc                SetIntrMask
+ .text          0x80011300      0x2a0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_dma.o)
+                0x80011300                startIntrDMA
+ .text          0x800115a0       0xc0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e03.o)
+                0x800115a0                SetDefDrawEnv
+ .text          0x80011660       0x40 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e04.o)
+                0x80011660                SetDefDispEnv
+ .text          0x800116a0      0xa80 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+                0x800116a0                SetDumpFnt
+                0x800116e0                FntLoad
+                0x80011780                FntOpen
+                0x80011a3c                FntFlush
+                0x80011d58                FntPrint
+ .text          0x80012120       0x40 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p06.o)
+                0x80012120                AddPrim
+ .text          0x80012160       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p09.o)
+                0x80012160                TermPrim
+ .text          0x80012180       0x30 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p10.o)
+                0x80012180                SetSemiTrans
+ .text          0x800121b0       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p20.o)
+                0x800121b0                SetSprt8
+ .text          0x800121d0       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p26.o)
+                0x800121d0                SetTile
+ .text          0x800121f0       0xa0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p41.o)
+                0x800121f0                SetDrawMode
+ .text          0x80012290     0x2f00 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+                0x80012290                ResetGraph
+                0x80012404                SetGraphDebug
+                0x80012460                SetGraphQueue
+                0x80012504                GetGraphDebug
+                0x80012514                DrawSyncCallback
+                0x80012574                SetDispMask
+                0x8001260c                DrawSync
+                0x80012790                ClearImage
+                0x80012820                ClearImage2
+                0x800128b8                LoadImage
+                0x80012918                StoreImage
+                0x80012978                MoveImage
+                0x80012a30                ClearOTag
+                0x80012af8                ClearOTagR
+                0x80012ba4                DrawPrim
+                0x80012c00                DrawOTag
+                0x80012c70                PutDrawEnv
+                0x80012d30                DrawOTagEnv
+                0x80012e08                GetDrawEnv
+                0x80012e3c                PutDispEnv
+                0x80013334                GetDispEnv
+                0x80013368                GetODE
+                0x80013398                SetDrawArea
+                0x80013418                SetDrawOffset
+                0x80013458                SetDrawEnv
+                0x80014d28                LoadImage2
+                0x80014e14                StoreImage2
+                0x80014f00                MoveImage2
+                0x80015044                DrawOTag2
+                0x80015140                _GPU_ResetCallback
+ .text          0x80015190       0xf0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e00.o)
+                0x80015190                LoadTPage
+ .text          0x80015280       0x70 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e02.o)
+                0x80015280                LoadClut2
+ .text          0x800152f0       0x40 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p00.o)
+                0x800152f0                GetTPage
+ .text          0x80015330       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p01.o)
+                0x80015330                GetClut
+ .text          0x80015350       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a23.o)
+                0x80015350                ReturnFromException
+ .text          0x80015360       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a24.o)
+                0x80015360                ResetEntryInt
+ .text          0x80015370       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a25.o)
+                0x80015370                HookEntryInt
+ .text          0x80015380       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c114.o)
+                0x80015388                _96_remove
+ .text          0x800153a0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c73.o)
+                0x800153a0                GPU_cw
+ .text          0x800153b0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l10.o)
+                0x800153b0                ChangeClearRCnt
+ .text          0x800153c0       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(a63.o)
+                0x800153c8                puts
+ .text          0x800153e0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c19.o)
+                0x800153e0                setjmp
+ .text          0x800153f0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c27.o)
+                0x800153f0                strlen
+ .text          0x80015400       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c42.o)
+                0x80015400                memcpy
+ .text          0x80015410       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c43.o)
+                0x80015410                memset
+ .text          0x80015420       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c63.o)
+                0x80015420                printf
+ .text          0x80015430       0x30 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vmode.o)
+                0x80015430                SetVideoMode
+                0x80015444                GetVideoMode
+                0x80015460                        . = ALIGN (0x10)
+ *(.init)
+                0x80015460                        . = ALIGN (0x10)
+ *(.fini)
+                0x80015460                        . = ALIGN (0x10)
+                0x80015460                        __text_end = .
+                0x80015460                        __ftext_end = ABSOLUTE (.)
+                0x80015460                        __fdata_start = ABSOLUTE (.)
+
+.rodata         0x80015460      0x380
+ *(.rodata .rodata.* .rdata .rdata.* .gnu.linkonce.r.*)
+ .rodata        0x80015460       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+ .rdata         0x80015470       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o)
+ .rdata         0x80015480       0x70 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o)
+ .rdata         0x800154f0       0x30 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_dma.o)
+ .rdata         0x80015520       0xa0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+ .rdata         0x800155c0      0x220 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+                0x800157e0                        . = ALIGN (0x10)
+                0x800157e0                        __preinit_array_start = .
+ *(.preinit_array)
+                0x800157e0                        __preinit_array_end = .
+                0x800157e0                        . = ALIGN (0x10)
+                0x800157e0                        __init_array_start = .
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array)
+                0x800157e0                        . = ALIGN (0x10)
+ *crtbegin.o(.ctors)
+ *(EXCLUDE_FILE(*crtend.o) .ctors)
+ *(SORT_BY_NAME(.ctors.*))
+ *crtend.o(.ctors)
+                0x800157e0                        __init_array_end = .
+                0x800157e0                        . = ALIGN (0x10)
+                0x800157e0                        __fini_array_start = .
+ *(.fini_array)
+ *(SORT_BY_NAME(.fini_array.*))
+ *crtbegin.o(.dtors)
+ *(EXCLUDE_FILE(*crtend.o) .dtors)
+ *(SORT_BY_NAME(.dtors.*))
+ *crtend.o(.dtors)
+                0x800157e0                        __fini_array_end = .
+                0x800157e0                        __build_id = .
+ *(.note.gnu.build-id)
+                0x800157e0                        __build_id_end = .
+
+.rel.dyn        0x800157e0        0x0
+ .rel.dyn       0x800157e0        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+
+.rodata1
+ *(.rodata1)
+                0x800157e0                        __data_start = .
+
+.data           0x800157e0     0x2020
+ *(.a0table)
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x800157e0       0x3c compile/c_output/output_test.o
+                0x800157e0                WHITE
+                0x800157ec                YELLOW
+                0x800157f8                GREEN
+                0x80015804                BLUE
+                0x80015810                RED
+ *fill*         0x8001581c        0x4 
+ .data          0x80015820       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o)
+ .data          0x80015830       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o)
+                0x80015840                Hcount
+ .data          0x80015850       0x30 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_vb.o)
+                0x80015870                Vcount
+ .data          0x80015880     0x1100 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o)
+ .data          0x80016980       0x30 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_dma.o)
+ .data          0x800169b0      0xb90 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+                0x800169b0                Font
+ .data          0x80017540      0x1a0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+                0x8001758c                GPU_printf
+                0x80017590                GEnv
+                0x800176b8                _qin
+                0x800176bc                _qout
+ .data          0x800176e0       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vmode.o)
+ *(.data1)
+ *(.sdata .sdata.* .gnu.linkonce.s.*)
+ *(.sdata2 .sdata2.* .gnu.linkonce.s2.*)
+ *(.got.plt)
+ *(.got)
+                0x80017800                        . = ALIGN (0x800)
+ *fill*         0x800176f0      0x110 
+                0x80017800                        __data_end = .
+                0x80017800                        __fdata_end = .
+                0x80017800                        __bss_start = .
+
+.sbss           0x80017800    0x15e00
+ *(.dynsbss)
+ *(.sbss .sbss.* .gnu.linkonce.sb.*)
+ .sbss          0x80017800        0xc compile/c_output/output_test.o
+                0x80017800                tile
+                0x80017804                nextpri
+                0x80017808                db
+ *(.scommon)
+ *(.dynbss)
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x8001780c    0x10164 compile/c_output/output_test.o
+                0x8001780c                padbuff
+                0x80017850                pribuff
+                0x80027850                ot
+                0x80027890                draw
+                0x80027948                disp
+ .bss           0x80027970       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o)
+                0x80027970                _apiPadPatch
+ .bss           0x80027980       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(patch.o)
+ .bss           0x80027990       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(chclrpad.o)
+ .bss           0x800279a0     0x4410 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+ .bss           0x8002bdb0     0x1850 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+                0x8002be00                _que
+ *(COMMON)
+                0x8002d600                        . = ALIGN (0x4)
+                0x8002d600                        __bss_end = .
+                0x8002d600                        __heap_start = __heap_base
+                0x8000f800                        . = (ADDR (.text) - 0x800)
+                0x8000f800                        __end = .
+
+/DISCARD/
+ *(.MIPS.abiflags)
+
+/DISCARD/
+ *(.rel.iplt)
+ *(.rela.iplt)
+ *(.rel.plt)
+ *(.rela.plt)
+ *(.plt)
+ *(.iplt)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+OUTPUT(compile/output/test.elf elf32-littlemips)
+
+.reginfo        0x00000000       0x18
+ .reginfo       0x00000000       0x18 compile/c_output/output_test.o
+
+.mdebug.abi32   0x00000000        0x0
+ .mdebug.abi32  0x00000000        0x0 compile/c_output/output_test.o
+
+.comment        0x00000000       0x12
+ .comment       0x00000000       0x12 compile/c_output/output_test.o
+                                 0x13 (size before relaxing)
+
+.gnu.attributes
+                0x00000000       0x10
+ .gnu.attributes
+                0x00000000       0x10 compile/c_output/output_test.o
+ .gnu.attributes
+                0x00000010       0x10 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.pdr            0x00000000        0x0
+ .pdr           0x00000000        0x0 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.note           0x00000000     0x137c
+ .note          0x00000000       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a91.o)
+ .note          0x00000074       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(pad.o)
+ .note          0x000000e8       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(patch.o)
+ .note          0x0000015c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a18.o)
+ .note          0x000001d0       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a19.o)
+ .note          0x00000244       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a21.o)
+ .note          0x000002b8       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a36.o)
+ .note          0x0000032c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a37.o)
+ .note          0x000003a0       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c68.o)
+ .note          0x00000414       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(chclrpad.o)
+ .note          0x00000488       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l02.o)
+ .note          0x000004fc       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l03.o)
+ .note          0x00000570       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vsync.o)
+ .note          0x000005e4       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_vb.o)
+ .note          0x00000658       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr.o)
+ .note          0x000006cc       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(intr_dma.o)
+ .note          0x00000740       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e03.o)
+ .note          0x000007b4       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e04.o)
+ .note          0x00000828       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(font.o)
+ .note          0x0000089c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p06.o)
+ .note          0x00000910       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p09.o)
+ .note          0x00000984       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p10.o)
+ .note          0x000009f8       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p20.o)
+ .note          0x00000a6c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p26.o)
+ .note          0x00000ae0       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p41.o)
+ .note          0x00000b54       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(sys.o)
+ .note          0x00000bc8       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e00.o)
+ .note          0x00000c3c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(e02.o)
+ .note          0x00000cb0       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p00.o)
+ .note          0x00000d24       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libgpu.a(p01.o)
+ .note          0x00000d98       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a23.o)
+ .note          0x00000e0c       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a24.o)
+ .note          0x00000e80       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(a25.o)
+ .note          0x00000ef4       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c114.o)
+ .note          0x00000f68       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(c73.o)
+ .note          0x00000fdc       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libapi.a(l10.o)
+ .note          0x00001050       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(a63.o)
+ .note          0x000010c4       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c19.o)
+ .note          0x00001138       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c27.o)
+ .note          0x000011ac       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c42.o)
+ .note          0x00001220       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c43.o)
+ .note          0x00001294       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libc.a(c63.o)
+ .note          0x00001308       0x74 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/psyq/lib\libetc.a(vmode.o)
+
+.debug_info     0x00000000      0xa12
+ .debug_info    0x00000000      0x9ee compile/c_output/output_test.o
+ .debug_info    0x000009ee       0x24 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_abbrev   0x00000000      0x285
+ .debug_abbrev  0x00000000      0x271 compile/c_output/output_test.o
+ .debug_abbrev  0x00000271       0x14 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_loclists
+                0x00000000       0x56
+ .debug_loclists
+                0x00000000       0x56 compile/c_output/output_test.o
+
+.debug_aranges  0x00000000       0x68
+ .debug_aranges
+                0x00000000       0x48 compile/c_output/output_test.o
+ .debug_aranges
+                0x00000048       0x20 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_rnglists
+                0x00000000       0x35
+ .debug_rnglists
+                0x00000000       0x35 compile/c_output/output_test.o
+
+.debug_line     0x00000000      0x3c8
+ .debug_line    0x00000000      0x36d compile/c_output/output_test.o
+ .debug_line    0x0000036d       0x5b C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_str      0x00000000      0x3d7
+ .debug_str     0x00000000      0x3d7 compile/c_output/output_test.o
+                                0x3ae (size before relaxing)
+ .debug_str     0x000003d7       0x97 C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
+
+.debug_frame    0x00000000       0xa4
+ .debug_frame   0x00000000       0xa4 compile/c_output/output_test.o
+
+.debug_line_str
+                0x00000000       0x8b
+ .debug_line_str
+                0x00000000       0x8b C:/OCaml64/home/magnu/OCamlProject/PS1Compiler/psyqsdk/thirdparty/nugget/common/crt0/crt0.o
