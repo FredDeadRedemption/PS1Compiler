@@ -11,7 +11,7 @@ This is done by pressing File->Load binary.
 Then navigate to the compiled game -> PS1Compiler/compile/output/
 One the game is loaded, press Emulation->Start emulation.
 
-To compile the psx program you have made, navigate to the PS1compiler directory in an Ocaml evnirorment and write this (make sure to have python installed):
+To compile the psx program you have made, navigate to the PS1compiler directory in an Ocaml environment and write this (make sure to have python installed):
 
 "python compile_all.py "filename"
 
