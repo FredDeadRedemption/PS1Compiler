@@ -8,6 +8,9 @@ class Game {
     }
 
     update() {
+        for (int i = 0; i > 10; i++;){
+
+        }
         if (player.super.x == platform.super.x){
             platform.super.x = 50;
             platform.super.y = 100;
