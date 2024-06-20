@@ -69,6 +69,23 @@ let rec generate_expr expr =
   | StringExpr s ->
     s
 
+let generate_stmt_for_loop stmt =
+  match stmt with
+  | VarDefI (ts, id, expr) ->
+    (string_of_typespec ts) ^ " " ^ id ^ " = " ^ generate_expr expr ^ ";"
+  | VarDefU (ts, id) ->
+    (string_of_typespec ts) ^ " " ^ id ^ ";"
+  | StructInit (ts, id) ->
+    (string_of_typespec ts) ^ " " ^ id ^ ";"
+  | IncrementVal (id, expr) ->
+    id ^ "+=" ^ generate_expr expr ^ ""
+  | DecrementVal (id, expr) ->
+    id ^ "-=" ^ generate_expr expr ^ ""
+  | Increment id -> 
+    id ^ "++"
+  | Decrement id -> 
+    id ^ "--"
+  | _ -> ""
 
 let rec generate_stmt stmt =
   match stmt with
@@ -88,10 +105,10 @@ let rec generate_stmt stmt =
     name ^ " = " ^ generate_expr expr ^ ";\n"
   | ForStmt (stmt, cond, incr, block) ->
     "for (" ^
-    generate_stmt stmt ^
+    generate_stmt_for_loop stmt ^
     generate_expr cond ^ 
     "; " ^
-    generate_stmt incr ^
+    generate_stmt_for_loop incr ^
     ") { \n" ^ 
     String.concat "\n" (List.map generate_stmt block) ^ 
     "}\n"

@@ -7,11 +7,11 @@ Moreover, you need a PSX emulator. Here we reccomend the psx-redux emulator that
 "https://github.com/grumpycoders/pcsx-redux/"
 
 Here you can load the .ps-exe file and look at how your own game runs.
-This is done by pressing File->Load binary. 
+This is done by pressing File->Load binary.
 Then navigate to the compiled game -> PS1Compiler/compile/output/
 One the game is loaded, press Emulation->Start emulation.
 
-To compile the psx program you have made, navigate to the PS1compiler directory in an Ocaml evnirorment and write this:
+To compile the psx program you have made, navigate to the PS1compiler directory in an Ocaml environment and write this (make sure to have python installed):
 
 "python compile_all.py "filename"
 
@@ -26,9 +26,9 @@ For the other tests, you can write:
 
 Have fun exploring the language 😄
 
+There is a cool pong game included for you to try in compile/output
 
-
-   O
-  o               
-    .
-     <><    'lil fisk
+O
+o  
+ .
+<>< 'lil fisk

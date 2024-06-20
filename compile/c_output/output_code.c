@@ -171,6 +171,9 @@ player.gameObject.width = 16;
 player.gameObject.height = 16;
 while(1) {
 ClearOTagR(ot[db], OTLEN); 
+for (int i = 0;i>10; i++) { 
+}
+
 if (player.gameObject.x==platform.gameObject.x) {
 platform.gameObject.x = 50;
 platform.gameObject.y = 100;}
