@@ -94,6 +94,8 @@ type _class =
   | ClassInherStmt of string * string * classblock
 
 (* program *)
+
+
 type program = 
   _class * _class list
 

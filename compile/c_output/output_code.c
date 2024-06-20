@@ -109,7 +109,7 @@ int playerY;
 }Player;
 
 
-
+void run(Player* varPlayer, int speed);
 
 Platform initializePlatform() {
 Platform varPlatform;
@@ -145,6 +145,10 @@ return varPlayer;
 }
 
 
+void run (Player* varPlayer, int speed) {
+   varPlayer->playerY = speed;
+
+}
 
 
 int main(void) {
@@ -161,11 +165,10 @@ platform.gameObject.x = 0;
 platform.gameObject.y = 208;
 platform.gameObject.width = 16;
 platform.gameObject.height = 16;
-player.gameObject.x = 146;
-player.gameObject.y = 40;
+player.gameObject.x = 0;
+player.gameObject.y = 208;
 player.gameObject.width = 16;
 player.gameObject.height = 16;
-player.gameObject.color = RED;
 while(1) {
 ClearOTagR(ot[db], OTLEN); 
 if (player.gameObject.x==platform.gameObject.x) {

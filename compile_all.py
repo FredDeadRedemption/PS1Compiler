@@ -29,7 +29,7 @@ def run_command(command):
 
 def main(filename):
 
-    # Make c to psyq
+    # Make psx to c
     stdout, stderr, status = run_command(f"make main {filename}.psx")
     print(stdout)
 

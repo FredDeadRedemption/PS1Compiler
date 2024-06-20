@@ -3,7 +3,7 @@ class Game {
     Platform platform = new Platform();
 
     start() {
-
+        
 
     }
 
@@ -32,16 +32,8 @@ class Game {
 class Player : GameObject {
     int playerY = 0;
 
-    start() {
-        super.x = 146;
-        super.y = 40;
-        super.width = 16;
-        super.height = 16;
-        super.color = "RED";
-    }
-
-    update() {
-
+    void run(int speed) {
+        playerY = speed;
     }
 }
 

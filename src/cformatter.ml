@@ -1,9 +1,8 @@
 (* made global *)
 let inst_classes_list = ref []
 let class_list = ref []
-let id_list = ref []
 let struct_list = ref []
-let construct_list = ref []
+let initializer_list = ref []
 let start_list = ref []
 let struct_init_list = ref []
 let game_field_list = ref []
@@ -298,7 +297,6 @@ let handle_method_stmt obj fields stmt =
   | Ctree.Assign (id, expr) when is_field fields id ->
     Ctree.Assign ((id_of_obj obj) ^ "->" ^ id, expr)
   | Ctree.ObjectPropAssign (id, props, expr) when is_field fields id ->
-    
     Ctree.ObjectPropAssign ((id_of_obj obj) ^ "->" ^ id, props, expr)
   | Ctree.ObjectPropAssign (id, props, expr) ->
     let id_with_game_object = 
@@ -311,7 +309,6 @@ let handle_method_stmt obj fields stmt =
       | "super" -> "gameObject"
       | other -> other
     ) props in
-    
     Ctree.ObjectPropAssign ((id_of_obj obj) ^ "->" ^ id_with_game_object, props_with_game_object, expr)
   | _ -> stmt
   
@@ -320,11 +317,11 @@ let handle_method_body obj fields stmts =
   List.map (fun stmt -> handle_method_stmt obj fields stmt) stmts
 
 let collect_class_components id inher_opt (fields, methods) =
-  id_list := id :: !id_list;
-  struct_list := assemble_struct id inher_opt fields :: !struct_list;
-  let class_constructor = assemble_constructor id inher_opt fields in
 
-  construct_list := class_constructor :: !construct_list;
+  struct_list := assemble_struct id inher_opt fields :: !struct_list;
+
+  let class_constructor = assemble_constructor id inher_opt fields in
+  initializer_list := class_constructor :: !initializer_list;
   
   let converted_methods = List.map convert_ast_method_to_ctree methods in
   let methods_with_class = List.map (fun (ts, name, formals, body) ->
@@ -501,9 +498,9 @@ let rec generate_all_objects inst_classes_list classes =
     let objects = instantiate_class (ts, [id]) classes in
     objects @ generate_all_objects tl classes
   
-  let instantiate_classes inst_classes_list classes =
-    let all_objects = generate_all_objects inst_classes_list classes in
-    List.iter collect_object_components all_objects
+let instantiate_classes inst_classes_list classes =
+  let all_objects = generate_all_objects inst_classes_list classes in
+  List.iter collect_object_components all_objects
 
 
 let rec generate_func_pt method_list =
@@ -529,10 +526,10 @@ let construct_main start_list update_list =
   let update = Ctree.Update (update_list) in
   (start, update)
 
-let construct_program struct_list construct_list start_list update_list method_list =
+let construct_program struct_list initializer_list start_list update_list method_list =
   let structs = struct_list in
   let ptypes = construct_ptypes method_list in
-  let constructors = construct_list in
+  let constructors = initializer_list in
   let funcs = construct_funcs method_list in
   let main = construct_main start_list update_list in
   (structs, ptypes, constructors, funcs, main)
@@ -555,7 +552,7 @@ let create_tree (gameClass, classes) : Ctree.program =
     collect_class_components id inher (fields, methods)
   ) classes;
   instantiate_classes !inst_classes_list classes;
-  construct_program !struct_list !construct_list !start_list !update_list !method_list
+  construct_program !struct_list !initializer_list !start_list !update_list !method_list
 
 let format_to_c ast =
   let formatted_tree = create_tree ast in
